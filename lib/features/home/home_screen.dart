@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/l10n/doory_strings.dart';
+import '../notifications/notification_bell.dart';
 import '../../core/routing/nav.dart';
 import '../../core/theme/doory_tokens.dart';
 import '../../core/theme/doory_typography.dart';
@@ -59,6 +60,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 112,
+        actions: const [NotificationBell()],
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

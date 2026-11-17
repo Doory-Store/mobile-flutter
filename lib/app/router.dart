@@ -5,16 +5,28 @@ import 'package:go_router/go_router.dart';
 import '../core/l10n/doory_strings.dart';
 import '../core/widgets/chrome.dart';
 import '../features/account/account_screen.dart';
+import '../features/account/profile_screen.dart';
+import '../features/addresses/address_form_screen.dart';
+import '../features/addresses/addresses_screen.dart';
+import '../features/auth/login_screen.dart';
 import '../features/cart/cart_screen.dart';
 import '../features/categories/categories_screen.dart';
+import '../features/checkout/checkout_screen.dart';
+import '../features/checkout/order_confirmation_screen.dart';
 import '../features/debug/api_status_screen.dart';
 import '../features/favorites/favorites_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/listing/listing_screen.dart';
+import '../features/notifications/notifications_screen.dart';
+import '../features/orders/order_detail_screen.dart';
+import '../features/orders/orders_screen.dart';
 import '../features/product/product_screen.dart';
 import '../features/search/search_screen.dart';
+import '../features/settings/settings_screen.dart';
 import '../features/shell/doory_shell.dart';
-import '../features/store/store_placeholder_screen.dart';
+import '../features/store/store_screen.dart';
+import '../features/support/new_ticket_screen.dart';
+import '../features/support/support_screen.dart';
 import 'branch_keys.dart';
 
 List<RouteBase> browseRoutes() {
@@ -37,7 +49,76 @@ List<RouteBase> browseRoutes() {
     GoRoute(
       path: 's/:slug',
       builder: (context, state) =>
-          StorePlaceholderScreen(slug: state.pathParameters['slug']!),
+          StoreScreen(slug: state.pathParameters['slug']!),
+    ),
+  ];
+}
+
+/// Full-screen flows above the tab bar: auth, checkout, and account pages.
+List<RouteBase> flowRoutes() {
+  return [
+    GoRoute(
+      path: '/login',
+      builder: (context, state) =>
+          LoginScreen(next: state.uri.queryParameters['next']),
+    ),
+    GoRoute(
+      path: '/checkout',
+      builder: (context, state) => const CheckoutScreen(),
+    ),
+    GoRoute(
+      path: '/order-confirmation',
+      builder: (context, state) => const OrderConfirmationScreen(),
+    ),
+    GoRoute(
+      path: '/orders',
+      builder: (context, state) => const OrdersScreen(),
+      routes: [
+        GoRoute(
+          path: ':id',
+          builder: (context, state) =>
+              OrderDetailScreen(publicId: state.pathParameters['id']!),
+        ),
+      ],
+    ),
+    GoRoute(
+      path: '/addresses',
+      builder: (context, state) => const AddressesScreen(),
+      routes: [
+        GoRoute(
+          path: 'new',
+          builder: (context, state) => const AddressFormScreen(),
+        ),
+        GoRoute(
+          path: ':id',
+          builder: (context, state) => AddressFormScreen(
+            id: int.tryParse(state.pathParameters['id'] ?? ''),
+          ),
+        ),
+      ],
+    ),
+    GoRoute(
+      path: '/notifications',
+      builder: (context, state) => const NotificationsScreen(),
+    ),
+    GoRoute(
+      path: '/settings',
+      builder: (context, state) => const SettingsScreen(),
+    ),
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: '/support',
+      builder: (context, state) => const SupportScreen(),
+      routes: [
+        GoRoute(
+          path: 'new',
+          builder: (context, state) =>
+              NewTicketScreen(orderId: state.uri.queryParameters['order']),
+        ),
+      ],
     ),
   ];
 }
@@ -110,6 +191,7 @@ GoRouter buildRouter() {
           ),
         ],
       ),
+      ...flowRoutes(),
     ],
   );
 }
