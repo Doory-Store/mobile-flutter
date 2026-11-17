@@ -101,4 +101,20 @@ abstract final class DooryStrings {
   static String categoryFacet(String name, int count) => '$name ($count)';
 
   static String milliseconds(int ms) => '$ms مللي ثانية';
+
+  static const cancel = 'إلغاء';
+  static const confirm = 'تأكيد';
+  static const remove = 'إزالة';
+  static const increase = 'زيادة الكمية';
+  static const decrease = 'إنقاص الكمية';
+  static const understood = 'حسنًا';
+  static const toBeDetermined = 'يُحدَّد لاحقًا';
+  static const mockScreenNote =
+      'هذه الشاشة تعمل على بيانات تجريبية حتى ربطها بالخادم.';
+  static const notWiredTitle = 'لم يتم الربط بعد';
+  static const notWiredBody =
+      'هذا الإجراء يحتاج إلى الخادم، ولم يتم الربط بعد. باقي الشاشة يعمل على بيانات تجريبية.';
+
+  static String notWiredFeature(String feature) =>
+      '«$feature» يعمل عند ربط التطبيق بالخادم، ولم يتم الربط بعد. باقي الشاشة يعمل على بيانات تجريبية.';
 }
