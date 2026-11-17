@@ -4,11 +4,9 @@ Items skipped while building the first runnable buyer app. The live API at `http
 
 ## Android and iOS product flavors
 
-The checked-in Android project is the Groovy template (AGP 8.1.0, Kotlin 1.8.22, Gradle 8.3). It is not the Kotlin DSL / AGP 9.3.1 setup described in the task, and it was left unchanged so that existing Gradle files keep working.
+Android is now the Kotlin DSL project (AGP 9.3.1, Kotlin 2.4.20, Gradle 9.5.0). Product flavors are still not declared. Adding `productFlavors` would make `flutter run` require `--flavor`, which conflicts with a flagless `flutter run`. `DOORY_FLAVOR` stays a `--dart-define` (`dev` by default) and does not change the application id. iOS schemes are not wired either.
 
-Product flavors were not added. Once `productFlavors` exist, `flutter run` requires `--flavor`, which conflicts with a flagless `flutter run`. Flavor is a `--dart-define=DOORY_FLAVOR` (`dev` by default) and does not change the application id.
-
-Next step: move Android onto the Flutter 3.50 Kotlin DSL (AGP 9.x) and add `dev` / `staging` / `prod` flavors plus matching iOS schemes, then document that `--flavor` is required.
+Next step: add `dev` / `staging` / `prod` application-id suffixes and matching iOS schemes only when the run command is allowed to require `--flavor`.
 
 ## Debug APK
 
