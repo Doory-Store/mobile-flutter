@@ -115,7 +115,11 @@ flutter analyze
 flutter test
 ```
 
-Requires the Flutter stable toolchain and a configured Android emulator or device (iOS on macOS). This environment had no Android SDK, so a debug APK was not built.
+Requires the Flutter stable toolchain and a configured Android emulator or device (iOS on macOS). `flutter build apk --debug` builds the Android debug APK.
+
+## Live and sample data
+ catalog (home, categories, product, listing, search, store profile) reads the live buyer API. Cart, login, profile, addresses, checkout, orders, notifications, reviews, and support run on Mock repositories whose fixtures follow the backend OpenAPI schemas, and those screens carry the «بيانات تجريبية» badge. Actions that need the server, such as placing a real order or submitting payment proof, open a «لم يتم الربط بعد» dialog. The sample OTP is `482910` and the sample coupon is `DOORY10`.
+ domain switches from Mock to Live in `lib/data/repositories/commerce/commerce_providers.dart`. See `design-plans/phase-5-full-ui-mock.md`.
 
 ## Delivery plan
 
@@ -126,4 +130,4 @@ Work ships in slices. Details are in `design-plans/`.
 2. Product detail
 3. Category listing and search
 4. Store profile
-5. Cart, checkout, and orders — once those API contracts exist
+5. Full interface on swappable data (catalog live, commerce on labelled samples). Wiring cart, checkout, and orders as their API contracts land

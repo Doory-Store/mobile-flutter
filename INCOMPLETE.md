@@ -1,51 +1,55 @@
 # Incomplete
 
-Items skipped while building the first runnable buyer app. The live API at `https://doory.elogyc.com/api/v1` was reachable and the models follow those payloads.
+Open items for the buyer app. The catalog reads the live API at `https://doory.elogyc.com/api/v1`; the commerce domains run on labelled Mock repositories (see `design-plans/phase-5-full-ui-mock.md`).
+
+## Commerce domains on sample data
+
+Cart, auth (OTP), profile, addresses and neighborhoods, payment guide, delivery slots, pickup points, checkout, orders, notifications, reviews, help articles, and support tickets use `Mock…Repository` classes. Their `Live…Repository` counterparts in `lib/data/repositories/commerce/live_repositories.dart` name the endpoint and throw `NotWiredException`.
+
+Next step: implement one Live repository at a time against the Dio transport, switch its provider in `commerce_providers.dart`, and replace the matching «لم يتم الربط بعد» actions.
+
+## Server-only actions
+
+These open the «لم يتم الربط بعد» dialog: placing a real order, submitting payment proof, cancelling a checkout or an order, returns, publishing a review, product questions, back-in-stock alerts, messaging or reporting a store, sending a support ticket, attachments, ticket threads, WhatsApp and phone handoff, map pin, phone change, password, sessions, data export, account deletion, WhatsApp OTP, password login, and policy pages.
+
+Next step: wire each with its endpoint. Dialing and WhatsApp need `url_launcher`; the map pin needs a maps package and location permission; attachments and payment proof need an image picker and multipart upload.
+
+## Auth token storage
+
+The mock session lives in memory and in `shared_preferences`. A real bearer token belongs in `flutter_secure_storage` with expiry and refresh handling.
+
+Next step: add secure storage and a Dio auth interceptor when `/auth/otp/verify` is wired.
 
 ## Android and iOS product flavors
 
-Android is now the Kotlin DSL project (AGP 9.3.1, Kotlin 2.4.20, Gradle 9.5.0). Product flavors are still not declared. Adding `productFlavors` would make `flutter run` require `--flavor`, which conflicts with a flagless `flutter run`. `DOORY_FLAVOR` stays a `--dart-define` (`dev` by default) and does not change the application id. iOS schemes are not wired either.
+Android is the Kotlin DSL project (AGP 9.3.1, Kotlin 2.4.20, Gradle 9.5.0). Product flavors are not declared, because `productFlavors` would make `flutter run` require `--flavor`. `DOORY_FLAVOR` stays a `--dart-define` (`dev` by default) and does not change the application id. iOS schemes are not wired.
 
-Next step: add `dev` / `staging` / `prod` application-id suffixes and matching iOS schemes only when the run command is allowed to require `--flavor`.
-
-## Debug APK
-
-`flutter build apk --debug` was not run. `ANDROID_HOME` is unset and there is no Android SDK or `adb` on this machine, so the build cannot configure the SDK.
-
-Next step: install the Android command-line tools and a platform matching `flutter.compileSdkVersion`, then run `flutter build apk --debug`.
-
-## Device launch
-
-`flutter run` was not executed against an emulator or a phone. Analyzer, unit tests, and widget tests passed. There is no display device in this environment.
-
-Next step: `flutter run` on an Android emulator and confirm Home, a category, a product, search, and **حسابي → حالة الاتصال** against the live host.
+Next step: add `dev` / `staging` / `prod` application-id suffixes and matching iOS schemes when the run command may require `--flavor`.
 
 ## Pixel goldens
 
-No golden files were committed. Widget tests cover the product card (price, missing price, estimate, demo label), the maintenance banner, the five-tab bar order, home unavailable vs rejected, empty search (no `/search` call), and the degraded-search notice.
+No golden files are committed. Widget tests cover the product card, maintenance banner, five-tab order, home failure states, search, cart lines and totals, the empty cart, the guest account, the quantity stepper, and the not-wired dialog.
 
-Next step: render the card and a shelf row at 390 logical pixels with Cairo loaded and commit the PNGs from `flutter test --update-goldens` on the CI image.
+Next step: render key screens at 390 logical pixels with Cairo loaded and commit the PNGs from `flutter test --update-goldens` on the CI image.
 
 ## Hero transition
 
-A shared-element transition from the card photo into the product gallery was not added. The same product can appear on more than one home shelf, and duplicate hero tags throw.
+A shared-element transition from the card photo into the product gallery is not added. The same product can appear on more than one home shelf, and duplicate hero tags throw.
 
 Next step: pass a placement-specific hero tag through the route and skip it when `disableAnimations` is set.
 
 ## Home modules with no live schema
 
-`GET /home` returns empty `cms_sections`, `banners`, and `flash_sales`, and those arrays have no documented item shape. The brand rail, campaign mosaic, and suggestion pills are omitted on a live response. A labelled mosaic is shown only with the unreachable-host fixture. There are no contracted help or policy URLs, so the footer is a brand band without invented links.
+`GET /home` returns empty `cms_sections`, `banners`, and `flash_sales`, and those arrays have no documented item shape. The brand rail, campaign mosaic, and suggestion pills are omitted on a live response; a labelled mosaic appears only with the unreachable-host fixture.
 
-Next step: record the banner and CMS object shape, then render real modules. Add help links only when the URLs exist.
+Next step: record the banner and CMS object shape, then render real modules.
 
-## Store, cart, checkout, account
+## Store catalog paging
 
-`/s/:slug` is a placeholder. It still calls `GET /stores/{slug}` so an unknown slug is not-found and a live store shows its name, area, and description. It does not page a store catalog.
+The store page shows the products included in `GET /stores/{slug}` and does not page a full store catalog.
 
-Cart and account are MSA coming-soon screens. Favorites are stored on the device with `shared_preferences`. Add-to-cart and buy on the product page explain that checkout is not contracted. Cards do not show a basket control.
-
-Next step: phase 4 for the store grid, then cart and checkout when those contracts exist.
+Next step: page `/products?store={slug}` inside the products tab.
 
 ## Category query
 
-Not skipped, recorded so the next contract pass does not "fix" it backwards. The live `GET /products?category=` filter accepts a numeric category id. A slug or unknown string is ignored and the endpoint returns the unfiltered catalog (confirmed with `category=bakery` vs `category=9`). The app resolves the slug to an id and, when the slug is not in the tree, shows not-found instead of the full catalog.
+Recorded so the next contract pass keeps it. `GET /products?category=` accepts a numeric category id; a slug is ignored and the endpoint returns the whole catalog. The app resolves the slug to an id and shows not-found for an unknown slug.

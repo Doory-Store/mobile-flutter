@@ -9,6 +9,7 @@ The app ships in vertical slices. Each phase leaves behind working screens, type
 | 2 | [Product detail](phase-2-live-product-page.md) | Full product page from `/products/{id}` |
 | 3 | [Listing and search](phase-3-listing-search.md) | Category grids and search results |
 | 4 | [Store profile](phase-4-store.md) | Merchant store from `/stores/{slug}` |
+| 5 | [Full interface on swappable data](phase-5-full-ui-mock.md) | Every screen and control, commerce on labelled Mock repositories |
 | Later | [Cart, checkout, and orders](phase-later-cart-checkout-orders.md) | Purchase flow, once contracted |
 
 Phases 0–3 are the first release. Later phases wait on their API contracts. `PRODUCT.md` and `DESIGN.md` apply to every slice.
