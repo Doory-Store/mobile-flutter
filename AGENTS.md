@@ -1,106 +1,68 @@
-# Agent conventions — Doory mobile (Flutter)
+# Working in this repository
 
-<!-- Keep this file short, imperative, and easy to follow in a new session. -->
+A short guide for contributors and coding agents. Product intent lives in `PRODUCT.md`. Visual and interaction decisions live in `DESIGN.md`. Read both before changing the interface.
 
-## This is a Flutter app, not the Next.js storefront
+## Everyday commands
 
-This repository is the buyer **mobile** app. The sibling web app is [Doory-Store/frontend](https://github.com/Doory-Store/frontend). Share product rules, visual tokens, and the buyer API contract with that repo. Do not paste web components, CSS class names, or desktop layout blindly into Dart.
+```bash
+flutter pub get
+flutter run --flavor dev --dart-define=DOORY_API_BASE_URL=https://doory.elogyc.com/api/v1
+dart format .
+flutter analyze
+flutter test
+flutter test --update-goldens   # only when a visual change is intentional
+```
 
-## Design and product first
+Generate models after a contract change:
 
-Before proposing, changing, or reviewing an interface, read `PRODUCT.md` and `DESIGN.md`. Design work starts only after both files have been read.
+```bash
+dart run build_runner build --delete-conflicting-outputs
+```
 
-Those files do not authorize new tools, servers, analytics, or business-policy decisions.
+## Layout of the code
 
-## Visual identity
+- `lib/app/` — `MaterialApp.router`, flavors, go_router.
+- `lib/core/theme/` — tokens, `DooryTokens` ThemeExtension, `dooryTheme()`.
+- `lib/core/network/` — Dio, interceptors, `ApiException`.
+- `lib/core/config/` — `--dart-define` and flavor values.
+- `lib/core/widgets/` — shared chrome (demo label, maintenance banner, skeletons, buttons).
+- `lib/data/models/` — freezed buyer DTOs and UI models.
+- `lib/data/repositories/` — one repository per aggregate (home, catalog, search, product, meta).
+- `lib/data/demo/` — labelled sample fixtures, imported by repositories, not by widgets.
+- `lib/features/<name>/` — screens, feature widgets, and providers for that area.
+- `test/unit`, `test/widget`, `test/golden`.
 
-- Use the token classes in `lib/core/theme/` (`DooryColors`, `DooryTypography`, `DooryRadii`, `DoorySpacing`, `DooryShadows`, and `dooryTheme()`).
-- Do not hardcode brand hex values (`#F27A1A`, `#C2410C`, and the rest) inside feature widgets.
-- Do not restore `#B95800` as a fill, price, or active color.
-- Do not use Plus pink `#FF4988` as a brand, price, or action color.
-- Light theme only. Do not add `themeMode` / a dark `ColorScheme` until tokens exist.
-- Cairo is the only text family, at weights 400, 600, and 700. `letterSpacing` stays 0 on Arabic text.
-- Default `Card` elevation is 0. Apply only the documented shadow tokens.
-- Minimum touch target: 44×44. Honor safe areas and `MediaQuery.disableAnimations`.
+New UI belongs in the feature it serves. Tokens and HTTP stay in `core/`.
 
-## Arabic, RTL, and copy
+## Conventions
 
-- Default locale is `ar`. The tree is `TextDirection.rtl`.
-- Use formal, contemporary MSA. Be concise, direct, helpful, and respectful.
-- Reuse approved terms: “تصفّح الفئات”, “عرض الكل”, “إضافة إلى السلة”, “متابعة التسوق”, “ابحث عن منتج أو فئة”, “وصل حديثًا”, “مختارات”. Use “مختارة لك” only when personalization actually exists.
-- Use logical directional APIs (`EdgeInsetsDirectional`, `AlignmentDirectional`, `PositionedDirectional`). Do not hardcode left/right insets.
-- Mirror directional chevrons only. Do not mirror the wordmark, logos, product photos, or nondirectional search/cart/heart/account icons.
-- Isolate Latin brand names, SKUs, and prices when mixed with Arabic.
-- Currency label is “ل.س”. Do not invent a currency format or a numeral system policy; confirm before changing the current Latin-digit practice.
-- Explain errors with a next step. Never blame the customer.
+**Theme.** Storefront widgets read color, type, radius, and spacing from `Theme.of(context)` and `DooryTokens`. Named styles (`DooryTypography.cardPrice`, and the rest) stay on the scale in `DESIGN.md`.
 
-## Data honesty
+**Direction.** The app is `Locale('ar')` with `TextDirection.rtl`. Use directional insets and alignment. Carousels start at the inline start. Directional chevrons flip; wordmark, photos, and search/cart/rating icons stay as drawn.
 
-- Never invent deals, ratings, reviews, badges, coupons, banners, counts, delivery promises, or payment methods.
-- Favorites are not a feature. Do not persist a heart or present it as a wishlist.
-- Missing optional fields are omitted; do not substitute zeros, empty stars, or fake reassurance.
-- `price_syp == null` is a missing price, not `0`.
-- Do not convert “API unavailable” into “نفدت الكمية” or an empty real catalog.
-- Visible “بيانات تجريبية” on every fixture surface. Fixtures live under `lib/data/demo/` and stay out of widgets and out of the HTTP client.
-- Do not lock unresolved `PRODUCT.md` §13 policies into copy, totals, or widget defaults.
+**Copy.** Formal MSA. Reuse the terms in `PRODUCT.md`. New strings go through `lib/core/l10n/` (or the project’s ARB files) so wording stays consistent.
 
-## API client rules
+**Networking.** One Dio client, 4s default timeout, `Accept: application/json`, `Accept-Language: ar`. Repositories return `ok` / `unavailable` / `rejected` / `notFound`. Widgets switch on that result: live data, a labelled fixture when the host is unreachable, a not-found screen, or a retryable error. `GET /search` is called only with a non-empty `q`. Price filters are sent only when the range is valid.
 
-Mirror `lib/api/client.ts` and `lib/api/errors.ts` from the web repo.
+**Models.** Buyer payloads are freezed + json_serializable, aligned with API v0.2.0. `price_syp` is `int?`. Optional fields are nullable and omitted in the UI when null. Ids and slugs come from the API.
 
-- Single client. `GET` against `DOORY_API_BASE_URL` (example documented in the web `.env.example`: `https://doory.elogyc.com/api/v1`). Strip a trailing slash. Do not invent hosts or endpoints.
-- Headers: `Accept: application/json`, `Accept-Language: ar`. No auth header until a contract exists.
-- Default timeout: 4000 ms.
-- Missing base URL is a `network` error, not an empty success.
-- Error kinds: `not_found`, `validation`, `unauthorized`, `forbidden`, `rate_limited`, `network`, `server`, `unknown`. Map 404 / 422 / 401 / 403 / 429 / 5xx the same way the web client does.
-- `unavailable` (network, 5xx, missing base URL) may fall back to a **matching** labelled fixture. `rejected` live responses (including 422) must not.
-- Live product 404 → not-found screen. Never an unrelated demo product.
-- A live id with the API down and no matching fixture → “صفحة المنتج غير متاحة بعد”, not a fake product.
-- Do not call `GET /search` with an empty `q` (422). Do not send an inverted price range (422).
-- Do not add `POST` / cart / checkout / auth calls until the contract is approved and documented.
-- The web app keeps this API server-only (`import "server-only"`, no `NEXT_PUBLIC_`). The Flutter app must call it from the device. That is the only intended difference. Do not embed secrets.
+**State and routing.** Riverpod for state; providers call repositories. go_router for `/`, `/search`, `/c/:slug`, `/p/:ref`, and `/s/:slug`. Cancel in-flight requests when a route is disposed.
 
-Known buyer endpoints (web `lib/api/*`):
+**Platform.** Honor safe areas, system text scale, Android predictive back, and iOS back swipe. Targets are 44–48 dp.
 
-- `GET /health`
-- `GET /meta/status`
-- `GET /cities`
-- `GET /categories`
-- `GET /home`
-- `GET /products` (query: `category`, `store`, `sort`, `min_price_syp`, `max_price_syp`, `page`, `per_page`)
-- `GET /products/{id}`
-- `GET /search` (query: `q` required, plus `category`, `brand`, `store`, `sort`, `min_price_syp`, `max_price_syp`, `city_id`, `page`, `per_page`)
-- `GET /stores/{slug}`
+## Known endpoints
 
-`sort` values: `newest`, `price_asc`, `price_desc`. Types are aligned with buyer API v0.2.0 in web `lib/api/types.ts`.
+`GET /health`, `/meta/status`, `/cities`, `/categories`, `/home`, `/products`, `/products/{id}`, `/search`, `/stores/{slug}`.
 
-Maintenance: show `maintenance.message.ar` when `maintenance_active` is true. If `/meta/status` fails, omit the strip.
+List and search query parameters: `category`, `store`, `brand` (search), `sort` (`newest` | `price_asc` | `price_desc`), `min_price_syp`, `max_price_syp`, `city_id` (search), `page`, `per_page`. Search requires `q`.
 
-## Architecture conventions
+## Definition of done
 
-- Keep data access, mapping, and policy out of visual widgets.
-- Repositories return explicit result types (`ok` / `unavailable` / `rejected` / `notFound`).
-- One widget, one job. Typed contracts for cards, shelves, and PDP sections.
-- Recommended state: Riverpod. Recommended HTTP: a thin Dio (or `http`) wrapper. Recommended routing: `go_router`. Alternatives are fine if consistent; do not add a stack of overlapping libraries.
-- Do not install packages, generate code, or change architecture merely to enforce these docs.
-- Do not invent product or store slugs; the backend owns transliteration (web `lib/links.ts`).
+A change is ready for review when all of the following hold:
 
-## Flutter / Dart quality
-
-- Write null-safe, formatted Dart (`dart format`). Follow `analysis_options.yaml` / `flutter_lints`.
-- Prefer `const` constructors. Avoid work in `build()` that belongs in a repository or `Notifier`.
-- Handle text scaling and long Arabic strings; do not overflow.
-- Give interactive widgets `Semantics` labels. Icon-only buttons need names.
-- Keep feature folders independent of each other except through `core/` and `data/`.
-
-## Scope discipline
-
-- MVP is home, categories, listing, search, and product detail — the surfaces the web app has already wired.
-- Cart, checkout, tracking, account, wallet, and a fixed bottom nav wait on approval and contracts.
-- Seller, merchant, and admin work is out of scope.
-- When in doubt, omit the module rather than decorating the gap.
-
-## Confirmation checklist
-
-- Confirm unsettled typography, numeral/currency formatting, cart-count convention, and bottom-nav proposals with Hamza before treating them as decided.
-- Keep `PRODUCT.md` business-policy questions open.
+- `dart format` and `flutter analyze` are clean; new behavior has unit, widget, or golden coverage as it fits.
+- The UI uses theme tokens and remains readable in RTL at a large text scale, without overflow or horizontal page scroll.
+- Loading, empty, and error states are present; pull-to-refresh works on data screens.
+- Prices, discounts, ratings, and delivery lines match the Principles in `PRODUCT.md`. Sample content shows «بيانات تجريبية».
+- Networking stays on the contracted GET surface; auth, cart, and checkout changes belong to a later phase with an approved contract.
+- Goldens are updated only with a short note in the pull request describing the visual change.

@@ -1,38 +1,61 @@
 # Phase 3 — Listing and search
 
-Web counterpart: branch `cursor/phase-3-listing-search-e983`, plus `lib/listing/*`, `app/ar/c/[slug]/page.tsx`, `app/search/page.tsx`, and `components/listing/*` in the frontend repo.
-
 ## Goal
-Category listing and search use the live catalog, with the same honesty rules as the web loaders.
 
-## Ship
-- Category route `/c/:slug` using `loadCategoryListing` rules from web `lib/listing/load-category-listing.ts`:
-  - Live category tree wins over a colliding demo id.
-  - Parent categories can show child tiles and omit a zero product count.
-  - `GET /products` with `category`, `sort`, `min_price_syp`, `max_price_syp`, `page`, `per_page` (default page size 24).
-  - `sort`: `newest`, `price_asc`, `price_desc`.
-  - If the requested page is past `last_page`, clamp and refetch the last page.
-  - Inverted price range: do not call the API (it is a 422); keep the live shell.
-  - `rejected` → live shell, no demo swap.
-  - `unavailable` → labelled demo listing for that slug if it exists; otherwise the live shell with an empty product grid and an honest unavailable explanation — not “no products in this category” presented as a real empty catalog.
-  - Unknown slug with no demo → not-found.
-- Search route `/search?q=` using `loadSearchListing` rules from web `lib/listing/load-search-listing.ts` and `app/search/page.tsx`:
-  - Empty `q`: do not call `GET /search`. Show the empty-search hint “اكتب اسم منتج أو فئة في مربع البحث”, plus suggestions/top categories only if they are real or labelled demo.
-  - Live results: title “نتائج البحث عن «{q}»”, count from `meta.total`, category facets joined to `/categories` names (facet buckets are ids only).
-  - `search.degraded`: show a quiet, honest notice that results may be incomplete — do not hide it and do not invent a better result set.
-  - Zero hits without extra filters: empty state, suggestions, and optional labelled sample cards — not fake “popular” claims.
-  - `rejected` → empty live search shell.
-  - `unavailable` → labelled demo search for that query.
-- Listing UI (phone): heading, count, sort sheet, price filters, category tree/child chips, product grid (two columns unless Arabic needs more width), paging or pull-to-load that respects `last_page`.
-- Reuse the phase-1 product card. Currency label “ل.س”.
-- Query parsing stays structured (not parsed from visible copy), matching web `lib/listing/filter.ts`.
+A shopper can browse a category and search the catalog, with sort, a price range, and infinite scroll, all backed by the live list and search endpoints.
 
-## Do not ship in this phase
-- Brand/store facet UI unless the API names are actually resolved (search facets for brand/store are ids; do not display raw ids as if they were names).
-- Cart or bottom nav.
+## Scope
 
-## Done when
-- A live category slug lists real products with a truthful count and pager.
-- An empty search query never hits the network.
-- A 422-class rejection does not suddenly display demo products.
-- A down API is labelled “بيانات تجريبية” or explained as unavailable, never as a real zero-result catalog.
+- Category listing at `/c/:slug`.
+- Search at `/search?q=`, opened from the home search field.
+- Phone UI: title, result count, sort sheet (`newest`, `price_asc`, `price_desc`), price-range filter, child-category chips or a side tree, a two-column grid that relaxes if text needs width, infinite scroll, pull-to-refresh.
+- Reuse the phase-1 product card. Currency label «ل.س».
+- Query state is structured in the route (`sort`, `min`, `max`, `page` recovery) and in a Riverpod notifier — not parsed from visible copy.
+
+**Category loader**
+
+- The live tree wins when the slug exists.
+- Parent categories show child tiles; a zero count is omitted for parents that are only hubs.
+- `GET /products` with `category`, `sort`, `min_price_syp`, `max_price_syp`, `page`, `per_page` (24).
+- A request past `last_page` is clamped to the last page.
+- An inverted price range stays on the device; the API is not called with it (it would be a 422).
+- `rejected` keeps an empty live shell and explains the error.
+- `unavailable` uses a labelled sample listing for that slug when one exists; otherwise the shell stays up with a retryable unavailable message.
+
+**Search loader**
+
+- An empty `q` stays on the empty-search state («اكتب اسم منتج أو فئة في مربع البحث») and suggestions; the client is not called.
+- Live hits use the title «نتائج البحث عن «{q}»» and `meta.total`. Category facets join bucket ids to `/categories` names.
+- When `search.degraded` is true, a quiet notice explains that results may be incomplete.
+- Zero hits without extra filters show a dedicated empty state and a path back into categories.
+- `rejected` and `unavailable` follow the same split as listing.
+
+## Screens
+
+- Category listing (`/c/:slug`)
+- Search (`/search?q=`)
+- Shared sort sheet and price-filter sheet
+- Not-found for an unknown slug with no fixture
+
+## Data
+
+- `GET /products` — list + `meta`
+- `GET /search` — `q`, facets (`category` ids + counts), `search.degraded`, list + `meta`
+- `GET /categories` — names for facets and the tree
+
+Brand and store facets are ids in the payload. They appear in the UI once names can be resolved; until then the category facet is the one that is shown.
+
+## Acceptance
+
+- A live category slug lists real products, a truthful count, and loads further pages up to `last_page`.
+- An empty search query makes no network call.
+- A 422-class rejection keeps the live shell and does not swap in sample products.
+- An unreachable host is labelled sample content or an unavailable message — not a real “zero products in this category” result.
+- Pull-to-refresh resets to page 1. Infinite scroll does not fire past `last_page`.
+- Widget tests cover empty query, zero hits, degraded notice, and error; a golden locks a two-column grid.
+
+## Risks
+
+- Filter + pagination race conditions: cancel the previous Dio request when sort or price changes.
+- Facet ids without names — show category facets first, as planned.
+- Two-column grids at large text scales: allow the grid to drop to one column rather than clipping Arabic titles.

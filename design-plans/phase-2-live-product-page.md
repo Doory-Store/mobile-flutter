@@ -1,37 +1,48 @@
-# Phase 2 — Live product page
-
-Web counterpart: branch `cursor/phase-2-live-product-page-8ef2`, plus `lib/product/load-product.ts`, `lib/api/map-product-detail.ts`, and `components/product/*` in the frontend repo.
+# Phase 2 — Product detail
 
 ## Goal
-A production-quality product detail screen driven by `GET /products/{id}`, with honest empty/unavailable states and labelled demo only for matching fixtures when the API is down.
 
-## Ship
-- Route `/p/:ref`. Parse `ref` with the web rule (`parseProductRefId`: leading digits, safe positive integer). Optional `id-slug` form is allowed; the backend owns the slug.
-- `loadProductPage` rules from web `lib/product/load-product.ts`:
-  - Non-numeric ref → matching demo fixture or not-found.
-  - Live numeric id, `ok` → map `BuyerProductDetail` to the widget contract. Overlay demo-only PDP modules (campaigns, questions) only when they are labelled demo and not presented as live offers.
-  - Live `not_found` → not-found screen. Never an unrelated demo product.
-  - Network / 5xx → matching demo fixture if one exists; otherwise “صفحة المنتج غير متاحة بعد”.
-- PDP composition (adapt web `components/product/*` and `design-plans/single-product-page/PLAN.md` to a phone column):
-  - Gallery (`BoxFit.contain` on white), optional unavailable/preview heart
-  - Title (`text-product`), brand, seller name
-  - Live price in `price` (`#F27A1A`, 24/28, 600). “سعر تقريبي” when `price_is_estimate`. Hide the amount when `price_syp` is null; never coerce to 0. Compare-at and discount chips only when genuine, or clearly labelled demo beside a live price (`discountIsDemo`)
-  - Variants from `options` (`available`, `low_stock_hint`)
-  - Quantity stepper (local only until cart exists)
-  - Buy box: “إضافة إلى السلة” / “اشتر الآن” as unavailable controls until cart/checkout exist (`can_purchase` still affects enabled/disabled and copy, but must not pretend the action succeeded)
-  - Highlights, attributes, description, delivery rows only when data exists — no invented policy
-  - Seller card; store link waits for phase 4 or uses unavailable
-  - Reviews and questions only when genuine (or labelled demo fixtures). Empty stars are `border`, fills are `rating`, and the numeric score is required
-  - “من نفس المتجر” rail from `GET /stores/{slug}` products; if the store request fails, a labelled demo similar rail is allowed (`similarIsDemo`)
-- Sticky compact price/CTA bar on scroll is allowed (web compact price 16/19, 40px actions).
-- Breadcrumb: الرئيسية → category (only when the category slug is a known `/categories` segment) → product name.
+Opening a product shows a complete, honest detail page driven by `GET /products/{id}`, with gallery, price, variants, and related modules that have data.
 
-## Do not ship in this phase
-- A working add-to-cart or checkout flow.
-- Invented coupons, delivery windows, or “official seller” badges.
-- A fake reviews distribution.
+## Scope
 
-## Done when
-- A live product id renders API photos, name, store, and price without demo labels on those live fields.
-- A random unknown id shows not-found, not another product.
-- Stopping the API on a live id with no fixture shows “صفحة المنتج غير متاحة بعد”.
+- Route `/p/:ref`. `ref` is parsed as a leading positive integer; an optional `-slug` suffix is accepted. Canonical navigation uses the slug the API provides.
+- Page composition (phone column): gallery with `BoxFit.contain` on white; title and brand; seller; price at 24/28 in the price color; «سعر تقريبي» when `price_is_estimate`; variants from `options` (`available`, `low_stock_hint`); local quantity stepper; buy box; highlights, attributes, and description when present; delivery rows that have data; reviews when a real rating exists; “from the same store” rail.
+- Sticky compact bar (16/19 price, 40px action) after the shopper scrolls past the buy box.
+- Breadcrumb: الرئيسية → category (when the slug is a known category) → product name.
+- Pull-to-refresh, gallery skeletons, and shared-element or hero transition from the card image when motion is enabled.
+- Add to cart and buy are on the page as primary actions. Until the cart contract exists they explain that checkout is coming; `can_purchase` still drives enabled state and copy.
+- «من نفس المتجر» is filled from `GET /stores/{slug}`. If that call fails, a labelled sample rail is acceptable. The seller’s store link can wait for phase 4 or open a placeholder that this phase already routes.
+
+## Screens
+
+- Product detail (`/p/:ref`)
+- Not-found (`/p/:ref` when the id is unknown)
+- Unreachable state: a matching labelled sample page when a fixture exists; otherwise a short “this product is unavailable right now” screen with retry
+
+## Data
+
+- `GET /products/{id}` — `BuyerProductDetail` (`name`, `photos`, `price_syp`, `price_is_estimate`, `can_purchase`, `store`, `category`, `options`, `description`, `average_rating`, `reviews_count`, `seo`, `share`)
+- `GET /stores/{slug}` — products for the same-store rail
+- `GET /categories` — to resolve breadcrumb links
+
+Resolution rules:
+
+- Live id, `ok` → map the DTO to the UI model. Sample-only modules (for example a decorative campaign) carry «بيانات تجريبية».
+- Live id, `notFound` → not-found screen.
+- Unreachable host → matching fixture if one exists, otherwise the retryable unavailable screen.
+- A missing `price_syp` hides the amount.
+
+## Acceptance
+
+- A live id shows API photos, name, store, and price, with demo labels only on modules that are actually sample content.
+- An unknown id shows not-found.
+- Stopping the API on a live id with no fixture shows the unavailable screen, not a different product.
+- Variants, estimates, and sold-out/can’t-purchase states follow the API flags.
+- TalkBack/VoiceOver announces the title, price, and availability. Large text wraps. Goldens cover the upper half of the PDP (gallery + price + buy box).
+
+## Risks
+
+- Photo lists can be large; cache and a page-view gallery keep memory in check.
+- SEO/canonical slugs may change; the parser stays tolerant of `id` and `id-slug`.
+- Mixing live price with labelled sample promotions needs careful layout so the shopper can tell them apart.

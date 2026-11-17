@@ -1,28 +1,45 @@
 # Later — Cart, checkout, and orders
 
-Web counterpart: these surfaces are in scope for the buyer storefront (`PRODUCT.md` jobs 4–7) but are **not implemented** on the current web `main` branch. There are no cart or checkout endpoints in the web `lib/api` client (GET-only).
-
 ## Goal
-Let a shopper build a cart, see a complete payable total, place an order under approved payment and delivery rules, and track whether the order was actually delivered.
 
-## Do not start this phase until
-- The buyer API contract for cart, checkout, payments, addresses, delivery fees, and order tracking is approved and documented.
-- The open business decisions in `PRODUCT.md` §13 that this flow would otherwise invent have been decided: payment methods (including cash on delivery), address capture, delivery fee, wallet/refunds, returns, and notifications.
-- Any mobile bottom-nav proposal that includes السلة or حسابي has been confirmed.
+A shopper can add purchasable items to a cart, see a complete payable total, place an order under the approved payment and delivery rules, and follow that order through to delivery.
 
-## When it is approved, design to these rules
-- Cart counts derive from actual cart state (proposed convention: total item quantities — confirm before shipping). Hide a zero badge if the label already says the cart is empty.
-- Price clarity: the customer can identify the final payable amount before committing. Do not show a “final total” while an applicable fee is unknown.
-- Do not promise payment methods, shipping terms, refunds, or delivery windows that are not in the contract.
-- Preserve cart state across recoverable errors. Explain failures in MSA with a next step.
-- Add-to-cart and buy actions on the PDP become real only in this phase; until then they stay unavailable controls.
-- Account / login / profile wait on the same approved auth contract. The current web client sends no `Authorization` header.
-- Favorites / follow remain out unless separately approved.
+## Scope
 
-## Until then
-- App-bar cart and account icons, if present, use the unavailable pattern (“غير متاح بعد”).
-- Do not store a pretend cart on device and present it as a real order path.
-- Do not add unofficial POST endpoints or local-only checkout flows.
+This phase starts when the buyer API and business rules for cart, checkout, payments, addresses, delivery fees, and order tracking are approved and written down, and when the open items in `PRODUCT.md` that this flow depends on have been decided (payment methods including cash on delivery, address capture, delivery fees, wallet/refunds, returns, notifications).
 
-## Done when (after approval)
-- A shopper can add a live, purchasable product, change quantities, see an honest total, place an order, and later see whether it was delivered — with no invented policy copy.
+Once that is in place, the work includes:
+
+- Cart screens and a cart badge driven by real cart state (default convention: total item quantities, confirmed at the start of the phase).
+- A checkout flow that shows the final payable amount only when every applicable fee is known.
+- Order history and a tracking view that reports whether the order was delivered.
+- Auth and a light account area, if the same contract introduces them.
+- The PDP add-to-cart and buy actions become live.
+- Optionally, a tab bar (Home, Categories, Cart, Account) — still an open product decision at the time of writing.
+
+Until this phase starts, app-bar cart and account controls stay visible but inactive, and the app remains on the GET catalog surface.
+
+## Screens
+
+- Cart
+- Checkout (address, delivery, payment, review)
+- Order confirmation
+- Order list and order detail / tracking
+- Account (if contracted)
+
+## Data
+
+The endpoints are those in the approved contract. They will be added to the Dio client, freezed models, and repositories in this phase, with the same result-type pattern as the catalog.
+
+## Acceptance
+
+- A shopper can add a live, purchasable product, change quantities, see an honest total, place an order, and later see whether it was delivered.
+- Copy about payment, shipping, and returns matches the approved policy — nothing earlier, nothing extra.
+- Recoverable errors keep the cart and explain the next step in MSA.
+- Tests cover quantity changes, totals, and the main failure paths (validation, stock change, network drop mid-checkout).
+
+## Risks
+
+- Totals that omit a fee are a trust failure; the UI waits for a complete breakdown.
+- Auth token storage, session expiry, and guest checkout need a clear design once the contract lands.
+- Platform payments (if any) have store-review implications; cash on delivery may be the first method.

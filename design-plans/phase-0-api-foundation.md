@@ -1,35 +1,51 @@
 # Phase 0 — API foundation
 
-Web counterpart: branch `cursor/phase-0-api-foundation-876e` and the files under `lib/api/` in [Doory-Store/frontend](https://github.com/Doory-Store/frontend).
-
 ## Goal
-A typed, testable buyer-API layer and an isolated demo-fixture library, with no feature UI beyond a thin smoke screen (theme + a health/maintenance read). After this phase, every later screen can load live data through the same contracts.
 
-## Ship
-- Folder skeleton from `DESIGN.md` §17 (`lib/app`, `lib/core/theme`, `lib/core/api`, `lib/data/demo`, `lib/data/repositories`).
-- `DooryColors`, typography, radii, spacing, shadows, and `dooryTheme()` as specified in `DESIGN.md` §16. `MaterialApp` in Arabic RTL, Cairo loaded.
-- `ApiClient.apiGet<T>` mirroring web `lib/api/client.ts`:
-  - `DOORY_API_BASE_URL` (required; trailing slash stripped)
-  - `DOORY_API_TIMEOUT_MS` (default 4000)
-  - `Accept: application/json`, `Accept-Language: ar`
-  - JSON parse, field-error extraction from `errors`, message from `message`
-- `ApiError` and `isApiUnavailable` mirroring web `lib/api/errors.ts`.
-- Dart models aligned with web `lib/api/types.ts` (buyer API v0.2.0): `BuyerProductCard`, `BuyerProductDetail`, `BuyerCategory`, `BuyerHome`, `BuyerSearchResponse`, `BuyerStoreDetail`, `BuyerCity`, `BuyerMetaStatus`, `BuyerHealthResponse`, list/search params and `BuyerListSort`.
-- Endpoint wrappers: `getHealth`, `getMetaStatus` / `readMetaStatus`, `getCities` / `readCities`, `getCategories` / `readCategories`, `getHome` / `readHome`, `getProduct` / `readProduct`, `getProducts` / `readProducts`, `getSearch` / `readSearch`, `getStore` / `readStore`. Safe readers never cache a failure as success.
-- Result types: `ok` | `unavailable` | `rejected` | `not_found`, as in web `lib/api/products.ts` and `lib/api/search.ts`.
-- Link helpers equivalent to web `lib/links.ts`: `productRef`, `categoryHref`, `storeHref`, `searchHref`. Do not invent slugs.
-- Isolated labelled fixtures under `lib/data/demo/`, plus a shared `demoLabel` of “بيانات تجريبية”.
-- Maintenance strip widget wired to `readMetaStatus()` (omit on failure).
-- Unit tests for URL building, error mapping, and “demo only when unavailable”.
+A bootable app with the Doory theme, a typed HTTP layer, environment configuration, and a maintenance banner. Every later screen will load data through this layer.
 
-## Do not ship in this phase
-- Home shelves, listing, search UI, or a full PDP.
-- Auth, POST endpoints, cart, or checkout.
-- A bottom navigation bar.
-- Dark mode.
+## Scope
 
-## Done when
-- The app launches RTL with Cairo and the orange primary on a placeholder scaffold.
-- A missing base URL or a forced timeout is reported as `unavailable`, not as an empty catalog.
-- A mocked 422 is `rejected`, not demo.
-- `/health` and `/meta/status` can be read against the configured host.
+- Repository skeleton as in the root `README.md` (`app/`, `core/`, `data/`, `features/`, tests).
+- Cairo bundled; `dooryTheme()`, `DooryTokens`, and `MaterialApp.router` in Arabic RTL.
+- Flavors `dev`, `staging`, `prod` and `--dart-define` for `DOORY_API_BASE_URL` and `DOORY_API_TIMEOUT_MS` (default 4000).
+- Dio client with interceptors: JSON headers, `Accept-Language: ar`, timeout, status mapping onto `ApiException`.
+- freezed models for the buyer contract v0.2.0: product card and detail, category, home, search response, store, city, health, meta status, list params, and `sort`.
+- Repositories with a four-way result (`ok`, `unavailable`, `rejected`, `notFound`) for health, meta, cities, categories, home, products, search, and stores.
+- Route helpers for `/`, `/search`, `/c/:slug`, `/p/:ref`, `/s/:slug`. `ref` is a leading numeric id.
+- Labelled fixtures under `data/demo/`.
+- Maintenance banner bound to `GET /meta/status` (`maintenance_active` + `message.ar`).
+- Unit tests for URL building, error mapping, and the unavailable-versus-rejected split.
+
+Out of this slice: home shelves, listing, search UI, and a full product page. Those are phases 1–3.
+
+## Screens
+
+A scaffold with the wordmark, theme applied, and the maintenance banner when the API reports an active window. Enough to prove flavors, RTL, and the client.
+
+## Data
+
+| Method | Path | Used for |
+| --- | --- | --- |
+| GET | `/health` | Smoke / readiness |
+| GET | `/meta/status` | Maintenance banner |
+| GET | `/cities` | Later city context |
+| GET | `/categories` | Ready for phase 1 |
+| GET | `/home` | Ready for phase 1 |
+| GET | `/products`, `/products/{id}` | Ready for phases 2–3 |
+| GET | `/search` | Ready for phase 3 |
+| GET | `/stores/{slug}` | Ready for phases 2 and 4 |
+
+## Acceptance
+
+- `flutter run --flavor dev --dart-define=DOORY_API_BASE_URL=…` launches RTL, Cairo, and the orange primary.
+- A missing base URL or a forced timeout surfaces as `unavailable`.
+- A mocked HTTP 422 surfaces as `rejected`.
+- `/health` and `/meta/status` succeed against the configured host; an active maintenance window shows the banner, and a failed status request simply hides it.
+- Format, analyze, and unit tests pass in CI.
+
+## Risks
+
+- Certificate pinning and environment mix-ups between flavors — keep application ids and base URLs distinct.
+- Android/iOS flavor wiring is easy to leave half-done; both platforms ship in this phase.
+- 4s timeout may be tight on very slow networks; it is the intended fail-fast default and can be overridden per define.

@@ -1,72 +1,103 @@
-# دوري — Doory mobile (Flutter)
+# دوري — Doory
 
-Flutter buyer storefront for Doory (دوري), the Homs shopping app. It follows the same product system, visual identity, and data-honesty rules as the web storefront in [Doory-Store/frontend](https://github.com/Doory-Store/frontend).
+A Flutter shopping app for customers in Homs, Syria. The shared brand identity and buyer API come from the Doory storefront at [Doory-Store/frontend](https://github.com/Doory-Store/frontend); this repository is the mobile product, designed and structured as a native app.
 
-This is a separate project from the Next.js site. Do not copy web navigation or desktop layout literally. Adapt structure and components for a phone, and keep tokens, Arabic voice, and API contracts aligned.
+The app is Arabic-first and right-to-left. People open it to find a product, understand the price and the offer, and — once those flows are contracted — complete a purchase and follow the order through to delivery.
 
-## Docs to read first
+## Documentation
 
-1. `PRODUCT.md` — what Doory is, audience, scope, voice, and open business decisions.
-2. `DESIGN.md` — color, type, geometry, RTL, mobile components, and the Flutter `ThemeData` mapping.
-3. `AGENTS.md` — conventions for anyone (or any agent) changing this repository.
-4. `design-plans/` — phased implementation plan, mirroring the web phases.
+| File | Contents |
+| --- | --- |
+| [PRODUCT.md](PRODUCT.md) | Product, audience, voice, principles, and open decisions |
+| [DESIGN.md](DESIGN.md) | Design system, Flutter theme, navigation, and mobile UX |
+| [AGENTS.md](AGENTS.md) | How to work in this repository |
+| [design-plans/](design-plans/) | Phased engineering plans |
 
-Design work starts only after `PRODUCT.md` and `DESIGN.md` have been read.
+Read `PRODUCT.md` and `DESIGN.md` before changing the interface.
 
-## Stack (current project)
+## Stack
 
-- Flutter (stable) and Dart
-- Material 3, configured with Doory tokens (light theme only)
-- Arabic RTL as the default locale (`ar`)
-- Cairo as the only text family (weights 400, 600, 700)
-- A typed HTTP client against the same buyer API used by the web app
+These are deliberate defaults for a catalog app with a typed backend and a dense, branded UI:
 
-Recommended libraries are listed in `AGENTS.md`. Do not add packages merely to enforce these docs.
+| Choice | Why |
+| --- | --- |
+| Flutter stable + Dart 3 | One codebase for Android and iOS, solid RTL and text-shaping support |
+| Riverpod | Feature-scoped state, easy test overrides, no build-method networking |
+| go_router | Deep links (`/p/:ref`, `/c/:slug`, `/search?q=`), typed routes, shell routes later |
+| Dio | Timeouts, interceptors for errors and `Accept-Language`, cancel tokens on dispose |
+| freezed + json_serializable | Immutable API models that match the buyer contract, cheap copy/equality |
+| cached_network_image | Disk/memory cache and fade-in for product photography on modest networks |
+| google_fonts only as a dev fallback | Cairo is bundled under `assets/fonts/` so typography works offline |
+| flutter_lints (or very_good_analysis) | Consistent review bar on every PR |
+
+## Architecture
+
+Feature-first folders. Shared infrastructure lives in `core/` and `data/`; screens and widgets live next to the feature they belong to.
+
+```
+lib/
+  main.dart
+  app/
+    app.dart              # MaterialApp.router, locale, theme
+    router.dart           # go_router table
+    bootstrap.dart        # ProviderScope, flavor, logging
+  core/
+    theme/                # tokens, ThemeExtension, ThemeData
+    network/              # Dio client, interceptors, ApiException
+    config/               # Env from --dart-define and flavors
+    widgets/              # DemoLabel, MaintenanceBanner, skeletons, buttons
+    l10n/                 # Approved MSA strings
+  data/
+    models/               # freezed buyer models
+    repositories/         # one repository per aggregate
+    demo/                 # labelled sample fixtures
+  features/
+    home/
+    categories/
+    listing/
+    search/
+    product/
+    store/                # phase 4
+    cart/                 # later
+assets/fonts/             # Cairo 400 / 600 / 700
+test/
+  unit/
+  widget/
+  golden/
+```
+
+**Data flow.** Widgets watch Riverpod providers. Providers call repositories. Repositories call the Dio client and map DTOs into UI models. UI models keep money, ids, and optional fields structured; visible labels are derived from those values.
+
+**Environment.** Base URL and timeout come from compile-time defines, per flavor:
+
+```bash
+flutter run --flavor dev --dart-define=DOORY_API_BASE_URL=https://doory.elogyc.com/api/v1
+# Optional; default is 4000 ms so a down host fails fast.
+# --dart-define=DOORY_API_TIMEOUT_MS=4000
+```
+
+Flavors: `dev`, `staging`, `prod`. Each has its own application id suffix and Android/iOS scheme. A missing base URL is treated as a network failure.
+
+**HTTP.** The current buyer API is unauthenticated `GET`. The client sends `Accept: application/json` and `Accept-Language: ar`, strips a trailing slash on the base URL, and maps status codes onto a single `ApiException` (`notFound`, `validation`, `unauthorized`, `forbidden`, `rateLimited`, `network`, `server`, `unknown`). Repositories expose a result type: `ok`, `unavailable`, `rejected`, or `notFound`.
+
+**Testing.** Unit tests cover the client, error mapping, and repositories (Dio via `http_mock_adapter` or a fake). Widget tests cover the product card, search empty/error states, and the maintenance banner. Golden tests lock the card, a shelf row, and the light theme at a 390-wide logical size, with Cairo loaded from assets. CI runs `dart format --output=none --set-exit-if-changed`, `flutter analyze`, and `flutter test` on every pull request.
 
 ## Getting started
 
 ```bash
 flutter pub get
-flutter run
+flutter run --flavor dev --dart-define=DOORY_API_BASE_URL=https://doory.elogyc.com/api/v1
 ```
 
-Point the app at the buyer API with a compile-time or runtime config value (never a public marketing claim about the host):
+Requires the Flutter stable toolchain, a configured Android emulator or device (iOS on macOS). See `AGENTS.md` for the everyday command list.
 
-```bash
-# Example host used by the web repo’s `.env.example`. Confirm the live base URL before shipping.
-flutter run --dart-define=DOORY_API_BASE_URL=https://doory.elogyc.com/api/v1
-```
+## Delivery plan
 
-Optional:
+Work ships in slices. Details are in `design-plans/`.
 
-```bash
-# Milliseconds. Web default is 4000 so a down API fails fast and can fall back to labelled demo data.
---dart-define=DOORY_API_TIMEOUT_MS=4000
-```
-
-If `DOORY_API_BASE_URL` is missing, treat it as an unavailable API (`network`), not as an empty catalog.
-
-## Same system as the web app
-
-The web storefront is Next.js 16 / React 19 / Tailwind 4. It talks to a **server-only** buyer API (`DOORY_API_BASE_URL`, never `NEXT_PUBLIC_`). The Flutter app must call that same API from the device. That is an intentional platform difference, not a license to invent auth, keys, or new endpoints.
-
-Current buyer API access in the web client is unauthenticated `GET` with `Accept: application/json` and `Accept-Language: ar`. Do not add tokens, cookies, or user identity until an approved contract exists.
-
-## Project layout (target)
-
-See `DESIGN.md` § Flutter architecture and `design-plans/phase-0-api-foundation.md` for the folder map, theme, and HTTP/state conventions.
-
-## Phases
-
-Work proceeds in the same order as the web repo’s `cursor/phase-*` branches:
-
-| Phase | Web branch (frontend, main-era) | Mobile goal |
-| --- | --- | --- |
-| 0 | `cursor/phase-0-api-foundation-876e` | Typed client, errors, models, health/meta, isolated demo fixtures |
-| 1 | `cursor/phase-1-home-categories-43d4` | Home and category chrome |
-| 2 | `cursor/phase-2-live-product-page-8ef2` | Live product detail |
-| 3 | `cursor/phase-3-listing-search-e983` | Category listing and search |
-| 4 | Planned on web (`storeHref` in `lib/links.ts`) | Store profile / «من نفس المتجر» |
-| Later | Not built on web yet | Cart, checkout, and order tracking — only with approved API contracts and policies |
-
-Details live under `design-plans/`.
+0. API foundation, theme, and environment
+1. Home and category browsing
+2. Product detail
+3. Category listing and search
+4. Store profile
+5. Cart, checkout, and orders — once those API contracts exist
