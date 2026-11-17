@@ -8,6 +8,7 @@ A bootable app with the Doory theme, a typed HTTP layer, environment configurati
 
 - Repository skeleton as in the root `README.md` (`app/`, `core/`, `data/`, `features/`, tests).
 - Cairo bundled; `dooryTheme()`, `DooryTokens`, and `MaterialApp.router` in Arabic RTL.
+- App shell: go_router `StatefulShellRoute.indexedStack` with the five-tab `NavigationBar` (Home, Categories, Favorites, Cart, Account; Home on the right) and an empty-state root screen for each tab, as specified in `DESIGN.md` §5.
 - Flavors `dev`, `staging`, `prod` and `--dart-define` for `DOORY_API_BASE_URL` and `DOORY_API_TIMEOUT_MS` (default 4000).
 - Dio client with interceptors: JSON headers, `Accept-Language: ar`, timeout, status mapping onto `ApiException`.
 - freezed models for the buyer contract v0.2.0: product card and detail, category, home, search response, store, city, health, meta status, list params, and `sort`.
@@ -37,6 +38,8 @@ A scaffold with the wordmark, theme applied, and the maintenance banner when the
 | GET | `/stores/{slug}` | Ready for phases 2 and 4 |
 
 ## Acceptance
+
+- The bottom bar shows the five tabs in RTL order with Home on the right; each tab keeps its own stack, and re-tapping the active tab returns to its root.
 
 - `flutter run --flavor dev --dart-define=DOORY_API_BASE_URL=…` launches RTL, Cairo, and the orange primary.
 - A missing base URL or a forced timeout surfaces as `unavailable`.

@@ -15,9 +15,9 @@ Once that is in place, the work includes:
 - Order history and a tracking view that reports whether the order was delivered.
 - Auth and a light account area, if the same contract introduces them.
 - The PDP add-to-cart and buy actions become live.
-- Optionally, a tab bar (Home, Categories, Cart, Account) — still an open product decision at the time of writing.
+- The Cart and Account tabs in the bottom bar switch from their empty states to the live screens; the Cart tab gains its count badge.
 
-Until this phase starts, app-bar cart and account controls stay visible but inactive, and the app remains on the GET catalog surface.
+Until this phase starts, the Cart and Account tabs show their coming-soon empty states, and the app remains on the GET catalog surface.
 
 ## Screens
 

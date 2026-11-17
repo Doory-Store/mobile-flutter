@@ -149,15 +149,33 @@ Named text styles (`DooryTypography.page`, `.shelf`, `.body`, `.cardPrice`, …)
 
 ## 5. Navigation and chrome
 
-**Recommendation.** A pinned app bar and a search-first home. The bar holds the orange wordmark «دوري» at the start, a search field or a single tap target that opens search, and a cart control that becomes active when cart exists. Category browsing is a full-screen tree («تصفّح الفئات») plus a horizontal shortcut rail on home. Listing, search, and product detail are pushed routes with a back affordance that follows the platform (Android system back and predictive back; iOS back swipe + leading back button).
+**Bottom navigation bar.** The app's primary navigation is a five-tab bottom bar. Because the app runs right-to-left, Home sits at the far right and the tabs read right to left in this order:
 
-A system tab bar (Home, Categories, Cart, Account) remains an open product decision and can be introduced once Cart and Account have real destinations.
+| Order (right → left) | Tab | Label | Icon (outline / selected filled) | Route |
+| --- | --- | --- | --- | --- |
+| 1 | Home | «الرئيسية» | `home_outlined` / `home` | `/` |
+| 2 | Categories | «الفئات» | `grid_view_outlined` / `grid_view` | `/categories` |
+| 3 | Favorites | «المفضلة» | `favorite_border` / `favorite` | `/favorites` |
+| 4 | Cart | «السلة» | `shopping_cart_outlined` / `shopping_cart` | `/cart` |
+| 5 | Account | «حسابي» | `person_outline` / `person` | `/account` |
+
+- **Implementation.** A Material 3 `NavigationBar` inside a go_router `StatefulShellRoute.indexedStack`, so each tab keeps its own navigation stack and scroll position. The destinations are declared in the order above; the app-wide `TextDirection.rtl` places the first destination (Home) on the right, so the order is never reversed by hand.
+- **Look.** Surface `#FFFFFF` with a 1px `#E6E6E6` top border and no elevation; selected icon and label in primary `#F27A1A`, unselected in text-secondary `#666666`; label 12/16 w600 Cairo, always visible; indicator pill in primary-subtle `#FFF3E8`. Bar height 64 plus the bottom safe-area inset; each destination is at least 48×48.
+- **Behaviour.** Tapping the active tab pops its stack to the root, and a second tap scrolls to the top. Product detail, listing, and search are pushed inside the current tab's stack, so the bar stays visible while browsing; full-screen flows such as checkout cover the bar. Android back walks the current tab's stack first, then returns to Home, then exits.
+- **Badges.** The Cart tab shows a count badge (primary fill, white 10px w700 text) once cart state is real. Favorites can show a dot for unseen changes later; it starts without one.
+- **Tabs ahead of their API.** Favorites, Cart, and Account are present from the first release so the structure is stable. Until their contracts exist, each opens a clear MSA empty state that explains the feature is coming and offers a path back to browsing (for example «تصفّح الفئات»). Favorites is stored on the device until a server-side favorites contract exists.
+
+**App bar.** Each tab root has its own pinned app bar. On Home it holds the orange wordmark «دوري» at the start and a search field (or a tap target that opens search). Listing, search, and product detail are pushed routes with a back affordance that follows the platform (Android system back and predictive back; iOS back swipe + leading back button).
 
 **Routes.**
 
 | Path | Screen |
 | --- | --- |
-| `/` | Home |
+| `/` | Home (tab 1) |
+| `/categories` | Category tree «تصفّح الفئات» (tab 2) |
+| `/favorites` | Favorites (tab 3) |
+| `/cart` | Cart (tab 4) |
+| `/account` | Account (tab 5) |
 | `/search?q=` | Search |
 | `/c/:slug` | Category listing |
 | `/p/:ref` | Product detail (`ref` is a leading numeric id, optionally `id-slug`) |
@@ -165,13 +183,13 @@ A system tab bar (Home, Categories, Cart, Account) remains an open product decis
 
 Deep links use the same shapes. Slugs come from the API.
 
-**App bar.** 44px actions, accessible names, wordmark in primary. Search field: 44px tall, `#F5F5F5`, 20px radius, orange magnifier at the inline end, placeholder «ابحث عن منتج أو فئة».
+**App bar details.** 44px actions, accessible names, wordmark in primary. Search field: 44px tall, `#F5F5F5`, 20px radius, orange magnifier at the inline end, placeholder «ابحث عن منتج أو فئة».
 
 **Home, top to bottom.** Maintenance banner when `/meta/status` reports an active window; delivery line when `/home` provides `delivery_promise.message_ar` (otherwise a labelled sample line is acceptable in early releases); search; shortcut rail; optional brand rail; product shelves («مختارات», «وصل حديثًا», and any labelled collections); campaign mosaic; suggestion pills; popular-category links; a short about block; a compact footer of real help links.
 
 ## 6. Layout, gesture, and platform behaviour
 
-- **Safe areas.** Padding follows `MediaQuery.padding` / `SafeArea`. The app bar clears the status bar and notch; the last module and any future tab bar clear the home indicator. Horizontal insets stay 16.
+- **Safe areas.** Padding follows `MediaQuery.padding` / `SafeArea`. The app bar clears the status bar and notch; the bottom navigation bar clears the home indicator, and scrollable content pads its end by the bar height. Horizontal insets stay 16.
 - **Small screens.** One column, near-full-bleed modules. Shelves target about 1.75 cards with a peek; minimum card width 160. If the name or price cannot fit, the shelf shows fewer cards. On a large tablet, the column caps around 600–840 wide rather than stretching a single card.
 - **Gestures.** Horizontal shelves and shortcut rails scroll with the reading direction and snap enough to reveal the next peek. Android system back pops the route; iOS edge-swipe does the same. Pull-to-refresh sits on home, listing, search, and product detail. A swipe is a shortcut, not the only way to move a shelf — when arrow controls are shown, they have Arabic labels and a 44px target.
 - **Pagination.** Listing and search use the API’s `page`, `per_page` (default 24), `total`, and `last_page`. On a phone this is infinite scroll: load the next page near the end of the grid, with a small footer indicator, and stop at `last_page`. Pull-to-refresh reloads page 1.

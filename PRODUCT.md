@@ -38,7 +38,7 @@ This repository is the buyer app for Android and iOS. The first releases cover h
 
 Store profiles follow in a later phase. Cart, checkout, order tracking, and account follow once payment, delivery, address, and auth contracts are approved. Seller, merchant, and admin tools belong in other products.
 
-Loyalty, credit, subscriptions, wallets, and a persisted favorites feature are not part of the current product. A heart on a sample card, if shown, is a local preview and is labelled as such.
+The app's structure is a five-tab bottom bar: Home, Categories, Favorites, Cart, and Account (Home on the right, in RTL reading order). Favorites starts as an on-device list; it moves to the server once a favorites contract exists. Loyalty, credit, subscriptions, and wallets are not part of the current product.
 
 ## Principles
 
@@ -55,7 +55,6 @@ These rules keep the catalog honest and the engineering scope tight.
 
 - Numeral style and currency presentation (cards today use Latin digits and the currency label «ل.س»).
 - Cart-count convention (a reasonable default is total item quantities).
-- A system tab bar is an open product decision; the shipping navigation model is described in `DESIGN.md`.
 - Commission model and the policy items listed under Principles.
 
 When a decision is made, this file is updated.
