@@ -1,2 +1,103 @@
-# mobile-flutter
-mobile app with flutter cross-platform
+# دوري — Doory
+
+A Flutter shopping app for customers in Homs, Syria. The shared brand identity and buyer API come from the Doory storefront at [Doory-Store/frontend](https://github.com/Doory-Store/frontend); this repository is the mobile product, designed and structured as a native app.
+
+The app is Arabic-first and right-to-left. People open it to find a product, understand the price and the offer, and — once those flows are contracted — complete a purchase and follow the order through to delivery.
+
+## Documentation
+
+| File | Contents |
+| --- | --- |
+| [PRODUCT.md](PRODUCT.md) | Product, audience, voice, principles, and open decisions |
+| [DESIGN.md](DESIGN.md) | Design system, Flutter theme, navigation, and mobile UX |
+| [AGENTS.md](AGENTS.md) | How to work in this repository |
+| [design-plans/](design-plans/) | Phased engineering plans |
+
+Read `PRODUCT.md` and `DESIGN.md` before changing the interface.
+
+## Stack
+
+These are deliberate defaults for a catalog app with a typed backend and a dense, branded UI:
+
+| Choice | Why |
+| --- | --- |
+| Flutter stable + Dart 3 | One codebase for Android and iOS, solid RTL and text-shaping support |
+| Riverpod | Feature-scoped state, easy test overrides, no build-method networking |
+| go_router | Deep links (`/p/:ref`, `/c/:slug`, `/search?q=`), typed routes, shell routes later |
+| Dio | Timeouts, interceptors for errors and `Accept-Language`, cancel tokens on dispose |
+| freezed + json_serializable | Immutable API models that match the buyer contract, cheap copy/equality |
+| cached_network_image | Disk/memory cache and fade-in for product photography on modest networks |
+| google_fonts only as a dev fallback | Cairo is bundled under `assets/fonts/` so typography works offline |
+| flutter_lints (or very_good_analysis) | Consistent review bar on every PR |
+
+## Architecture
+
+Feature-first folders. Shared infrastructure lives in `core/` and `data/`; screens and widgets live next to the feature they belong to.
+
+```
+lib/
+  main.dart
+  app/
+    app.dart              # MaterialApp.router, locale, theme
+    router.dart           # go_router table
+    bootstrap.dart        # ProviderScope, flavor, logging
+  core/
+    theme/                # tokens, ThemeExtension, ThemeData
+    network/              # Dio client, interceptors, ApiException
+    config/               # Env from --dart-define and flavors
+    widgets/              # DemoLabel, MaintenanceBanner, skeletons, buttons
+    l10n/                 # Approved MSA strings
+  data/
+    models/               # freezed buyer models
+    repositories/         # one repository per aggregate
+    demo/                 # labelled sample fixtures
+  features/
+    home/
+    categories/
+    listing/
+    search/
+    product/
+    store/                # phase 4
+    cart/                 # later
+assets/fonts/             # Cairo 400 / 600 / 700
+test/
+  unit/
+  widget/
+  golden/
+```
+
+**Data flow.** Widgets watch Riverpod providers. Providers call repositories. Repositories call the Dio client and map DTOs into UI models. UI models keep money, ids, and optional fields structured; visible labels are derived from those values.
+
+**Environment.** Base URL and timeout come from compile-time defines, per flavor:
+
+```bash
+flutter run --flavor dev --dart-define=DOORY_API_BASE_URL=https://doory.elogyc.com/api/v1
+# Optional; default is 4000 ms so a down host fails fast.
+# --dart-define=DOORY_API_TIMEOUT_MS=4000
+```
+
+Flavors: `dev`, `staging`, `prod`. Each has its own application id suffix and Android/iOS scheme. A missing base URL is treated as a network failure.
+
+**HTTP.** The current buyer API is unauthenticated `GET`. The client sends `Accept: application/json` and `Accept-Language: ar`, strips a trailing slash on the base URL, and maps status codes onto a single `ApiException` (`notFound`, `validation`, `unauthorized`, `forbidden`, `rateLimited`, `network`, `server`, `unknown`). Repositories expose a result type: `ok`, `unavailable`, `rejected`, or `notFound`.
+
+**Testing.** Unit tests cover the client, error mapping, and repositories (Dio via `http_mock_adapter` or a fake). Widget tests cover the product card, search empty/error states, and the maintenance banner. Golden tests lock the card, a shelf row, and the light theme at a 390-wide logical size, with Cairo loaded from assets. CI runs `dart format --output=none --set-exit-if-changed`, `flutter analyze`, and `flutter test` on every pull request.
+
+## Getting started
+
+```bash
+flutter pub get
+flutter run --flavor dev --dart-define=DOORY_API_BASE_URL=https://doory.elogyc.com/api/v1
+```
+
+Requires the Flutter stable toolchain, a configured Android emulator or device (iOS on macOS). See `AGENTS.md` for the everyday command list.
+
+## Delivery plan
+
+Work ships in slices. Details are in `design-plans/`.
+
+0. API foundation, theme, and environment
+1. Home and category browsing
+2. Product detail
+3. Category listing and search
+4. Store profile
+5. Cart, checkout, and orders — once those API contracts exist
