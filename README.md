@@ -1,2 +1,2 @@
 # mobile-flutter
-mobile app with flutter cross-system
+mobile app with flutter cross-platform
