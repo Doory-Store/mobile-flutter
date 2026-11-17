@@ -68,15 +68,16 @@ test/
 
 **Data flow.** Widgets watch Riverpod providers. Providers call repositories. Repositories call the Dio client and map DTOs into UI models. UI models keep money, ids, and optional fields structured; visible labels are derived from those values.
 
-**Environment.** Base URL and timeout come from compile-time defines, per flavor:
+**Environment.** Base URL and timeout come from compile-time defines. The defaults are the buyer host and 4000 ms, so a missing define still runs. An empty base URL is treated as a network failure.
 
 ```bash
-flutter run --flavor dev --dart-define=DOORY_API_BASE_URL=https://doory.elogyc.com/api/v1
-# Optional; default is 4000 ms so a down host fails fast.
+flutter run
+# --dart-define=DOORY_API_BASE_URL=https://doory.elogyc.com/api/v1
 # --dart-define=DOORY_API_TIMEOUT_MS=4000
+# --dart-define=DOORY_FLAVOR=dev
 ```
 
-Flavors: `dev`, `staging`, `prod`. Each has its own application id suffix and Android/iOS scheme. A missing base URL is treated as a network failure.
+`DOORY_FLAVOR` is `dev`, `staging`, or `prod`. Application-id suffixes are not wired yet (`INCOMPLETE.md`).
 
 **HTTP.** The current buyer API is unauthenticated `GET`. The client sends `Accept: application/json` and `Accept-Language: ar`, strips a trailing slash on the base URL, and maps status codes onto a single `ApiException` (`notFound`, `validation`, `unauthorized`, `forbidden`, `rateLimited`, `network`, `server`, `unknown`). Repositories expose a result type: `ok`, `unavailable`, `rejected`, or `notFound`.
 
@@ -84,12 +85,37 @@ Flavors: `dev`, `staging`, `prod`. Each has its own application id suffix and An
 
 ## Getting started
 
+Flutter 3.50 / Dart 3.14. Cairo is bundled under `assets/fonts/`, so the UI does not need a network just to draw type.
+
+The default API base URL is `https://doory.elogyc.com/api/v1` and the default timeout is 4000 ms. `flutter run` reaches that host with no flags.
+
 ```bash
 flutter pub get
-flutter run --flavor dev --dart-define=DOORY_API_BASE_URL=https://doory.elogyc.com/api/v1
+flutter run
 ```
 
-Requires the Flutter stable toolchain, a configured Android emulator or device (iOS on macOS). See `AGENTS.md` for the everyday command list.
+Optional overrides:
+
+```bash
+flutter run \
+  --dart-define=DOORY_API_BASE_URL=https://doory.elogyc.com/api/v1 \
+  --dart-define=DOORY_API_TIMEOUT_MS=4000 \
+  --dart-define=DOORY_FLAVOR=dev
+```
+
+`DOORY_FLAVOR` is `dev`, `staging`, or `prod`. It is compile-time configuration only. Android and iOS product flavors are not wired yet, so `--flavor` is not accepted. See `INCOMPLETE.md`.
+
+After launch, open **حسابي** then **حالة الاتصال**. That screen shows the base URL, the `GET /health` result, and the round-trip latency.
+
+Checks used while building this slice:
+
+```bash
+dart format .
+flutter analyze
+flutter test
+```
+
+Requires the Flutter stable toolchain and a configured Android emulator or device (iOS on macOS). This environment had no Android SDK, so a debug APK was not built.
 
 ## Delivery plan
 
