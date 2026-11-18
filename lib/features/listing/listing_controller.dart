@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/l10n/doory_strings.dart';
+import '../../core/routing/home_collection.dart';
 import '../../data/demo/demo_data.dart';
 import '../../data/models/catalog_models.dart';
 import '../../data/models/product_query.dart';
@@ -78,38 +79,44 @@ class ListingController extends FamilyNotifier<ListingState, String> {
       priceRangeError: false,
     );
 
-    final categories = await ref.read(categoriesProvider.future);
-    if (generation != _generation) return;
+    // The whole catalog needs no category lookup: `/products` without a
+    // `category` filter lists every visible product.
+    final wholeCatalog = _slug == allProductsKey;
+    CategoryNode? node;
+    if (!wholeCatalog) {
+      final categories = await ref.read(categoriesProvider.future);
+      if (generation != _generation) return;
 
-    final nodes = switch (categories) {
-      RepoOk<List<CategoryNode>>(:final data) => data,
-      RepoUnavailable<List<CategoryNode>>(:final sample) => sample,
-      _ => null,
-    };
-    final node = nodes == null ? null : findCategory(nodes, _slug);
-    if (categories is RepoOk<List<CategoryNode>> && node == null) {
-      state = state.copyWith(
-        loading: false,
-        loadingMore: false,
-        failure: ListingFailure.notFound,
-        items: const [],
-      );
-      return;
-    }
-    if (node == null) {
-      final demo = DemoData.listingFor(_slug);
-      state = state.copyWith(
-        loading: false,
-        loadingMore: false,
-        failure: ListingFailure.unavailable,
-        sample: demo != null,
-        items: demo?.items ?? const [],
-        total: demo?.meta.total ?? 0,
-        lastPage: demo?.meta.lastPage ?? 1,
-        page: 1,
-        message: DooryStrings.resultsMayBeSample,
-      );
-      return;
+      final nodes = switch (categories) {
+        RepoOk<List<CategoryNode>>(:final data) => data,
+        RepoUnavailable<List<CategoryNode>>(:final sample) => sample,
+        _ => null,
+      };
+      node = nodes == null ? null : findCategory(nodes, _slug);
+      if (categories is RepoOk<List<CategoryNode>> && node == null) {
+        state = state.copyWith(
+          loading: false,
+          loadingMore: false,
+          failure: ListingFailure.notFound,
+          items: const [],
+        );
+        return;
+      }
+      if (node == null) {
+        final demo = DemoData.listingFor(_slug);
+        state = state.copyWith(
+          loading: false,
+          loadingMore: false,
+          failure: ListingFailure.unavailable,
+          sample: demo != null,
+          items: demo?.items ?? const [],
+          total: demo?.meta.total ?? 0,
+          lastPage: demo?.meta.lastPage ?? 1,
+          page: 1,
+          message: DooryStrings.resultsMayBeSample,
+        );
+        return;
+      }
     }
 
     final nextPage = reset ? 1 : state.page + 1;
@@ -122,14 +129,14 @@ class ListingController extends FamilyNotifier<ListingState, String> {
         .read(catalogRepositoryProvider)
         .products(
           ProductsQuery(
-            categoryId: node.id,
+            categoryId: node?.id,
             sort: sort,
             minPriceSyp: minPrice,
             maxPriceSyp: maxPrice,
             page: clampPage(nextPage, reset ? nextPage : state.lastPage),
             perPage: 24,
           ),
-          categorySlug: _slug,
+          categorySlug: wholeCatalog ? null : _slug,
           cancelToken: cancel,
         );
     if (generation != _generation) return;
@@ -146,8 +153,8 @@ class ListingController extends FamilyNotifier<ListingState, String> {
           total: data.meta.total,
           sample: false,
           failure: ListingFailure.none,
-          categoryName: node.name,
-          children: node.children,
+          categoryName: node?.name,
+          children: node?.children,
           clearMessage: true,
         );
       case RepoUnavailable<ProductPage>(:final sample, :final message):
@@ -163,8 +170,8 @@ class ListingController extends FamilyNotifier<ListingState, String> {
           message: sample == null
               ? DooryStrings.unavailable
               : DooryStrings.resultsMayBeSample,
-          categoryName: node.name,
-          children: node.children,
+          categoryName: node?.name,
+          children: node?.children,
         );
         if (message != null && sample == null) {
           state = state.copyWith(message: message);
@@ -177,8 +184,8 @@ class ListingController extends FamilyNotifier<ListingState, String> {
           sample: false,
           failure: ListingFailure.rejected,
           message: message,
-          categoryName: node.name,
-          children: node.children,
+          categoryName: node?.name,
+          children: node?.children,
         );
       case RepoNotFound<ProductPage>():
         state = state.copyWith(
@@ -186,7 +193,7 @@ class ListingController extends FamilyNotifier<ListingState, String> {
           loadingMore: false,
           failure: ListingFailure.notFound,
           items: const [],
-          categoryName: node.name,
+          categoryName: node?.name,
         );
     }
   }

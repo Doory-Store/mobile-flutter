@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/l10n/doory_strings.dart';
+import '../core/routing/home_collection.dart';
 import '../core/widgets/chrome.dart';
 import '../features/account/account_screen.dart';
 import '../features/account/profile_screen.dart';
@@ -16,6 +17,7 @@ import '../features/checkout/order_confirmation_screen.dart';
 import '../features/debug/api_status_screen.dart';
 import '../features/favorites/favorites_screen.dart';
 import '../features/home/home_screen.dart';
+import '../features/listing/collection_screen.dart';
 import '../features/listing/listing_screen.dart';
 import '../features/notifications/notifications_screen.dart';
 import '../features/orders/order_detail_screen.dart';
@@ -35,6 +37,14 @@ List<RouteBase> browseRoutes() {
       path: 'search',
       builder: (context, state) =>
           SearchScreen(initialQuery: state.uri.queryParameters['q'] ?? ''),
+    ),
+    GoRoute(
+      path: 'products',
+      builder: (context, state) => CollectionScreen(
+        collection: HomeCollection.parse(
+          state.uri.queryParameters['collection'],
+        ),
+      ),
     ),
     GoRoute(
       path: 'c/:slug',

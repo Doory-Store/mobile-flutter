@@ -53,3 +53,13 @@ Next step: page `/products?store={slug}` inside the products tab.
 ## Category query
 
 Recorded so the next contract pass keeps it. `GET /products?category=` accepts a numeric category id; a slug is ignored and the endpoint returns the whole catalog. The app resolves the slug to an id and shows not-found for an unknown slug.
+
+## Featured and recently viewed collections
+
+«عرض الكل» on «وصل حديثًا» pages the whole catalog from `GET /products` (newest first, 513 products on the live host). «مختارات» and «شاهدته مؤخرًا» have no paged endpoint: the collection screen lists every card `GET /home` returned for that shelf (the backend sends the full featured list), and falls back to the whole catalog when the shelf is empty.
+
+Next step: page `/products?featured=1` (or a dedicated collection endpoint) once the backend exposes one, and keep the `collection` route key unchanged.
+
+## Arabic keyboard on the emulator
+
+The Pixel_8a_API_35 emulator boots with the AOSP keyboard in English (US) only, so Arabic letters cannot be typed there until the Arabic subtype is enabled (Settings → System → Keyboard → On-screen keyboard → Android Keyboard → Languages → العربية). It is enabled on emulator-5554 now; a fresh or wiped emulator needs the same step. The search field itself accepts Arabic and keeps the keyboard's composing region while results refresh (covered by `test/widget/search_and_collections_test.dart`).

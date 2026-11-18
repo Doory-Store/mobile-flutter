@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
+import 'home_collection.dart';
+
 /// Prefix of the tab that owns [path], or empty when the route sits on Home.
 String tabPrefixFrom(String path) {
   const roots = <String>['/categories', '/favorites', '/cart', '/account'];
@@ -27,6 +29,11 @@ void pushCategory(BuildContext context, String slug) {
 void pushStore(BuildContext context, String slug) {
   final prefix = currentTabPrefix(context);
   context.push('$prefix/s/$slug');
+}
+
+void pushCollection(BuildContext context, HomeCollection collection) {
+  final prefix = currentTabPrefix(context);
+  context.push('$prefix/products?collection=${collection.key}');
 }
 
 void pushSearch(BuildContext context, [String query = '']) {

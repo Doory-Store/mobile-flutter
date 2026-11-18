@@ -32,12 +32,28 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   final _scroll = ScrollController();
   Timer? _debounce;
 
+  /// Query the results follow. Typing updates it in place; the route's `q`
+  /// changes only on submit, so the field keeps its focus, cursor, and the
+  /// keyboard's composing region (Arabic and other IME input) while results
+  /// refresh underneath.
+  late String _query = widget.initialQuery.trim();
+
   @override
   void didUpdateWidget(SearchScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.initialQuery != oldWidget.initialQuery &&
-        widget.initialQuery != _field.text) {
-      _field.text = widget.initialQuery;
+    final incoming = widget.initialQuery.trim();
+    if (widget.initialQuery == oldWidget.initialQuery || incoming == _query) {
+      return;
+    }
+    _query = incoming;
+    // A new `q` from outside (a deep link or a chip) replaces the text; the
+    // user's own words, including a trailing space between words, stay as
+    // typed.
+    if (_field.text.trim() != incoming) {
+      _field.value = TextEditingValue(
+        text: incoming,
+        selection: TextSelection.collapsed(offset: incoming.length),
+      );
     }
   }
 
@@ -49,19 +65,34 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     super.dispose();
   }
 
+  void _show(String value) {
+    final next = value.trim();
+    if (!mounted || next == _query) return;
+    setState(() => _query = next);
+  }
+
   void _commit(String value) {
     _debounce?.cancel();
+    _show(value);
     replaceSearch(context, value);
+  }
+
+  void _pick(String value) {
+    _field.value = TextEditingValue(
+      text: value,
+      selection: TextSelection.collapsed(offset: value.length),
+    );
+    _commit(value);
   }
 
   void _onChanged(String value) {
     _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 400), () => _commit(value));
+    _debounce = Timer(const Duration(milliseconds: 400), () => _show(value));
   }
 
   @override
   Widget build(BuildContext context) {
-    final query = widget.initialQuery.trim();
+    final query = _query;
     final state = ref.watch(searchProvider(query));
     return Scaffold(
       appBar: AppBar(
@@ -77,7 +108,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         ),
       ),
       body: query.isEmpty
-          ? _EmptySearch(onPick: _commit)
+          ? _EmptySearch(onPick: _pick)
           : RefreshIndicator(
               onRefresh: () =>
                   ref.read(searchProvider(query).notifier).refresh(),

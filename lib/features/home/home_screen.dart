@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/l10n/doory_strings.dart';
 import '../notifications/notification_bell.dart';
+import '../../core/routing/home_collection.dart';
 import '../../core/routing/nav.dart';
 import '../../core/theme/doory_tokens.dart';
 import '../../core/theme/doory_typography.dart';
@@ -188,17 +189,21 @@ class _HomeBody extends StatelessWidget {
             title: DooryStrings.featured,
             products: content.featured,
             sample: sample,
+            onViewAll: () => pushCollection(context, HomeCollection.featured),
           ),
           ProductShelf(
             title: DooryStrings.latest,
             products: content.latest,
             sample: sample,
+            onViewAll: () => pushCollection(context, HomeCollection.latest),
           ),
           if (content.recentlyViewed.isNotEmpty)
             ProductShelf(
               title: DooryStrings.recentlyViewed,
               products: content.recentlyViewed,
               sample: sample,
+              onViewAll: () =>
+                  pushCollection(context, HomeCollection.recentlyViewed),
             ),
           if (sample) const _DemoMosaic(),
           _PopularCategories(categories: categories),

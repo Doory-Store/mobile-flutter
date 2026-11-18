@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/l10n/doory_strings.dart';
+import '../../core/routing/home_collection.dart';
 import '../../core/routing/nav.dart';
 import '../../core/theme/doory_tokens.dart';
 import '../../core/theme/doory_typography.dart';
@@ -12,9 +13,13 @@ import 'listing_controller.dart';
 import 'listing_state.dart';
 
 class ListingScreen extends ConsumerStatefulWidget {
-  const ListingScreen({required this.slug, super.key});
+  const ListingScreen({required this.slug, this.title, super.key});
 
+  /// Category slug, or [allProductsKey] for the whole catalog.
   final String slug;
+
+  /// Fixed app-bar title; the category name is used when this is null.
+  final String? title;
 
   @override
   ConsumerState<ListingScreen> createState() => _ListingScreenState();
@@ -39,7 +44,7 @@ class _ListingScreenState extends ConsumerState<ListingScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(listingProvider(widget.slug));
-    final title = state.categoryName ?? widget.slug;
+    final title = widget.title ?? state.categoryName ?? widget.slug;
     return Scaffold(
       appBar: AppBar(title: Text(title)),
       body: RefreshIndicator(
