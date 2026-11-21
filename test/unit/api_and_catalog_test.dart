@@ -91,7 +91,10 @@ void main() {
         'image': 'https://cdn.example/bread.webp',
       }),
     ]);
-    expect(findCategory(tree, 'grocery')?.imageUrl, 'https://cdn.example/grocery.webp');
+    expect(
+      findCategory(tree, 'grocery')?.imageUrl,
+      'https://cdn.example/grocery.webp',
+    );
     expect(findCategory(tree, 'bakery')?.imageUrl, isNull);
     expect(
       findCategory(tree, 'bakery-bread')?.imageUrl,

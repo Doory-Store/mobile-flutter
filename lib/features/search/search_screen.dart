@@ -297,10 +297,7 @@ class _EmptySearch extends ConsumerWidget {
           runSpacing: 8,
           children: [
             for (final node in nodes)
-              CategoryChip(
-                node: node,
-                onPressed: () => onPick(node.name),
-              ),
+              CategoryChip(node: node, onPressed: () => onPick(node.name)),
           ],
         ),
       ],
