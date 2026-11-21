@@ -118,6 +118,8 @@ abstract final class ShopStrings {
       ? 'استنفدت طلبات الرمز لهذا الرقم. يمكنك الطلب مجددًا بعد 15 دقيقة.'
       : count == 1
       ? 'يمكنك طلب الرمز مرة واحدة أخرى خلال 15 دقيقة.'
+      : count == 2
+      ? 'يمكنك طلب الرمز مرتين أخريين خلال 15 دقيقة.'
       : 'يمكنك طلب الرمز $count مرات أخرى خلال 15 دقيقة.';
   static String simulationCode(String code) => 'الرمز: $code';
   static String signedIn(String name) => 'أهلًا $name';
