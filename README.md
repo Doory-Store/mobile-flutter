@@ -118,8 +118,25 @@ flutter test
 Requires the Flutter stable toolchain and a configured Android emulator or device (iOS on macOS). `flutter build apk --debug` builds the Android debug APK.
 
 ## Live and sample data
- catalog (home, categories, product, listing, search, store profile) reads the live buyer API. Cart, login, profile, addresses, checkout, orders, notifications, reviews, and support run on Mock repositories whose fixtures follow the backend OpenAPI schemas, and those screens carry the «بيانات تجريبية» badge. Actions that need the server, such as placing a real order or submitting payment proof, open a «لم يتم الربط بعد» dialog. The sample OTP is `482910` and the sample coupon is `DOORY10`.
- domain switches from Mock to Live in `lib/data/repositories/commerce/commerce_providers.dart`. See `design-plans/phase-5-full-ui-mock.md`.
+
+The catalog (home, categories, product, listing, search, store profile) and sign-in read the live buyer API. Cart, addresses, checkout, orders, notifications, reviews, and support run on Mock repositories whose fixtures follow the backend OpenAPI schemas, and those screens carry the «بيانات تجريبية» badge. Actions that need the server, such as placing a real order or submitting payment proof, open a «لم يتم الربط بعد» dialog. The sample coupon is `DOORY10`.
+
+Each domain switches from Mock to Live in `lib/data/repositories/commerce/commerce_providers.dart`. Sign-in follows `DOORY_AUTH`: `live` (default) or `mock`, the offline demo that accepts `482910`. See `design-plans/phase-5-full-ui-mock.md`.
+
+## Authentication and security
+
+Sign-in uses the buyer API: `POST /auth/otp` → `POST /auth/otp/verify`, or `POST /auth/login` with a password, then `GET /me`, `PATCH /me` and `POST /auth/logout`. The code lives in `lib/data/repositories/commerce/live_auth_repository.dart`, `lib/core/auth/` and `lib/core/network/`.
+
+- **Secure storage only.** The Sanctum bearer token and the profile snapshot live in `flutter_secure_storage`: Android Keystore (RSA-OAEP wrapped AES-GCM) and the iOS Keychain with `first_unlock_this_device`. The token stays on this device, stays readable for background work after the first unlock, and never appears in `shared_preferences`. Sessions from earlier builds are deleted from `shared_preferences` on start.
+- **Token scoped to the API origin.** `AuthInterceptor` adds `Authorization: Bearer` only when scheme, host, port and the `/api/v1` path all match the configured base URL. Image hosts and third parties receive no credential, a hand-set header is stripped from them, and authenticated calls do not follow redirects.
+- **401 ends the session.** Tokens last 30 days and the API has no refresh endpoint, so a 401 on an authenticated call wipes the token and opens sign-in with «انتهت جلستك». A restored session is confirmed with `GET /me` at launch.
+- **Logout is server-side first.** `POST /auth/logout` revokes the token, and the device wipes secure storage whether or not the server was reachable.
+- **Redacted, debug-only logs.** `RedactingLogInterceptor` runs only in debug builds and masks the Authorization header, tokens, one-time codes, passwords and phone numbers. `ApiException` and stored-session `toString()` carry no secrets.
+- **HTTPS only in release.** A release build drops any non-https base URL. Android declares a network security config with clear text disabled and system CAs only; debug and profile builds additionally reach `10.0.2.2`/`localhost` over http for a local backend.
+- **No backup of credentials.** `android:allowBackup="false"`, and the backup and data-extraction rules exclude the secure-storage files from cloud backup and device-to-device transfer, following the `flutter_secure_storage` guidance.
+- **Phone numbers match the server.** `normalizeSyrianMobile` mirrors the backend `PhoneNormalizer`, so the number the app sends is the one the server throttles and verifies.
+- **Server limits shown honestly.** A code is valid for 5 minutes; a phone may request 3 codes per 15 minutes and verify 10 times per 15 minutes. The screen counts down the resend button, shows the remaining requests from `X-RateLimit-Remaining`, and turns a 429 into an Arabic message with the `Retry-After` wait.
+- **No secrets in the app.** The app ships no credentials or test numbers. A server-provided `simulation_code` appears only in debug builds, labelled as a test code.
 
 ## Delivery plan
 

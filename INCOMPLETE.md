@@ -1,24 +1,40 @@
 # Incomplete
 
-Open items for the buyer app. The catalog reads the live API at `https://doory.elogyc.com/api/v1`; the commerce domains run on labelled Mock repositories (see `design-plans/phase-5-full-ui-mock.md`).
+Open items for the buyer app. The catalog reads the live API at `https://doory.elogyc.com/api/v1`; sign-in is live as well, and the other commerce domains run on labelled Mock repositories (see `design-plans/phase-5-full-ui-mock.md`).
 
 ## Commerce domains on sample data
 
-Cart, auth (OTP), profile, addresses and neighborhoods, payment guide, delivery slots, pickup points, checkout, orders, notifications, reviews, help articles, and support tickets use `Mock…Repository` classes. Their `Live…Repository` counterparts in `lib/data/repositories/commerce/live_repositories.dart` name the endpoint and throw `NotWiredException`.
+Cart, addresses and neighborhoods, payment guide, delivery slots, pickup points, checkout, orders, notifications, reviews, help articles, and support tickets use `Mock…Repository` classes. Their `Live…Repository` counterparts in `lib/data/repositories/commerce/live_repositories.dart` name the endpoint and throw `NotWiredException`.
 
 Next step: implement one Live repository at a time against the Dio transport, switch its provider in `commerce_providers.dart`, and replace the matching «لم يتم الربط بعد» actions.
 
 ## Server-only actions
 
-These open the «لم يتم الربط بعد» dialog: placing a real order, submitting payment proof, cancelling a checkout or an order, returns, publishing a review, product questions, back-in-stock alerts, messaging or reporting a store, sending a support ticket, attachments, ticket threads, WhatsApp and phone handoff, map pin, phone change, password, sessions, data export, account deletion, WhatsApp OTP, password login, and policy pages.
+These open the «لم يتم الربط بعد» dialog: placing a real order, submitting payment proof, cancelling a checkout or an order, returns, publishing a review, product questions, back-in-stock alerts, messaging or reporting a store, sending a support ticket, attachments, ticket threads, WhatsApp and phone handoff, map pin, phone change, password, sessions, data export, account deletion, WhatsApp OTP, and policy pages.
 
 Next step: wire each with its endpoint. Dialing and WhatsApp need `url_launcher`; the map pin needs a maps package and location permission; attachments and payment proof need an image picker and multipart upload.
 
-## Auth token storage
+## Sign-in on production
 
-The mock session lives in memory and in `shared_preferences`. A real bearer token belongs in `flutter_secure_storage` with expiry and refresh handling.
+Sign-in is wired to the live API and secured on the device (see README, «Authentication and security»). Three items need the backend:
 
-Next step: add secure storage and a Dio auth interceptor when `/auth/otp/verify` is wired.
+- **No real OTP delivery.** Production binds only `LogSmsOtpDriver` and `LogWhatsAppOtpDriver`, which write the code to the server log. Nobody receives an SMS or WhatsApp message.
+- **`simulation_code` is exposed on production.** `DOORY_OTP_BROWSER_POPUP` is on, so `POST /auth/otp` returns the code in its response. Anyone can sign in as any phone number. Debug builds show it as a labelled test code; release builds hide it and wait for real delivery.
+- **No refresh endpoint.** Tokens expire after 30 days and the app sends the buyer back to sign-in. A `POST /auth/refresh` would allow silent renewal.
+
+Next step: the backend teammate wires a real SMS/WhatsApp driver, turns `DOORY_OTP_BROWSER_POPUP` off, and provides a fixed-code test number for QA.
+
+## Profile actions
+
+Changing the phone number, setting a password, listing sessions, exporting data and deleting the account still open «لم يتم الربط بعد». Their endpoints exist (`/me/phone/*`, `/me/password`, `/me/sessions`, `/me/data-requests`).
+
+Next step: wire each one with the authenticated transport.
+
+## Certificate pinning
+
+The app trusts the system certificate authorities. Pinning the `doory.elogyc.com` certificate is a deliberate later step, because the host's certificate rotates with its hosting provider.
+
+Next step: pin the SPKI hash once the production certificate and its rotation plan are fixed.
 
 ## Android and iOS product flavors
 
