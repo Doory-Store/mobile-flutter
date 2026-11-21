@@ -12,14 +12,32 @@ enum ApiFailureKind {
 }
 
 class ApiException implements Exception {
-  const ApiException(this.kind, this.message, {this.statusCode});
+  const ApiException(
+    this.kind,
+    this.message, {
+    this.statusCode,
+    this.retryAfter,
+    this.fieldErrors = const {},
+  });
 
   final ApiFailureKind kind;
   final String message;
   final int? statusCode;
 
+  /// From the `Retry-After` header on 429 responses.
+  final Duration? retryAfter;
+
+  /// Laravel validation `errors`: field → messages.
+  final Map<String, List<String>> fieldErrors;
+
+  /// First message the server gave for [field], or ''.
+  String fieldError(String field) {
+    final messages = fieldErrors[field];
+    return messages == null || messages.isEmpty ? '' : messages.first;
+  }
+
   @override
-  String toString() => 'ApiException($kind, $statusCode, $message)';
+  String toString() => 'ApiException($kind, $statusCode)';
 }
 
 /// In-flight call cancelled because the route was disposed or replaced.
@@ -35,6 +53,28 @@ String messageFromBody(Object? data) {
   return '';
 }
 
+Map<String, List<String>> fieldErrorsFromBody(Object? data) {
+  if (data is! Map) return const {};
+  final errors = data['errors'];
+  if (errors is! Map) return const {};
+  return {
+    for (final entry in errors.entries)
+      '${entry.key}': switch (entry.value) {
+        final List<dynamic> list => [for (final item in list) '$item'],
+        final Object value => ['$value'],
+        null => const <String>[],
+      },
+  };
+}
+
+/// Seconds form of `Retry-After` (Laravel's throttle middleware sends it).
+Duration? retryAfterFrom(Headers? headers) {
+  final raw = headers?.value('retry-after');
+  final seconds = raw == null ? null : int.tryParse(raw.trim());
+  if (seconds == null || seconds < 0) return null;
+  return Duration(seconds: seconds);
+}
+
 ApiException mapDioException(DioException error) {
   if (error.type == DioExceptionType.cancel) {
     throw const ApiCancelled();
@@ -45,7 +85,12 @@ ApiException mapDioException(DioException error) {
     return ApiException(ApiFailureKind.notFound, message, statusCode: code);
   }
   if (code == 400 || code == 422) {
-    return ApiException(ApiFailureKind.validation, message, statusCode: code);
+    return ApiException(
+      ApiFailureKind.validation,
+      message,
+      statusCode: code,
+      fieldErrors: fieldErrorsFromBody(error.response?.data),
+    );
   }
   if (code == 401) {
     return ApiException(ApiFailureKind.unauthorized, message, statusCode: code);
@@ -54,7 +99,12 @@ ApiException mapDioException(DioException error) {
     return ApiException(ApiFailureKind.forbidden, message, statusCode: code);
   }
   if (code == 429) {
-    return ApiException(ApiFailureKind.rateLimited, message, statusCode: code);
+    return ApiException(
+      ApiFailureKind.rateLimited,
+      message,
+      statusCode: code,
+      retryAfter: retryAfterFrom(error.response?.headers),
+    );
   }
   if (code != null && code >= 500) {
     return ApiException(ApiFailureKind.server, message, statusCode: code);

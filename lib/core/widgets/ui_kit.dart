@@ -357,11 +357,17 @@ class DooryTextField extends StatelessWidget {
     this.textDirection,
     this.enabled = true,
     this.autofocus = false,
+    this.obscureText = false,
+    this.suffix,
+    this.autofillHints,
     super.key,
   });
 
   final String label;
   final TextEditingController? controller;
+  final bool obscureText;
+  final Widget? suffix;
+  final Iterable<String>? autofillHints;
   final String? hint;
   final TextInputType? keyboardType;
   final FormFieldValidator<String>? validator;
@@ -391,10 +397,15 @@ class DooryTextField extends StatelessWidget {
           enabled: enabled,
           autofocus: autofocus,
           textDirection: textDirection,
+          obscureText: obscureText,
+          enableSuggestions: !obscureText,
+          autocorrect: !obscureText,
+          autofillHints: autofillHints,
           style: DooryTypography.body(context),
           decoration: InputDecoration(
             hintText: hint,
             prefixIcon: prefix,
+            suffixIcon: suffix,
             border: OutlineInputBorder(
               borderRadius: radius,
               borderSide: BorderSide.none,

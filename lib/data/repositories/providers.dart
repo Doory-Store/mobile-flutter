@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/auth/auth_providers.dart';
 import '../../core/config/app_config.dart';
 import '../../core/network/api_transport.dart';
+import '../../core/network/auth_interceptor.dart';
 import '../models/catalog_models.dart';
 import 'catalog_repository.dart';
 import 'home_repository.dart';
@@ -17,7 +19,21 @@ final appConfigProvider = Provider<AppConfig>(
 );
 
 final apiTransportProvider = Provider<ApiTransport>((ref) {
-  final transport = DioApiTransport(ref.watch(appConfigProvider));
+  final config = ref.watch(appConfigProvider);
+  final transport = DioApiTransport(
+    config,
+    interceptors: [
+      AuthInterceptor(
+        apiUri: config.apiUri,
+        allowInsecureHttp: config.allowInsecureHttp,
+        readToken: () => ref.read(credentialVaultProvider).liveToken,
+        onUnauthorized: () {
+          ref.read(credentialVaultProvider).clear();
+          ref.read(sessionRevokedProvider.notifier).state++;
+        },
+      ),
+    ],
+  );
   ref.onDispose(transport.close);
   return transport;
 });

@@ -17,4 +17,15 @@ class FakeTransport implements ApiTransport {
     calls.add(path);
     return onGet(path, query);
   }
+
+  @override
+  Future<ApiResponse> send(
+    String method,
+    String path, {
+    Object? body,
+    CancelToken? cancelToken,
+  }) {
+    calls.add('$method $path');
+    throw UnimplementedError('FakeTransport.send $method $path');
+  }
 }

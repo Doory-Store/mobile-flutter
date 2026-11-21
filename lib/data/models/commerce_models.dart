@@ -40,19 +40,31 @@ class OtpChallenge {
     required this.phone,
     required this.expiresIn,
     this.simulationCode,
+    this.remainingSends,
   });
 
-  factory OtpChallenge.fromJson(String phone, Map<String, dynamic> json) {
+  factory OtpChallenge.fromJson(
+    String phone,
+    Map<String, dynamic> json, {
+    int? remainingSends,
+  }) {
     return OtpChallenge(
       phone: phone,
       expiresIn: _int(json['expires_in']) ?? 300,
       simulationCode: _str(json['simulation_code']),
+      remainingSends: remainingSends,
     );
   }
 
   final String phone;
   final int expiresIn;
+
+  /// Present only while the backend runs its pre-delivery simulation mode.
   final String? simulationCode;
+
+  /// Codes this phone may still request in the current 15-minute window
+  /// (`X-RateLimit-Remaining`), when the server reports it.
+  final int? remainingSends;
 }
 
 /// `BuyerAuthUser` / `BuyerMe`.

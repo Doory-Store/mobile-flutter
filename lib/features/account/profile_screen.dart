@@ -21,7 +21,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _name = TextEditingController(text: ref.read(sessionProvider).user?.name);
+    final initial = ref.read(sessionProvider).user?.name;
+    _name = TextEditingController(text: initial);
+    // Shows the server's copy of the profile (`GET /me`).
+    Future.microtask(() async {
+      await ref.read(sessionProvider.notifier).refreshProfile();
+      final fresh = ref.read(sessionProvider).user?.name;
+      if (mounted && fresh != null && _name.text == (initial ?? '')) {
+        _name.text = fresh;
+      }
+    });
   }
 
   @override
@@ -45,7 +54,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(sessionProvider).user;
+    final session = ref.watch(sessionProvider);
+    final user = session.user;
     return Scaffold(
       appBar: AppBar(title: const Text(ShopStrings.profile)),
       body: Form(
@@ -53,8 +63,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         child: ListView(
           padding: const EdgeInsetsDirectional.only(bottom: 24),
           children: [
-            const MockBanner(),
-            const SizedBox(height: 12),
+            if (session.sample) ...[
+              const MockBanner(),
+              const SizedBox(height: 12),
+            ] else
+              const SizedBox(height: 12),
             SectionCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,

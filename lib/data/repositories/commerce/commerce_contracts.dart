@@ -20,6 +20,13 @@ class DomainRejection implements Exception {
   String toString() => message;
 }
 
+/// The server throttled the call. [retryAfter] comes from `Retry-After`.
+class RateLimitedRejection extends DomainRejection {
+  const RateLimitedRejection(super.message, {this.retryAfter});
+
+  final Duration? retryAfter;
+}
+
 /// Thrown by Live repositories whose endpoint is not wired yet.
 class NotWiredException implements Exception {
   const NotWiredException(this.endpoint);
@@ -68,11 +75,16 @@ abstract interface class CartRepository {
   Future<CartSnapshot> clear();
 }
 
-/// `/auth/otp`, `/auth/otp/verify`, `/auth/logout`, `/me`.
+/// `/auth/otp`, `/auth/otp/verify`, `/auth/login`, `/auth/logout`, `/me`.
+///
+/// Phones are passed already normalised to `+9639XXXXXXXX`. Failures surface
+/// as [DomainRejection] (or [RateLimitedRejection]) with shopper-facing text.
 abstract interface class AuthRepository {
   bool get isSample;
   Future<OtpChallenge> requestOtp(String phone);
   Future<BuyerSession> verifyOtp(String phone, String code);
+  Future<BuyerSession> loginWithPassword(String phone, String password);
+  Future<BuyerUser> me();
   Future<BuyerUser> updateName(String name);
   Future<void> logout();
 }

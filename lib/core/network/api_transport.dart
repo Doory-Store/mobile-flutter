@@ -1,7 +1,29 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../config/app_config.dart';
 import 'api_exception.dart';
+import 'log_interceptor.dart';
+
+/// Body, status and headers of a successful call.
+class ApiResponse {
+  const ApiResponse({
+    required this.data,
+    required this.statusCode,
+    this.headers = const {},
+  });
+
+  final dynamic data;
+  final int statusCode;
+
+  /// Lower-cased header names.
+  final Map<String, List<String>> headers;
+
+  String? header(String name) {
+    final values = headers[name.toLowerCase()];
+    return values == null || values.isEmpty ? null : values.first;
+  }
+}
 
 abstract class ApiTransport {
   Future<dynamic> get(
@@ -9,10 +31,22 @@ abstract class ApiTransport {
     Map<String, dynamic>? query,
     CancelToken? cancelToken,
   });
+
+  /// Any verb with a JSON body. Used by authenticated buyer endpoints.
+  Future<ApiResponse> send(
+    String method,
+    String path, {
+    Object? body,
+    CancelToken? cancelToken,
+  });
 }
 
 class DioApiTransport implements ApiTransport {
-  DioApiTransport(this.config, {Dio? dio}) : dio = dio ?? buildDio(config);
+  DioApiTransport(
+    this.config, {
+    Dio? dio,
+    List<Interceptor> interceptors = const [],
+  }) : dio = dio ?? buildDio(config, interceptors: interceptors);
 
   final AppConfig config;
   final Dio dio;
@@ -44,9 +78,46 @@ class DioApiTransport implements ApiTransport {
       throw mapDioException(error);
     }
   }
+
+  @override
+  Future<ApiResponse> send(
+    String method,
+    String path, {
+    Object? body,
+    CancelToken? cancelToken,
+  }) async {
+    if (!config.hasBaseUrl) {
+      throw const ApiException(ApiFailureKind.network, 'missing base url');
+    }
+    try {
+      final response = await dio.request<dynamic>(
+        path,
+        data: body,
+        cancelToken: cancelToken,
+        options: Options(method: method, contentType: Headers.jsonContentType),
+      );
+      return ApiResponse(
+        data: response.data,
+        statusCode: response.statusCode ?? 0,
+        headers: {
+          for (final entry in response.headers.map.entries)
+            entry.key.toLowerCase(): entry.value,
+        },
+      );
+    } on DioException catch (error) {
+      if (error.type == DioExceptionType.cancel) {
+        throw const ApiCancelled();
+      }
+      final mapped = error.error;
+      if (mapped is ApiException) throw mapped;
+      throw mapDioException(error);
+    }
+  }
 }
 
-Dio buildDio(AppConfig config) {
+/// [interceptors] run after the header interceptor and before logging and
+/// error mapping, which is where the auth interceptor belongs.
+Dio buildDio(AppConfig config, {List<Interceptor> interceptors = const []}) {
   final dio = Dio(
     BaseOptions(
       baseUrl: config.baseUrl,
@@ -58,6 +129,8 @@ Dio buildDio(AppConfig config) {
     ),
   );
   dio.interceptors.add(DooryHeaderInterceptor(config));
+  dio.interceptors.addAll(interceptors);
+  if (kDebugMode) dio.interceptors.add(RedactingLogInterceptor());
   dio.interceptors.add(DooryErrorInterceptor());
   return dio;
 }

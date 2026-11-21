@@ -1,10 +1,10 @@
 // Live implementations of the commerce contracts.
 //
 // Each method names the buyer endpoint it maps to (see the backend
-// `docs/openapi/buyer-v1.yaml`). They throw [NotWiredException] until the
-// transport gains authenticated POST/PATCH/DELETE support and the matching
-// business rules are approved. Switching a provider in
-// `commerce_providers.dart` from Mock to Live is the wiring step.
+// `docs/openapi/buyer-v1.yaml`). Auth is wired in `live_auth_repository.dart`;
+// the domains below throw [NotWiredException] until their business rules are
+// approved. Switching a provider in `commerce_providers.dart` from Mock to
+// Live is the wiring step.
 
 import '../../models/commerce_models.dart';
 import 'commerce_contracts.dart';
@@ -35,21 +35,6 @@ class LiveCartRepository implements CartRepository {
       _todo('DELETE /carts/{public_id}/coupons/{code}');
   @override
   Future<CartSnapshot> clear() async => _todo('POST /carts');
-}
-
-class LiveAuthRepository implements AuthRepository {
-  @override
-  bool get isSample => false;
-  @override
-  Future<OtpChallenge> requestOtp(String phone) async =>
-      _todo('POST /auth/otp {phone, purpose: login}');
-  @override
-  Future<BuyerSession> verifyOtp(String phone, String code) async =>
-      _todo('POST /auth/otp/verify');
-  @override
-  Future<BuyerUser> updateName(String name) async => _todo('PATCH /me');
-  @override
-  Future<void> logout() async => _todo('POST /auth/logout');
 }
 
 class LiveAddressRepository implements AddressRepository {

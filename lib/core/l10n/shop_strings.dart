@@ -99,7 +99,26 @@ abstract final class ShopStrings {
   static const termsNote =
       'بمتابعتك فإنك توافق على شروط الاستخدام وسياسة الخصوصية.';
   static String otpBody(String phone) => 'أرسلنا الرمز إلى $phone';
-  static String resendIn(int seconds) => 'إعادة الإرسال بعد $seconds ث';
+  static String resendIn(int seconds) => seconds < 60
+      ? 'إعادة الإرسال بعد $seconds ث'
+      : 'إعادة الإرسال بعد ${seconds ~/ 60}:${(seconds % 60).toString().padLeft(2, '0')}';
+  static const passwordLabel = 'كلمة المرور';
+  static const passwordRequired = 'أدخل كلمة المرور.';
+  static const loginPasswordTitle = 'الدخول بكلمة المرور';
+  static const loginPasswordBody =
+      'أدخل رقم جوالك وكلمة المرور التي عيّنتها لحسابك.';
+  static const loginWithOtp = 'الدخول برمز التحقق';
+  static const signInAction = 'دخول';
+  static const sessionExpiredNote =
+      'انتهت جلستك. سجّل الدخول من جديد للمتابعة.';
+  static const serverTestCode = 'رمز الاختبار من الخادم';
+  static String otpValidFor(int seconds) =>
+      'الرمز صالح لمدة ${(seconds / 60).ceil()} دقائق.';
+  static String remainingSends(int count) => count <= 0
+      ? 'استنفدت طلبات الرمز لهذا الرقم. يمكنك الطلب مجددًا بعد 15 دقيقة.'
+      : count == 1
+      ? 'يمكنك طلب الرمز مرة واحدة أخرى خلال 15 دقيقة.'
+      : 'يمكنك طلب الرمز $count مرات أخرى خلال 15 دقيقة.';
   static String simulationCode(String code) => 'الرمز: $code';
   static String signedIn(String name) => 'أهلًا $name';
 

@@ -257,6 +257,24 @@ class MockAuthRepository implements AuthRepository {
   }
 
   @override
+  Future<BuyerSession> loginWithPassword(String phone, String password) async {
+    await _wait();
+    throw const DomainRejection(
+      'الدخول بكلمة المرور يعمل مع الخادم الحقيقي فقط. استخدم رمز التحقق.',
+    );
+  }
+
+  @override
+  Future<BuyerUser> me() async {
+    await _wait();
+    final user = _user;
+    if (user == null) {
+      throw const DomainRejection('انتهت جلستك. سجّل الدخول من جديد.');
+    }
+    return user;
+  }
+
+  @override
   Future<BuyerUser> updateName(String name) async {
     await _wait();
     final trimmed = name.trim();
