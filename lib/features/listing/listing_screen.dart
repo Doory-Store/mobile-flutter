@@ -7,6 +7,7 @@ import '../../core/routing/home_collection.dart';
 import '../../core/routing/nav.dart';
 import '../../core/theme/doory_tokens.dart';
 import '../../core/theme/doory_typography.dart';
+import '../../core/widgets/category_avatar.dart';
 import '../../core/widgets/chrome.dart';
 import 'catalog_widgets.dart';
 import 'listing_controller.dart';
@@ -72,7 +73,7 @@ class _ListingScreenState extends ConsumerState<ListingScreen> {
       children: [
         if (state.children.isNotEmpty)
           SizedBox(
-            height: 52,
+            height: 56,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsetsDirectional.symmetric(
@@ -83,8 +84,8 @@ class _ListingScreenState extends ConsumerState<ListingScreen> {
               separatorBuilder: (context, index) => const SizedBox(width: 8),
               itemBuilder: (context, index) {
                 final child = state.children[index];
-                return ActionChip(
-                  label: Text(child.name),
+                return CategoryChip(
+                  node: child,
                   onPressed: () => pushCategory(context, child.slug),
                 );
               },

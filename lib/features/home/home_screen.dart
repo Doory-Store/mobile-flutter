@@ -7,6 +7,7 @@ import '../../core/routing/home_collection.dart';
 import '../../core/routing/nav.dart';
 import '../../core/theme/doory_tokens.dart';
 import '../../core/theme/doory_typography.dart';
+import '../../core/widgets/category_avatar.dart';
 import '../../core/widgets/chrome.dart';
 import '../../core/widgets/product_shelf.dart';
 import '../../data/models/catalog_models.dart';
@@ -254,19 +255,12 @@ class _CategoryRail extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               child: Column(
                 children: [
-                  Container(
-                    width: 68,
-                    height: 68,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: pastels.toneAt(index),
-                      shape: BoxShape.circle,
-                      border: Border.all(color: pastels.border),
-                    ),
-                    child: Text(
-                      node.name.characters.first,
-                      style: DooryTypography.section(context),
-                    ),
+                  CategoryAvatar(
+                    name: node.name,
+                    imageUrl: node.imageUrl,
+                    size: 68,
+                    backgroundColor: pastels.toneAt(index),
+                    showBorder: true,
                   ),
                   const SizedBox(height: 4),
                   Text(
@@ -314,8 +308,8 @@ class _PopularCategories extends StatelessWidget {
             runSpacing: 8,
             children: [
               for (final node in nodes)
-                ActionChip(
-                  label: Text(node.name),
+                CategoryChip(
+                  node: node,
                   onPressed: () => pushCategory(context, node.slug),
                 ),
             ],

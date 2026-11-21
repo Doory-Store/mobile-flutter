@@ -8,6 +8,7 @@ import '../../core/l10n/doory_strings.dart';
 import '../../core/routing/nav.dart';
 import '../../core/theme/doory_tokens.dart';
 import '../../core/theme/doory_typography.dart';
+import '../../core/widgets/category_avatar.dart';
 import '../../core/widgets/chrome.dart';
 import '../../data/models/catalog_models.dart';
 import '../../data/repositories/providers.dart';
@@ -296,8 +297,8 @@ class _EmptySearch extends ConsumerWidget {
           runSpacing: 8,
           children: [
             for (final node in nodes)
-              ActionChip(
-                label: Text(node.name),
+              CategoryChip(
+                node: node,
                 onPressed: () => onPick(node.name),
               ),
           ],

@@ -39,12 +39,36 @@ abstract final class DemoData {
       name: 'مخبوزات',
       slug: 'bakery',
       children: [
-        CategoryNode(id: 9, name: 'خبز', slug: 'bakery-bread'),
-        CategoryNode(id: 10, name: 'معجنات', slug: 'bakery-pastry'),
+        CategoryNode(
+          id: 9,
+          name: 'خبز',
+          slug: 'bakery-bread',
+          imageUrl:
+              'https://doory.elogyc.com/storage/categories/085b6d54-9d8f-426e-b4ea-5cc251a3ec38/card.webp',
+        ),
+        CategoryNode(
+          id: 10,
+          name: 'معجنات',
+          slug: 'bakery-pastry',
+          imageUrl:
+              'https://doory.elogyc.com/storage/categories/1b503f1a-0476-48b7-930c-27eeb0efbb25/card.webp',
+        ),
       ],
     ),
-    CategoryNode(id: 3, name: 'بقالة', slug: 'grocery'),
-    CategoryNode(id: 6, name: 'حلويات', slug: 'sweets'),
+    CategoryNode(
+      id: 3,
+      name: 'بقالة',
+      slug: 'grocery',
+      imageUrl:
+          'https://doory.elogyc.com/storage/categories/b187e404-0791-4ea1-bc45-0137c0be9b25/card.webp',
+    ),
+    CategoryNode(
+      id: 6,
+      name: 'حلويات',
+      slug: 'sweets',
+      imageUrl:
+          'https://doory.elogyc.com/storage/categories/d3e11e95-7302-4991-8e43-880b699ce3dd/card.webp',
+    ),
   ];
 
   static const home = HomeContent(

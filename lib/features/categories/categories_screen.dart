@@ -5,6 +5,7 @@ import '../../core/l10n/doory_strings.dart';
 import '../../core/routing/nav.dart';
 import '../../core/theme/doory_tokens.dart';
 import '../../core/theme/doory_typography.dart';
+import '../../core/widgets/category_avatar.dart';
 import '../../core/widgets/chrome.dart';
 import '../../data/models/catalog_models.dart';
 import '../../data/repositories/providers.dart';
@@ -162,18 +163,11 @@ class _CategoryTileState extends State<_CategoryTile> {
               ),
               child: Row(
                 children: [
-                  Container(
-                    width: 36,
-                    height: 36,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: tokens.shortcutPastels.toneAt(node.id),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Text(
-                      node.name.characters.first,
-                      style: DooryTypography.labelStrong(context),
-                    ),
+                  CategoryAvatar(
+                    name: node.name,
+                    imageUrl: node.imageUrl,
+                    size: 36,
+                    backgroundColor: tokens.shortcutPastels.toneAt(node.id),
                   ),
                   const SizedBox(width: 12),
                   Expanded(

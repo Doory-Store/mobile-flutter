@@ -69,6 +69,36 @@ void main() {
     expect(findCategory(tree, 'missing'), isNull);
   });
 
+  test('category JSON keeps image URLs on parents and children', () {
+    final tree = buildCategoryTree([
+      CategoryDto.fromJson({
+        'id': 3,
+        'name': 'بقالة',
+        'slug': 'grocery',
+        'image': 'https://cdn.example/grocery.webp',
+      }),
+      CategoryDto.fromJson({
+        'id': 2,
+        'name': 'مخبوزات',
+        'slug': 'bakery',
+        'image': null,
+      }),
+      CategoryDto.fromJson({
+        'id': 9,
+        'name': 'خبز',
+        'slug': 'bakery-bread',
+        'parent_id': 2,
+        'image': 'https://cdn.example/bread.webp',
+      }),
+    ]);
+    expect(findCategory(tree, 'grocery')?.imageUrl, 'https://cdn.example/grocery.webp');
+    expect(findCategory(tree, 'bakery')?.imageUrl, isNull);
+    expect(
+      findCategory(tree, 'bakery-bread')?.imageUrl,
+      'https://cdn.example/bread.webp',
+    );
+  });
+
   test('detail JSON tolerates a null price and unknown keys', () {
     final dto = ProductDetailDto.fromJson({
       'id': 4,
