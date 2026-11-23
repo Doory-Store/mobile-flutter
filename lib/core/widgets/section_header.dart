@@ -47,6 +47,7 @@ class _SectionHeaderState extends State<SectionHeader> {
               child: Semantics(
                 header: true,
                 label: widget.title,
+                container: true,
                 excludeSemantics: true,
                 child: Text(
                   widget.title,
@@ -61,6 +62,8 @@ class _SectionHeaderState extends State<SectionHeader> {
               Semantics(
                 button: true,
                 label: widget.actionLabel,
+                onTap: widget.onAction,
+                container: true,
                 excludeSemantics: true,
                 child: GestureDetector(
                   onTapDown: (_) => setState(() => _pressed = true),

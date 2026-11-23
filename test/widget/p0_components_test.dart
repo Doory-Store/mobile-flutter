@@ -13,6 +13,7 @@ import 'package:doory_mobile/core/widgets/product_cards.dart';
 import 'package:doory_mobile/core/widgets/search_pill.dart';
 import 'package:doory_mobile/features/debug/component_catalog_screen.dart';
 import 'package:doory_mobile/features/shell/tab_root_screen.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -221,7 +222,7 @@ void main() {
           children: [
             DooryChip(label: 'قطن', onTap: () {}),
             DooryButton(label: 'متابعة', onPressed: () {}),
-            const ListRow(title: 'الماركة', value: 'نور'),
+            ListRow(title: 'الماركة', value: 'نور', onTap: () {}),
           ],
         ),
         bottomNavigationBar: BottomTabBar(
@@ -231,13 +232,52 @@ void main() {
         ),
       ),
     );
-    expect(tester.getSemantics(find.byType(DooryChip)).label, 'قطن');
-    expect(tester.getSemantics(find.byType(DooryButton)).label, 'متابعة');
-    expect(tester.getSemantics(find.byType(ListRow)).label, 'الماركة، نور');
-    expect(
-      tester.getSemantics(find.bySemanticsLabel('السلة، 3 منتجات')).label,
-      'السلة، 3 منتجات',
+    void expectOneLabel(Finder finder, String label) {
+      final data = tester.getSemantics(finder).getSemanticsData();
+      expect(data.label, label);
+      expect(data.label.contains('\n'), isFalse);
+      expect(data.hasAction(SemanticsAction.tap), isTrue);
+    }
+
+    expectOneLabel(find.byType(DooryChip), 'قطن');
+    expectOneLabel(find.byType(DooryButton), 'متابعة');
+    expectOneLabel(find.byType(ListRow), 'الماركة، نور');
+    expectOneLabel(find.bySemanticsLabel('السلة، 3 منتجات'), 'السلة، 3 منتجات');
+    handle.dispose();
+  });
+
+  testWidgets('an active search field keeps its value and clear button', (
+    tester,
+  ) async {
+    final handle = tester.ensureSemantics();
+    await pumpDoory(
+      tester,
+      const Scaffold(
+        body: SearchPill(mode: SearchPillMode.active, text: 'قميص'),
+      ),
     );
+    SemanticsData? textField;
+    SemanticsData? clear;
+    void visit(Element element) {
+      final node = element.renderObject?.debugSemantics;
+      if (node != null && !node.isMergedIntoParent) {
+        final data = node.getSemanticsData();
+        if (data.flagsCollection.isTextField) textField = data;
+        if (data.label == DooryStrings.clearSearch ||
+            data.tooltip == DooryStrings.clearSearch) {
+          clear = data;
+        }
+      }
+      element.visitChildren(visit);
+    }
+
+    visit(tester.element(find.byType(SearchPill)));
+    expect(textField, isNotNull);
+    expect(textField!.value, 'قميص');
+    expect(textField!.hasAction(SemanticsAction.tap), isTrue);
+    expect(textField!.hasAction(SemanticsAction.focus), isTrue);
+    expect(clear, isNotNull);
+    expect(clear!.hasAction(SemanticsAction.tap), isTrue);
     handle.dispose();
   });
 

@@ -74,6 +74,7 @@ class ListRow extends StatelessWidget {
       checked: isRadio ? selected : null,
       inMutuallyExclusiveGroup: isRadio,
       label: label,
+      onTap: enabled ? onTap : null,
       excludeSemantics: true,
       child: Material(
         color: scheme.surface,

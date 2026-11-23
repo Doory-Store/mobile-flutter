@@ -39,6 +39,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
       label: widget.selected
           ? DooryStrings.removeFavorite
           : DooryStrings.addFavorite,
+      onTap: widget.enabled ? widget.onPressed : null,
       excludeSemantics: true,
       child: SizedBox(
         width: 48,

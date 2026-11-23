@@ -52,6 +52,12 @@ class _DooryChipState extends State<DooryChip> {
       enabled: widget.enabled,
       selected: widget.selected,
       label: widget.label,
+      onTap: widget.enabled
+          ? () {
+              setState(() => _pressed = false);
+              widget.onTap?.call();
+            }
+          : null,
       excludeSemantics: true,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,

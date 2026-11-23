@@ -128,28 +128,33 @@ class _SearchPillState extends State<SearchPill> {
       ),
     );
 
+    final gesture = GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTapDown: widget.enabled && widget.mode != SearchPillMode.active
+          ? (_) => setState(() => _pressed = true)
+          : null,
+      onTapCancel: () => setState(() => _pressed = false),
+      onTapUp: (_) => setState(() => _pressed = false),
+      onTap: !widget.enabled || widget.mode == SearchPillMode.active
+          ? null
+          : widget.onTap,
+      child: pill,
+    );
+    // An active field keeps its own semantics: value, focus, and clear.
+    if (widget.mode == SearchPillMode.active) {
+      return SizedBox(height: 48, child: Center(child: gesture));
+    }
     return SizedBox(
       height: 48,
       child: Center(
         child: Semantics(
-          button: widget.mode != SearchPillMode.active,
-          textField: widget.mode == SearchPillMode.active,
+          button: true,
           enabled: widget.enabled,
           label: DooryStrings.searchAction,
-          hint: widget.mode == SearchPillMode.active ? widget.hint : null,
+          hint: widget.hint,
+          onTap: widget.enabled ? widget.onTap : null,
           excludeSemantics: true,
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTapDown: widget.enabled && widget.mode != SearchPillMode.active
-                ? (_) => setState(() => _pressed = true)
-                : null,
-            onTapCancel: () => setState(() => _pressed = false),
-            onTapUp: (_) => setState(() => _pressed = false),
-            onTap: !widget.enabled || widget.mode == SearchPillMode.active
-                ? null
-                : widget.onTap,
-            child: pill,
-          ),
+          child: gesture,
         ),
       ),
     );

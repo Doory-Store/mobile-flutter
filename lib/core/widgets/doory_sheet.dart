@@ -138,9 +138,10 @@ class _SheetClose extends StatelessWidget {
         maxWidth: 48,
         minHeight: 48,
         maxHeight: 48,
-        child: Semantics(
+          child: Semantics(
           button: true,
           label: DooryStrings.close,
+          onTap: () => Navigator.of(context).maybePop(),
           excludeSemantics: true,
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
