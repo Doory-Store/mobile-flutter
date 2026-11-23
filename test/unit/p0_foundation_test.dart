@@ -20,9 +20,9 @@ void main() {
 
   test('cart badge hides zero and caps at 99+', () {
     expect(cartBadgeLabel(0), isNull);
-    expect(cartBadgeLabel(3), '3');
-    expect(cartBadgeLabel(99), '99');
-    expect(cartBadgeLabel(120), '99+');
+    expect(cartBadgeLabel(3), '\u20663\u2069');
+    expect(cartBadgeLabel(99), '\u206699\u2069');
+    expect(cartBadgeLabel(120), '\u206699+\u2069');
   });
 
   test('discount percent is a rounded honest ratio', () {

@@ -3,6 +3,7 @@ import 'package:doory_mobile/core/l10n/doory_strings.dart';
 import 'package:doory_mobile/core/widgets/bottom_tab_bar.dart';
 import 'package:doory_mobile/core/widgets/doory_app_bar.dart';
 import 'package:doory_mobile/core/widgets/doory_button.dart';
+import 'package:doory_mobile/core/theme/doory_theme.dart';
 import 'package:doory_mobile/core/widgets/doory_chip.dart';
 import 'package:doory_mobile/core/widgets/doory_image.dart';
 import 'package:doory_mobile/core/widgets/list_row.dart';
@@ -10,6 +11,7 @@ import 'package:doory_mobile/core/widgets/price_block.dart';
 import 'package:doory_mobile/core/widgets/product_cards.dart';
 import 'package:doory_mobile/core/widgets/search_pill.dart';
 import 'package:doory_mobile/features/debug/component_catalog_screen.dart';
+import 'package:doory_mobile/features/shell/tab_root_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -61,6 +63,7 @@ void main() {
       ),
     );
     expect(tester.getSize(find.byKey(DooryChip.visualKey)).height, 30);
+    expect(tester.getSize(find.byType(DooryChip)).height, 48);
     await tester.tap(find.text('قطن'));
     expect(taps, 0);
   });
@@ -156,7 +159,7 @@ void main() {
       ),
     );
     expect(tester.getSize(find.byType(BottomTabBar)).height, 56);
-    expect(find.text('99+'), findsOneWidget);
+    expect(find.text('\u206699+\u2069'), findsOneWidget);
     expect(find.text(DooryStrings.tabHome), findsOneWidget);
   });
 
@@ -177,5 +180,99 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('الأنسب'), findsWidgets);
     expect(find.text('الأقل سعراً'), findsOneWidget);
+  });
+
+  testWidgets('a two-line row grows at 1.3x instead of overflowing', (
+    tester,
+  ) async {
+    await pumpDoory(
+      tester,
+      const Scaffold(
+        body: ListRow(title: 'الماركة', value: 'نور'),
+      ),
+      textScale: 1.3,
+    );
+    expect(tester.takeException(), isNull);
+    expect(tester.getSize(find.byType(ListRow)).height, greaterThan(56));
+  });
+
+  testWidgets('the chip target includes the padding above the pill', (
+    tester,
+  ) async {
+    var taps = 0;
+    await pumpDoory(
+      tester,
+      Scaffold(
+        body: DooryChip(label: 'قطن', onTap: () => taps++),
+      ),
+    );
+    final rect = tester.getRect(find.byType(DooryChip));
+    await tester.tapAt(rect.topCenter + const Offset(0, 4));
+    expect(taps, 1);
+  });
+
+  testWidgets('controls announce their label once', (tester) async {
+    final handle = tester.ensureSemantics();
+    await pumpDoory(
+      tester,
+      Scaffold(
+        body: Column(
+          children: [
+            DooryChip(label: 'قطن', onTap: () {}),
+            DooryButton(label: 'متابعة', onPressed: () {}),
+            const ListRow(title: 'الماركة', value: 'نور'),
+          ],
+        ),
+        bottomNavigationBar: BottomTabBar(
+          current: DooryTab.cart,
+          cartCount: 3,
+          onSelect: (_) {},
+        ),
+      ),
+    );
+    expect(tester.getSemantics(find.byType(DooryChip)).label, 'قطن');
+    expect(tester.getSemantics(find.byType(DooryButton)).label, 'متابعة');
+    expect(tester.getSemantics(find.byType(ListRow)).label, 'الماركة، نور');
+    expect(
+      tester.getSemantics(find.bySemanticsLabel('السلة، 3 منتجات')).label,
+      'السلة، 3 منتجات',
+    );
+    handle.dispose();
+  });
+
+  testWidgets('app bars start below a 46 dp status bar', (tester) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = p0Surface;
+    tester.view.padding = const FakeViewPadding(top: 46);
+    tester.view.viewPadding = const FakeViewPadding(top: 46);
+    addTearDown(tester.view.reset);
+
+    Future<void> pump(Widget home) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: dooryTheme(),
+          locale: const Locale('ar'),
+          builder: (context, child) => Directionality(
+            textDirection: TextDirection.rtl,
+            child: child ?? const SizedBox.shrink(),
+          ),
+          home: home,
+        ),
+      );
+      await tester.pumpAndSettle();
+    }
+
+    await pump(
+      const Scaffold(
+        appBar: DooryAppBar(title: 'الفئات', showBack: false),
+        body: SizedBox.shrink(),
+      ),
+    );
+    expect(tester.getSize(find.byType(DooryAppBar)).height, 102);
+    expect(tester.getTopLeft(find.text('الفئات')).dy, greaterThanOrEqualTo(46));
+
+    await pump(const TabRootScreen(tab: DooryTab.home));
+    expect(tester.getTopLeft(find.text('دوري')).dy, greaterThanOrEqualTo(46));
   });
 }
