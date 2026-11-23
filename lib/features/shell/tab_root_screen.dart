@@ -66,13 +66,15 @@ class _HomeBar extends StatelessWidget implements PreferredSizeWidget {
     return Material(
       color: scheme.surface,
       elevation: 0,
-      child: const SizedBox(
-        height: 56,
-        child: Padding(
-          padding: EdgeInsetsDirectional.only(start: 16),
-          child: Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: DooryWordmark(),
+      child: const DooryStatusInset(
+        child: SizedBox(
+          height: 56,
+          child: Padding(
+            padding: EdgeInsetsDirectional.only(start: 16),
+            child: Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: DooryWordmark(),
+            ),
           ),
         ),
       ),

@@ -7,6 +7,23 @@ import 'search_pill.dart';
 
 enum DooryAppBarVariant { search, title }
 
+/// Pushes a 56 dp bar below the status bar. [preferredSize] stays 56 because
+/// [Scaffold] already adds the top inset to the app-bar slot.
+class DooryStatusInset extends StatelessWidget {
+  const DooryStatusInset({required this.child, super.key});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final top = MediaQuery.paddingOf(context).top;
+    return Padding(
+      padding: EdgeInsets.only(top: top),
+      child: child,
+    );
+  }
+}
+
 class DooryAppBarAction {
   const DooryAppBarAction({
     required this.icon,
@@ -57,13 +74,15 @@ class DooryAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Material(
       color: scheme.surface,
       elevation: 0,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          border: variant == DooryAppBarVariant.title
-              ? Border(bottom: DooryBorders.hairline(scheme.outline))
-              : null,
+      child: DooryStatusInset(
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: variant == DooryAppBarVariant.title
+                ? Border(bottom: DooryBorders.hairline(scheme.outline))
+                : null,
+          ),
+          child: bar,
         ),
-        child: bar,
       ),
     );
   }
