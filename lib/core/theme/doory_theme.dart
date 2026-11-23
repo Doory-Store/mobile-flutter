@@ -35,50 +35,50 @@ ThemeData dooryTheme() {
         headlineSmall: const TextStyle(
           fontFamily: DooryTypography.family,
           fontSize: 24,
-          height: 36 / 24,
+          height: 32 / 24,
           fontWeight: FontWeight.w700,
           letterSpacing: 0,
         ),
         titleLarge: const TextStyle(
           fontFamily: DooryTypography.family,
-          fontSize: 20,
-          height: 24 / 20,
-          fontWeight: FontWeight.w600,
+          fontSize: 18,
+          height: 24 / 18,
+          fontWeight: FontWeight.w700,
           letterSpacing: 0,
         ),
         titleMedium: const TextStyle(
           fontFamily: DooryTypography.family,
           fontSize: 16,
-          height: 24 / 16,
-          fontWeight: FontWeight.w600,
+          height: 22 / 16,
+          fontWeight: FontWeight.w700,
           letterSpacing: 0,
         ),
         bodyLarge: const TextStyle(
           fontFamily: DooryTypography.family,
-          fontSize: 16,
-          height: 24 / 16,
+          fontSize: 14,
+          height: 20 / 14,
           fontWeight: FontWeight.w400,
           letterSpacing: 0,
         ),
         bodyMedium: const TextStyle(
           fontFamily: DooryTypography.family,
-          fontSize: 14,
-          height: 20 / 14,
+          fontSize: 15,
+          height: 22 / 15,
           fontWeight: FontWeight.w400,
           letterSpacing: 0,
         ),
         labelLarge: const TextStyle(
           fontFamily: DooryTypography.family,
-          fontSize: 14,
-          height: 20 / 14,
-          fontWeight: FontWeight.w600,
+          fontSize: 16,
+          height: 22 / 16,
+          fontWeight: FontWeight.w700,
           letterSpacing: 0,
         ),
         labelSmall: const TextStyle(
           fontFamily: DooryTypography.family,
           fontSize: 12,
           height: 16 / 12,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w400,
           letterSpacing: 0,
         ),
       ).apply(
@@ -89,9 +89,9 @@ ThemeData dooryTheme() {
 
   final buttonText = const TextStyle(
     fontFamily: DooryTypography.family,
-    fontSize: 18,
-    height: 24 / 18,
-    fontWeight: FontWeight.w600,
+    fontSize: 16,
+    height: 22 / 16,
+    fontWeight: FontWeight.w700,
     letterSpacing: 0,
   );
 
@@ -208,22 +208,22 @@ ThemeData dooryTheme() {
       ),
     ),
     navigationBarTheme: NavigationBarThemeData(
-      height: 64,
+      height: 56,
       elevation: 0,
       backgroundColor: scheme.surface,
       surfaceTintColor: Colors.transparent,
-      indicatorColor: DooryColors.primarySubtle,
+      indicatorColor: Colors.transparent,
       labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
       labelTextStyle: WidgetStateProperty.resolveWith((states) {
         final selected = states.contains(WidgetState.selected);
-        return DooryTypography.navLabel(
-          selected ? DooryColors.primary : DooryColors.textSecondary,
+        return DooryTypography.tabLabel(
+          selected ? DooryColors.primary : DooryColors.textPrimary,
         );
       }),
       iconTheme: WidgetStateProperty.resolveWith((states) {
         final selected = states.contains(WidgetState.selected);
         return IconThemeData(
-          color: selected ? DooryColors.primary : DooryColors.textSecondary,
+          color: selected ? DooryColors.primary : DooryColors.textPrimary,
           size: 24,
         );
       }),

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -15,6 +16,9 @@ import '../features/categories/categories_screen.dart';
 import '../features/checkout/checkout_screen.dart';
 import '../features/checkout/order_confirmation_screen.dart';
 import '../features/debug/api_status_screen.dart';
+import '../features/debug/component_catalog_screen.dart';
+import '../features/shell/tab_root_screen.dart';
+import '../core/widgets/bottom_tab_bar.dart';
 import '../features/favorites/favorites_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/listing/collection_screen.dart';
@@ -133,7 +137,13 @@ List<RouteBase> flowRoutes() {
   ];
 }
 
-GoRouter buildRouter() {
+/// [legacyStorefront] keeps the previous tab roots so existing screen tests
+/// can still open them. The default shell is the P0 placeholder.
+GoRouter buildRouter({bool legacyStorefront = false}) {
+  Widget root(DooryTab tab, Widget legacy) {
+    return legacyStorefront ? legacy : TabRootScreen(tab: tab);
+  }
+
   return GoRouter(
     initialLocation: '/',
     errorBuilder: (context, state) => const _MissingPage(),
@@ -148,7 +158,8 @@ GoRouter buildRouter() {
             routes: [
               GoRoute(
                 path: '/',
-                builder: (context, state) => const HomeScreen(),
+                builder: (context, state) =>
+                    root(DooryTab.home, const HomeScreen()),
                 routes: browseRoutes(),
               ),
             ],
@@ -158,7 +169,8 @@ GoRouter buildRouter() {
             routes: [
               GoRoute(
                 path: '/categories',
-                builder: (context, state) => const CategoriesScreen(),
+                builder: (context, state) =>
+                    root(DooryTab.categories, const CategoriesScreen()),
                 routes: browseRoutes(),
               ),
             ],
@@ -168,7 +180,8 @@ GoRouter buildRouter() {
             routes: [
               GoRoute(
                 path: '/favorites',
-                builder: (context, state) => const FavoritesScreen(),
+                builder: (context, state) =>
+                    root(DooryTab.favorites, const FavoritesScreen()),
                 routes: browseRoutes(),
               ),
             ],
@@ -178,7 +191,8 @@ GoRouter buildRouter() {
             routes: [
               GoRoute(
                 path: '/cart',
-                builder: (context, state) => const CartScreen(),
+                builder: (context, state) =>
+                    root(DooryTab.cart, const CartScreen()),
                 routes: browseRoutes(),
               ),
             ],
@@ -188,7 +202,8 @@ GoRouter buildRouter() {
             routes: [
               GoRoute(
                 path: '/account',
-                builder: (context, state) => const AccountScreen(),
+                builder: (context, state) =>
+                    root(DooryTab.account, const AccountScreen()),
                 routes: [
                   GoRoute(
                     path: 'status',
@@ -202,8 +217,19 @@ GoRouter buildRouter() {
         ],
       ),
       ...flowRoutes(),
+      ...debugRoutes(),
     ],
   );
+}
+
+List<RouteBase> debugRoutes() {
+  if (!kDebugMode) return const [];
+  return [
+    GoRoute(
+      path: '/debug/catalog',
+      builder: (context, state) => const ComponentCatalogScreen(),
+    ),
+  ];
 }
 
 final routerProvider = Provider<GoRouter>((ref) {

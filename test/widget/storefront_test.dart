@@ -1,4 +1,5 @@
 import 'package:doory_mobile/app/app.dart';
+import 'package:doory_mobile/app/router.dart';
 import 'package:doory_mobile/core/config/app_config.dart';
 import 'package:doory_mobile/core/l10n/doory_strings.dart';
 import 'package:doory_mobile/core/network/api_exception.dart';
@@ -7,6 +8,7 @@ import 'package:doory_mobile/core/widgets/chrome.dart';
 import 'package:doory_mobile/core/widgets/product_card.dart';
 import 'package:doory_mobile/data/favorites/favorites_controller.dart';
 import 'package:doory_mobile/data/models/catalog_models.dart';
+import 'package:doory_mobile/core/widgets/bottom_tab_bar.dart';
 import 'package:doory_mobile/data/repositories/providers.dart';
 import 'package:doory_mobile/features/search/search_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -100,28 +102,21 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    final bar = tester.widget<NavigationBar>(find.byType(NavigationBar));
-    expect(
-      (bar.destinations[0] as NavigationDestination).label,
-      DooryStrings.tabHome,
-    );
-    expect(
-      (bar.destinations[1] as NavigationDestination).label,
-      DooryStrings.tabCategories,
-    );
-    expect(
-      (bar.destinations[2] as NavigationDestination).label,
-      DooryStrings.tabFavorites,
-    );
-    expect(
-      (bar.destinations[3] as NavigationDestination).label,
-      DooryStrings.tabCart,
-    );
-    expect(
-      (bar.destinations[4] as NavigationDestination).label,
-      DooryStrings.tabAccount,
-    );
+    final bar = tester.widget<BottomTabBar>(find.byType(BottomTabBar));
+    expect(bar.current, DooryTab.home);
+    expect(DooryTab.values, [
+      DooryTab.home,
+      DooryTab.categories,
+      DooryTab.favorites,
+      DooryTab.cart,
+      DooryTab.account,
+    ]);
     expect(find.text(DooryStrings.tabHome), findsWidgets);
+    expect(find.text(DooryStrings.tabCategories), findsWidgets);
+    expect(find.text(DooryStrings.tabFavorites), findsWidgets);
+    expect(find.text(DooryStrings.tabCart), findsWidgets);
+    expect(find.text(DooryStrings.tabAccount), findsWidgets);
+    expect(find.text(DooryStrings.sectionReady), findsOneWidget);
   });
 
   testWidgets('an unreachable home shows a labelled fixture and a retry', (
@@ -143,6 +138,11 @@ void main() {
               flavor: AppFlavor.dev,
             ),
           ),
+          routerProvider.overrideWith((ref) {
+            final router = buildRouter(legacyStorefront: true);
+            ref.onDispose(router.dispose);
+            return router;
+          }),
         ],
         child: const DooryApp(),
       ),
@@ -179,6 +179,11 @@ void main() {
               flavor: AppFlavor.dev,
             ),
           ),
+          routerProvider.overrideWith((ref) {
+            final router = buildRouter(legacyStorefront: true);
+            ref.onDispose(router.dispose);
+            return router;
+          }),
         ],
         child: const DooryApp(),
       ),

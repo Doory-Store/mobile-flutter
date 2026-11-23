@@ -44,9 +44,9 @@ Next step: add `dev` / `staging` / `prod` application-id suffixes and matching i
 
 ## Pixel goldens
 
-No golden files are committed. Widget tests cover the product card, maintenance banner, five-tab order, home failure states, search, cart lines and totals, the empty cart, the guest account, the quantity stepper, and the not-wired dialog.
+P0 goldens are committed at 411×914 logical pixels: the type scale, a component strip, the top of the debug catalog, and the empty home shell (`test/golden/p0_*.png`). Widget tests still cover the older product card, maintenance banner, five-tab order, home failure states, search, cart lines and totals, the empty cart, the guest account, the quantity stepper, and the not-wired dialog.
 
-Next step: render key screens at 390 logical pixels with Cairo loaded and commit the PNGs from `flutter test --update-goldens` on the CI image.
+Next step: add a golden for each later screen as that phase lands, on the same 411×914 surface.
 
 ## Hero transition
 
@@ -92,3 +92,33 @@ The reference survey (`docs/trendyol-rebuild/`) covers every guest screen and th
 - **Doory logo file.** The web uses the text wordmark «دوري», and neither project has an SVG or PNG logo. `DooryWordmark` stands in until an official file is added.
 
 Next step: capture the address form and checkout on a Play-enabled emulator image or a real device, and add the official Doory logo file when it exists.
+
+## P0 design spec — reference dumps
+
+The full uiautomator XML and PNG captures cited in `docs/trendyol-rebuild/README.md` are not on this machine at `/workspace/shots/trendyol-app/screens/`.
+
+The P0 specs in `docs/trendyol-rebuild/specs/` use the measurements already extracted in `dimensions.md` and the curated frames in `docs/trendyol-rebuild/ref/`. That does not block issues #7–#12. Figures marked «≈» in `dimensions.md` stay approximate, and the open items have recommended defaults in `specs/p0-decisions.md`.
+
+Next step: copy `trendyol-ref/screens/` into the designer environment before re-measuring a bound from the raw dump.
+
+## P0 foundation — open items
+
+The default shell is the five empty roots from the P0 spec. The previous home, categories, favorites, cart, and account screens are still in the tree and still covered by tests through `buildRouter(legacyStorefront: true)`. They are not the tab a shopper sees on this branch.
+
+Next step: phases P2–P9 replace each `TabRootScreen` with the rebuilt screen and delete the legacy flag when nothing calls it.
+
+- **Mock photos are flat stills.** `assets/mock/` holds generated JPEGs at the specified pixel sizes (1200×1800 products, 512 squares, 1233×315 banners). They have no logo and no promotional text. They are not photographs.
+- **Older widgets remain.** `ProductCard`, `DoorySearchField`, `DooryPrimaryButton`, and the previous `EmptyState` / `showDoorySheet` in `ui_kit.dart` still serve the current storefront. New screens use the P0 widgets.
+- **Focus ring.** The button focus ring is drawn on the button bounds. The spec’s 2 dp outer offset is not painted outside the layout.
+- **Rating row.** On a rail narrower than the stars plus the count, the count wraps under the stars instead of overflowing. The star size stays 12 dp.
+- **Release catalog.** `/debug/catalog` is registered only when `kDebugMode` is true. A release build drops the route; widget tests run in debug, so they see it.
+- **B14, sort-sheet radio.** Resolved. `ListRow.radioLeading` puts the radio at the start on a 49 dp row with no divider, and `DoorySheet` uses the 49 dp `surfaceSubtle` header with a 14 dp close glyph. `trailing: radio` remains for other rows. Delete-confirm rows stay 56 dp.
+
+Deferred to P12:
+
+- **R2, chip target.** The painted chip is 30 dp inside a 48 dp touch box. The spec asks for 44 dp, and the chip is not keyboard or switch-access focusable. Deferred to P12.
+- **B6, section link.** «رؤية الكل» is only tappable on its text, about 20 dp, not the full 44 dp header. Deferred to P12.
+- **B10, small buttons at 1.3×.** A two-line label in `h36` and `h40` is clipped inside the fixed height. Deferred to P12.
+- **B11, catalog states.** The debug catalog does not show every component state (search app bar, badge tones, disabled heart, empty card image). Deferred to P12.
+- **B12, list leading slot.** The account-row icon is 20 dp with no 24 dp slot, so the title starts 4 dp early. Deferred to P12.
+- **B13, image fade.** An asset image appears at once; the 200 ms fade never runs. Deferred to P12.
