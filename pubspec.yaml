@@ -32,6 +32,12 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/mock/products/
+    - assets/mock/categories/
+    - assets/mock/stores/
+    - assets/mock/channels/
+    - assets/mock/banners/
   fonts:
     - family: Cairo
       fonts:

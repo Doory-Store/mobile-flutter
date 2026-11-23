@@ -1,5 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// P0 rebuild mocks. The providers below stay on their current
+// implementations; new screens read the mock catalog from this export.
+export '../../rebuild/rebuild_providers.dart';
+
 import '../../../core/config/app_config.dart';
 import '../../favorites/favorites_controller.dart';
 import '../providers.dart';
