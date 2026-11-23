@@ -113,3 +113,12 @@ Next step: phases P2–P9 replace each `TabRootScreen` with the rebuilt screen a
 - **Rating row.** On a rail narrower than the stars plus the count, the count wraps under the stars instead of overflowing. The star size stays 12 dp.
 - **Release catalog.** `/debug/catalog` is registered only when `kDebugMode` is true. A release build drops the route; widget tests run in debug, so they see it.
 - **B14, sort-sheet radio.** Resolved. `ListRow.radioLeading` puts the radio at the start on a 49 dp row with no divider, and `DoorySheet` uses the 49 dp `surfaceSubtle` header with a 14 dp close glyph. `trailing: radio` remains for other rows. Delete-confirm rows stay 56 dp.
+
+Deferred to P12:
+
+- **R2, chip target.** The painted chip is 30 dp inside a 48 dp touch box. The spec asks for 44 dp, and the chip is not keyboard or switch-access focusable. Deferred to P12.
+- **B6, section link.** «رؤية الكل» is only tappable on its text, about 20 dp, not the full 44 dp header. Deferred to P12.
+- **B10, small buttons at 1.3×.** A two-line label in `h36` and `h40` is clipped inside the fixed height. Deferred to P12.
+- **B11, catalog states.** The debug catalog does not show every component state (search app bar, badge tones, disabled heart, empty card image). Deferred to P12.
+- **B12, list leading slot.** The account-row icon is 20 dp with no 24 dp slot, so the title starts 4 dp early. Deferred to P12.
+- **B13, image fade.** An asset image appears at once; the 200 ms fade never runs. Deferred to P12.
