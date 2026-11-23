@@ -50,33 +50,45 @@ class _SkeletonBoxState extends State<SkeletonBox>
   @override
   Widget build(BuildContext context) {
     final tokens = DooryTokens.of(context);
-    final box = AnimatedBuilder(
-      animation: _controller ?? const AlwaysStoppedAnimation<double>(0),
-      builder: (context, child) {
-        final t = _controller?.value ?? 0;
-        return DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(widget.radius),
-            gradient: LinearGradient(
-              begin: Alignment(-1.4 + (t * 2.8), 0),
-              end: Alignment(-0.2 + (t * 2.8), 0),
-              colors: [
-                tokens.surfaceSubtle,
-                tokens.surfaceSubtle,
-                Theme.of(context).colorScheme.surface,
-                tokens.surfaceSubtle,
-                tokens.surfaceSubtle,
-              ],
-              stops: const [0, 0.35, 0.5, 0.65, 1],
+    final sized = widget.height.isFinite
+        ? SizedBox(width: widget.width, height: widget.height)
+        : const SizedBox.expand();
+    final Widget box;
+    if (_controller == null) {
+      box = DecoratedBox(
+        decoration: BoxDecoration(
+          color: tokens.surfaceSubtle,
+          borderRadius: BorderRadius.circular(widget.radius),
+        ),
+        child: sized,
+      );
+    } else {
+      box = AnimatedBuilder(
+        animation: _controller!,
+        builder: (context, child) {
+          final t = _controller!.value;
+          return DecoratedBox(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(widget.radius),
+              gradient: LinearGradient(
+                begin: Alignment(-1.4 + (t * 2.8), 0),
+                end: Alignment(-0.2 + (t * 2.8), 0),
+                colors: [
+                  tokens.surfaceSubtle,
+                  tokens.surfaceSubtle,
+                  Theme.of(context).colorScheme.surface,
+                  tokens.surfaceSubtle,
+                  tokens.surfaceSubtle,
+                ],
+                stops: const [0, 0.35, 0.5, 0.65, 1],
+              ),
             ),
-          ),
-          child: child,
-        );
-      },
-      child: widget.height.isFinite
-          ? SizedBox(width: widget.width, height: widget.height)
-          : const SizedBox.expand(),
-    );
+            child: child,
+          );
+        },
+        child: sized,
+      );
+    }
     if (widget.silent) return box;
     return Semantics(
       label: DooryStrings.loading,
@@ -119,27 +131,31 @@ class SkeletonProductCard extends StatelessWidget {
       container: true,
       child: SizedBox(
         width: cardWidth,
-        child: const Padding(
-          padding: EdgeInsetsDirectional.all(8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AspectRatio(
-                aspectRatio: 2 / 3,
-                child: SkeletonBox(
-                  height: double.infinity,
-                  radius: 0,
-                  silent: true,
-                ),
+        child: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AspectRatio(
+              aspectRatio: 2 / 3,
+              child: SkeletonBox(
+                height: double.infinity,
+                radius: 0,
+                silent: true,
               ),
-              SizedBox(height: 8),
-              SkeletonText(),
-              SizedBox(height: 6),
-              SkeletonText(widthFactor: 0.6),
-              SizedBox(height: 6),
-              SkeletonText(widthFactor: 0.4),
-            ],
-          ),
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SkeletonText(),
+                  SizedBox(height: 6),
+                  SkeletonText(widthFactor: 0.6),
+                  SizedBox(height: 6),
+                  SkeletonText(widthFactor: 0.4),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
