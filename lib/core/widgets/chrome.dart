@@ -4,6 +4,8 @@ import '../l10n/doory_strings.dart';
 import '../theme/doory_tokens.dart';
 import '../theme/doory_typography.dart';
 
+export 'skeleton.dart';
+
 class DemoLabel extends StatelessWidget {
   const DemoLabel({super.key});
 
@@ -19,7 +21,10 @@ class DemoLabel extends StatelessWidget {
         color: tokens.primarySubtle,
         borderRadius: BorderRadius.circular(999),
       ),
-      child: Text(DooryStrings.demo, style: DooryTypography.cardMeta(context)),
+      child: Text(
+        DooryStrings.demo,
+        style: DooryTypography.captionStrong(context),
+      ),
     );
   }
 }
@@ -49,31 +54,6 @@ class MaintenanceBanner extends StatelessWidget {
           textAlign: TextAlign.center,
           style: DooryTypography.labelStrong(context),
         ),
-      ),
-    );
-  }
-}
-
-class SkeletonBox extends StatelessWidget {
-  const SkeletonBox({
-    required this.height,
-    this.width,
-    this.radius = 8,
-    super.key,
-  });
-
-  final double height;
-  final double? width;
-  final double radius;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: DooryTokens.of(context).surfaceSubtle,
-        borderRadius: BorderRadius.circular(radius),
       ),
     );
   }
