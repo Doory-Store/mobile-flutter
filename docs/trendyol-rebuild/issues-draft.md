@@ -4,7 +4,7 @@
 
 ## المستودع
 
-الـ Issues مكانها `Doory-Store/mobile-flutter`. هو مستودع مستقل للموبايل (الويب في `Doory-Store/frontend` والخادم في `Doory-Store/backend`)، وفيه كل الكود الذي تغيّره هذه المراحل، فتُغلق الـ Issues تلقائياً من الـ PRs بـ `Closes #n`. المستودع فيه حالياً الـ Labels الافتراضية فقط، ولا يوجد Milestones ولا Issues مفتوحة.
+الـ Issues مكانها `Doory-Store/mobile-flutter`. هو مستودع مستقل للموبايل (الويب في `Doory-Store/frontend` والخادم في `Doory-Store/backend`)، وفيه كل الكود الذي تغيّره هذه المراحل، فتُغلق الـ Issues تلقائياً من الـ PRs بـ `Closes #n`. أُنشئت الـ Labels والـ Issues (#5 إلى #68) يوم 23 نوفمبر 2026، والأرقام في [`issues-map.md`](issues-map.md). الـ Milestones تنتظر [`apply-milestones.sh`](apply-milestones.sh).
 
 ## Milestones
 
