@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:doory_mobile/app/app.dart';
+import 'package:doory_mobile/app/router.dart';
 import 'package:doory_mobile/core/config/app_config.dart';
 import 'package:doory_mobile/core/l10n/doory_strings.dart';
 import 'package:doory_mobile/core/network/api_exception.dart';
@@ -197,6 +198,11 @@ void main() {
           sharedPreferencesProvider.overrideWithValue(prefs),
           apiTransportProvider.overrideWith((ref) => transport),
           appConfigProvider.overrideWithValue(_config),
+          routerProvider.overrideWith((ref) {
+            final router = buildRouter(legacyStorefront: true);
+            ref.onDispose(router.dispose);
+            return router;
+          }),
         ],
         child: const DooryApp(),
       ),
