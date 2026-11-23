@@ -3,7 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import '../theme/doory_tokens.dart';
 import '../theme/doory_typography.dart';
 
-/// 30 dp chip inside a 44 dp target.
+/// 30 dp chip inside a 48 dp target.
 class DooryChip extends StatefulWidget {
   const DooryChip({
     required this.label,
@@ -52,25 +52,29 @@ class _DooryChipState extends State<DooryChip> {
       enabled: widget.enabled,
       selected: widget.selected,
       label: widget.label,
-      child: SizedBox(
-        height: 44,
-        child: Center(
-          child: Material(
-            key: DooryChip.visualKey,
-            color: fill,
-            shape: StadiumBorder(side: side ?? BorderSide.none),
-            child: InkWell(
-              customBorder: const StadiumBorder(),
-              onTapDown: widget.enabled
-                  ? (_) => setState(() => _pressed = true)
-                  : null,
-              onTapCancel: () => setState(() => _pressed = false),
-              onTap: widget.enabled
-                  ? () {
-                      setState(() => _pressed = false);
-                      widget.onTap?.call();
-                    }
-                  : null,
+      excludeSemantics: true,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTapDown: widget.enabled
+            ? (_) => setState(() => _pressed = true)
+            : null,
+        onTapCancel: () => setState(() => _pressed = false),
+        onTapUp: (_) => setState(() => _pressed = false),
+        onTap: widget.enabled
+            ? () {
+                setState(() => _pressed = false);
+                widget.onTap?.call();
+              }
+            : null,
+        child: SizedBox(
+          height: 48,
+          child: Center(
+            widthFactor: 1,
+            heightFactor: 1,
+            child: Material(
+              key: DooryChip.visualKey,
+              color: fill,
+              shape: StadiumBorder(side: side ?? BorderSide.none),
               child: Padding(
                 padding: const EdgeInsetsDirectional.symmetric(horizontal: 12),
                 child: SizedBox(

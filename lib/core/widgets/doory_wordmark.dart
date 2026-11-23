@@ -28,6 +28,7 @@ class DooryWordmark extends StatelessWidget {
     return Semantics(
       button: true,
       label: DooryStrings.wordmarkHome,
+      excludeSemantics: true,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(8),

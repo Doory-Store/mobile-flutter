@@ -137,6 +137,7 @@ class _SearchPillState extends State<SearchPill> {
           enabled: widget.enabled,
           label: DooryStrings.searchAction,
           hint: widget.mode == SearchPillMode.active ? widget.hint : null,
+          excludeSemantics: true,
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTapDown: widget.enabled && widget.mode != SearchPillMode.active

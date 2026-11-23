@@ -126,6 +126,7 @@ class _TabCell extends StatelessWidget {
       button: true,
       selected: selected,
       label: label,
+      excludeSemantics: true,
       child: InkWell(
         onTap: onTap,
         splashColor: tokens.primarySubtle,
@@ -184,7 +185,11 @@ class _CountBadge extends StatelessWidget {
         color: scheme.primary,
         borderRadius: BorderRadius.circular(999),
       ),
-      child: Text(label, style: DooryTypography.badgeCount(scheme.onPrimary)),
+      child: Text(
+        label,
+        textDirection: TextDirection.ltr,
+        style: DooryTypography.badgeCount(scheme.onPrimary),
+      ),
     );
   }
 }

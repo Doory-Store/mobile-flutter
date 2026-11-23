@@ -151,6 +151,7 @@ class _DooryButtonState extends State<DooryButton> {
       button: true,
       enabled: widget.onPressed != null && !widget.loading,
       label: widget.loading ? DooryStrings.working : widget.label,
+      excludeSemantics: true,
       child: Focus(
         onFocusChange: (value) => setState(() => _focused = value),
         child: SizedBox(

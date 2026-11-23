@@ -60,6 +60,7 @@ class ColorCountBadge extends StatelessWidget {
     return Semantics(
       button: onTap != null,
       label: DooryStrings.colorCount(count),
+      excludeSemantics: true,
       child: SizedBox(
         width: 44,
         height: 44,
