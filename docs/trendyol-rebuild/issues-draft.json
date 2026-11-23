@@ -1023,7 +1023,7 @@
     "role:designer",
     "ui-only"
    ],
-   "body": "من 72 و74 و75 و78 و78b و80: الطلبات، والعناوين، والإشعارات، والمساعدة، والمتجر.",
+   "body": "من 72 و74 و75 و78 و78b و80 و85–88: الطلبات، والعناوين، والإشعارات، والمساعدة، والمتجر.",
    "acceptance": [
     "لكل شاشة حالاتها"
    ],
@@ -1038,11 +1038,11 @@
     "role:flutter",
     "ui-only"
    ],
-   "body": "OrderCard وStatusChip وتفاصيل الطلب، وحالة الفراغ مع «ابدأ التسوق».",
+   "body": "قائمة بحث وفلتر وChips حالات 32 dp، وOrderCard وStatusChip. وتفاصيل الطلب: OrderSummaryCard وShipmentCard وصفوف المنتجات وعنوان التسليم وPaymentSummaryCard. وحالة الفراغ مع «ابدأ التسوق».",
    "acceptance": [
     "فارغة وخطأ"
    ],
-   "refs": "ref/72-orders.jpg"
+   "refs": "ref/85-orders-current.jpg، ref/86-order-detail.jpg، ref/87-order-detail-s1.jpg، ref/88-order-detail-s2.jpg، ref/72-orders.jpg"
   },
   {
    "phase": "P10",

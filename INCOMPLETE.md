@@ -85,7 +85,6 @@ The Pixel_8a_API_35 emulator boots with the AOSP keyboard in English (US) only, 
 The reference survey (`docs/trendyol-rebuild/`) covers every guest screen and the signed-in account, orders, addresses, settings, notification preferences, personal info, help, notifications, favorites and cart screens. These parts rest on derived patterns instead of a direct capture:
 
 - **Address details form, checkout summary and payment methods.** Both come after Trendyol's map step, and the map needs Google Play Services, which this emulator lacks. Phases 10 and 11 build them from the measured personal-info fields and cart summary rows.
-- **Order detail.** The account has no past orders. Phase 10 builds the detail from cart cards and summary rows.
 - **OTP and registration steps.** The account was already signed in. Phase 1 builds them from the measured login screen.
 - **Search empty state.** Trendyol's fuzzy search returns products even for random text. Phase 5 builds the empty state from the empty-orders pattern.
 - **Full questions page.** Phase 6 reuses the reviews page template, captured in `47-pdp-reviews`.

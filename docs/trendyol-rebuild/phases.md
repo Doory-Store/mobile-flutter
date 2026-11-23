@@ -268,11 +268,13 @@
 
 **الشاشات والحالات.** لكل شاشة: قائمة، وتفاصيل، وفارغة، وتحميل، وخطأ. المراجع الحقيقية:
 - الطلبات الفارغة (`72-orders`): أيقونة، وعنوان، ورسالة، و«ابدأ التسوق».
+- قائمة الطلبات (`85-orders-current`): بحث وزر فلتر، وChips حالات 32 dp، وOrderCard فيها التاريخ والإجمالي و«التفاصيل ›» والحالة الملونة وصور المنتجات.
+- تفاصيل الطلب (`86-order-detail`، `87-order-detail-s1`، `88-order-detail-s2`): بطاقة ملخص بصفوف 27 dp، ثم بطاقة الشحنة بالحالة وصفوف المنتجات (≈ 129 dp)، ثم عنوان التسليم، ثم بيانات الدفع والإجمالي. من غير تصنيف البائع والمنتج، ولا العقود، ولا التوصيات.
 - العناوين الفارغة (`74-addresses`) مع إجراء «أضف عنواناً» في شريط العنوان، ثم خطوة الخريطة (`75-address-form`): بحث 40 dp، و«عرض موقعي»، ودبوس، و«تأكيد العنوان». بعدها نموذج التفاصيل بحقول البيانات الشخصية.
 - الإشعارات (`80-notifications`): تبويبا «الكل» و«طلبياتي» بارتفاع 48 dp، ولافتة تشغيل الإشعارات، وصفوف 102 dp بأيقونة دائرية وتاريخ وحذف.
 - المساعدة (`78-support`، `78b-support-topics`): «كل المواضيع» قابل للطي، وChips مواضيع 34 dp، والبحث في شريط العنوان، و«تواصل معنا» يفتح تذاكر دوري.
 
-**المكوّنات.** `OrderCard`، و`StatusChip`، و`AddressCard`، و`MapPicker`، و`OutlinedField` (44 dp)، و`NotificationTabs`، و`NotificationRow`، و`TopicChips`، و`StoreHeader`.
+**المكوّنات.** `OrderCard`، و`StatusChip`، و`OrderFilterChips`، و`OrderSummaryCard`، و`ShipmentCard`، و`PaymentSummaryCard`، و`AddressCard`، و`MapPicker`، و`OutlinedField` (44 dp)، و`NotificationTabs`، و`NotificationRow`، و`TopicChips`، و`StoreHeader`.
 
 **يعتمد على.** المرحلة 9.
 

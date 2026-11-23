@@ -394,13 +394,13 @@
 
 #### [P10] مواصفة شاشات الحساب الفرعية
 - **Labels:** `type:design-spec`, `area:account`, `role:designer`, `ui-only`
-- **الوصف:** من 72 و74 و75 و78 و78b و80: الطلبات، والعناوين، والإشعارات، والمساعدة، والمتجر.
+- **الوصف:** من 72 و74 و75 و78 و78b و80 و85–88: الطلبات، والعناوين، والإشعارات، والمساعدة، والمتجر.
 - **معايير القبول:** لكل شاشة حالاتها؛ وتعريف الإنجاز المشترك في `phases.md`.
 
 #### [P10] الطلبات وتفاصيل الطلب
 - **Labels:** `type:feature`, `area:account`, `role:flutter`, `ui-only`
-- **الوصف:** OrderCard وStatusChip وتفاصيل الطلب، وحالة الفراغ مع «ابدأ التسوق».
-- **المرجع:** `ref/72-orders.jpg`
+- **الوصف:** قائمة بحث وفلتر وChips حالات 32 dp، وOrderCard وStatusChip. وتفاصيل الطلب: OrderSummaryCard وShipmentCard وصفوف المنتجات وعنوان التسليم وPaymentSummaryCard. وحالة الفراغ مع «ابدأ التسوق».
+- **المرجع:** `ref/85-orders-current.jpg`، `ref/86-order-detail.jpg`، `ref/87-order-detail-s1.jpg`، `ref/88-order-detail-s2.jpg`، `ref/72-orders.jpg`
 - **معايير القبول:** فارغة وخطأ؛ وتعريف الإنجاز المشترك في `phases.md`.
 
 #### [P10] العناوين واختيار الموقع ونموذج العنوان
