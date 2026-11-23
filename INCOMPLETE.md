@@ -112,4 +112,4 @@ Next step: phases P2–P9 replace each `TabRootScreen` with the rebuilt screen a
 - **Focus ring.** The button focus ring is drawn on the button bounds. The spec’s 2 dp outer offset is not painted outside the layout.
 - **Rating row.** On a rail narrower than the stars plus the count, the count wraps under the stars instead of overflowing. The star size stays 12 dp.
 - **Release catalog.** `/debug/catalog` is registered only when `kDebugMode` is true. A release build drops the route; widget tests run in debug, so they see it.
-- **B14, sort-sheet radio.** The spec now matches `ref/15-sort-sheet`: `radio-leading` at the start, 49 dp rows, no dividers, grey header band (`surfaceSubtle`). See `specs/p0-decisions.md` §B14. `ListRow` and `DoorySheet` in code still follow the previous end-slot layout. Next step: the engineer updates those widgets to the new variant.
+- **B14, sort-sheet radio.** Resolved. `ListRow.radioLeading` puts the radio at the start on a 49 dp row with no divider, and `DoorySheet` uses the 49 dp `surfaceSubtle` header with a 14 dp close glyph. `trailing: radio` remains for other rows. Delete-confirm rows stay 56 dp.

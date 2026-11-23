@@ -4,7 +4,7 @@ import '../l10n/doory_strings.dart';
 import '../theme/doory_tokens.dart';
 import '../theme/doory_typography.dart';
 
-/// Bottom sheet with a 56 dp title row and a close button. No grabber.
+/// Bottom sheet. The header is 49 dp on `surfaceSubtle`. Confirm rows stay 56.
 Future<void> showDoorySheet({
   required BuildContext context,
   required String title,
@@ -37,6 +37,8 @@ class DoorySheet extends StatelessWidget {
   final Widget child;
   final bool dismissible;
 
+  static const headerKey = ValueKey<String>('doory-sheet-header');
+
   @override
   Widget build(BuildContext context) {
     final tokens = DooryTokens.of(context);
@@ -54,51 +56,96 @@ class DoorySheet extends StatelessWidget {
           constraints: BoxConstraints(maxHeight: maxHeight),
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: scheme.surface,
               borderRadius: BorderRadius.vertical(
                 top: Radius.circular(tokens.radius12),
               ),
               boxShadow: DooryShadows.sheet(tokens.shadowCard),
             ),
-            child: Padding(
-              padding: EdgeInsets.only(bottom: bottom),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    height: 56,
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Focus(
-                            autofocus: true,
-                            child: Semantics(
-                              header: true,
-                              child: Text(
-                                title,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: DooryTypography.toolbarTitle(context),
+            child: ClipRRect(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(tokens.radius12),
+              ),
+              child: ColoredBox(
+                color: scheme.surface,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: bottom),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      DecoratedBox(
+                        key: headerKey,
+                        decoration: BoxDecoration(
+                          color: tokens.surfaceSubtle,
+                          border: Border(
+                            bottom: DooryBorders.hairline(scheme.outline),
+                          ),
+                        ),
+                        child: SizedBox(
+                          height: 49,
+                          child: Row(
+                            children: [
+                              const SizedBox(width: 14),
+                              Expanded(
+                                child: Focus(
+                                  autofocus: true,
+                                  child: Semantics(
+                                    header: true,
+                                    label: title,
+                                    excludeSemantics: true,
+                                    child: Text(
+                                      title,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: DooryTypography.toolbarTitle(
+                                        context,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
+                              const Padding(
+                                padding: EdgeInsetsDirectional.only(end: 14),
+                                child: _SheetClose(),
+                              ),
+                            ],
                           ),
                         ),
-                        IconButton(
-                          tooltip: DooryStrings.close,
-                          onPressed: () => Navigator.of(context).maybePop(),
-                          icon: const Icon(
-                            Icons.close,
-                            size: DooryIconSize.chrome,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                      Flexible(child: SingleChildScrollView(child: child)),
+                    ],
                   ),
-                  Flexible(child: SingleChildScrollView(child: child)),
-                ],
+                ),
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SheetClose extends StatelessWidget {
+  const _SheetClose();
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return SizedBox(
+      width: 14,
+      height: 14,
+      child: OverflowBox(
+        minWidth: 48,
+        maxWidth: 48,
+        minHeight: 48,
+        maxHeight: 48,
+        child: Semantics(
+          button: true,
+          label: DooryStrings.close,
+          excludeSemantics: true,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => Navigator.of(context).maybePop(),
+            child: Icon(Icons.close, size: 14, color: scheme.onSurface),
           ),
         ),
       ),

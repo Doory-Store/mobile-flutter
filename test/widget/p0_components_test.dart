@@ -5,6 +5,7 @@ import 'package:doory_mobile/core/widgets/doory_app_bar.dart';
 import 'package:doory_mobile/core/widgets/doory_button.dart';
 import 'package:doory_mobile/core/theme/doory_theme.dart';
 import 'package:doory_mobile/core/widgets/doory_chip.dart';
+import 'package:doory_mobile/core/widgets/doory_sheet.dart';
 import 'package:doory_mobile/core/widgets/doory_image.dart';
 import 'package:doory_mobile/core/widgets/list_row.dart';
 import 'package:doory_mobile/core/widgets/price_block.dart';
@@ -179,7 +180,7 @@ void main() {
     await tester.tap(find.widgetWithText(DooryButton, 'الفرز'));
     await tester.pumpAndSettle();
     expect(find.text('الأنسب'), findsWidgets);
-    expect(find.text('الأقل سعراً'), findsOneWidget);
+    expect(find.text('الأقل سعراً'), findsWidgets);
   });
 
   testWidgets('a two-line row grows at 1.3x instead of overflowing', (
@@ -238,6 +239,66 @@ void main() {
       'السلة، 3 منتجات',
     );
     handle.dispose();
+  });
+
+  testWidgets('sort rows keep the radio at the start and stay 49 dp', (
+    tester,
+  ) async {
+    await pumpDoory(
+      tester,
+      const Scaffold(
+        body: Column(
+          children: [
+            ListRow(
+              title: 'الأنسب',
+              variant: ListRowVariant.radioLeading,
+              selected: true,
+              showDivider: true,
+            ),
+            ListRow(
+              title: 'حذف',
+              trailing: ListRowTrailing.radio,
+              selected: true,
+            ),
+          ],
+        ),
+      ),
+    );
+    final leading = find.widgetWithText(ListRow, 'الأنسب');
+    final trailing = find.widgetWithText(ListRow, 'حذف');
+    expect(tester.getSize(leading).height, 49);
+    expect(tester.getSize(trailing).height, 56);
+    final leadingRadio = tester.getCenter(
+      find.descendant(of: leading, matching: find.byType(DooryRadioMark)),
+    );
+    final leadingTitle = tester.getCenter(find.text('الأنسب'));
+    expect(leadingRadio.dx, greaterThan(leadingTitle.dx));
+    final endRadio = tester.getCenter(
+      find.descendant(of: trailing, matching: find.byType(DooryRadioMark)),
+    );
+    final endTitle = tester.getCenter(find.text('حذف'));
+    expect(endRadio.dx, lessThan(endTitle.dx));
+  });
+
+  testWidgets('the sort sheet header is 49 dp with a 14 dp close glyph', (
+    tester,
+  ) async {
+    await pumpDoory(
+      tester,
+      const Scaffold(
+        body: DoorySheet(
+          title: 'الفرز',
+          child: ListRow(
+            title: 'الأنسب',
+            variant: ListRowVariant.radioLeading,
+            selected: true,
+          ),
+        ),
+      ),
+    );
+    expect(tester.getSize(find.byKey(DoorySheet.headerKey)).height, 49);
+    expect(tester.widget<Icon>(find.byIcon(Icons.close)).size, 14);
+    expect(tester.getSize(find.byType(ListRow)).height, 49);
   });
 
   testWidgets('app bars start below a 46 dp status bar', (tester) async {

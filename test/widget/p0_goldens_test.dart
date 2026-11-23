@@ -5,6 +5,7 @@ import 'package:doory_mobile/core/network/api_exception.dart';
 import 'package:doory_mobile/core/theme/doory_typography.dart';
 import 'package:doory_mobile/core/widgets/bottom_tab_bar.dart';
 import 'package:doory_mobile/core/widgets/doory_button.dart';
+import 'package:doory_mobile/core/widgets/doory_sheet.dart';
 import 'package:doory_mobile/core/widgets/list_row.dart';
 import 'package:doory_mobile/core/widgets/doory_wordmark.dart';
 import 'package:doory_mobile/core/widgets/product_cards.dart';
@@ -144,6 +145,11 @@ void main() {
                 ),
               ),
               ListRow(title: 'الماركة', value: 'نور'),
+              ListRow(
+                title: 'الأنسب',
+                variant: ListRowVariant.radioLeading,
+                selected: true,
+              ),
             ],
           ),
         ),
@@ -170,6 +176,25 @@ void main() {
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile('../golden/p0_catalog.png'),
+    );
+  });
+
+  testWidgets('sort sheet', (tester) async {
+    await pumpDoory(tester, const ComponentCatalogScreen());
+    final sheet = find.byKey(ComponentCatalogScreen.sheetKey);
+    for (var i = 0; i < 12 && sheet.evaluate().isEmpty; i++) {
+      await tester.drag(
+        find.byKey(ComponentCatalogScreen.listKey),
+        const Offset(0, -450),
+      );
+      await tester.pump();
+    }
+    await tester.tap(find.widgetWithText(DooryButton, 'الفرز'));
+    await tester.pumpAndSettle();
+    expect(find.byKey(DoorySheet.headerKey), findsOneWidget);
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('../golden/p0_sort_sheet.png'),
     );
   });
 

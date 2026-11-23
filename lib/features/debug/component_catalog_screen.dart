@@ -248,6 +248,15 @@ class ComponentCatalogScreen extends StatelessWidget {
                   onTap: () {},
                 ),
                 const ListRow(
+                  title: 'الأنسب',
+                  variant: ListRowVariant.radioLeading,
+                  selected: true,
+                ),
+                const ListRow(
+                  title: 'الأقل سعراً',
+                  variant: ListRowVariant.radioLeading,
+                ),
+                const ListRow(
                   title: 'معطّل',
                   enabled: false,
                   showDivider: false,
@@ -414,9 +423,8 @@ class ComponentCatalogScreen extends StatelessWidget {
           for (var index = 0; index < options.length; index++)
             ListRow(
               title: options[index],
-              trailing: ListRowTrailing.radio,
+              variant: ListRowVariant.radioLeading,
               selected: index == 0,
-              showDivider: index != options.length - 1,
               onTap: () => Navigator.of(context).maybePop(),
             ),
         ],
