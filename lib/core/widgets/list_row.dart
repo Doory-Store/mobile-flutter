@@ -63,6 +63,7 @@ class ListRow extends StatelessWidget {
       checked: trailing == ListRowTrailing.radio ? selected : null,
       inMutuallyExclusiveGroup: trailing == ListRowTrailing.radio,
       label: label,
+      excludeSemantics: true,
       child: Material(
         color: scheme.surface,
         child: InkWell(
@@ -73,8 +74,8 @@ class ListRow extends StatelessWidget {
                   ? Border(bottom: DooryBorders.hairline(scheme.outline))
                   : null,
             ),
-            child: SizedBox(
-              height: _height,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: _height),
               child: Padding(
                 padding: EdgeInsetsDirectional.symmetric(
                   horizontal: 16,
@@ -92,6 +93,7 @@ class ListRow extends StatelessWidget {
                     ],
                     Expanded(
                       child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
