@@ -82,12 +82,14 @@ The Pixel_8a_API_35 emulator boots with the AOSP keyboard in English (US) only, 
 
 ## Trendyol rebuild
 
-The reference survey (`docs/trendyol-rebuild/`) covers every screen Trendyol shows a guest. These parts rest on derived patterns instead of a direct capture:
+The reference survey (`docs/trendyol-rebuild/`) covers every guest screen and the signed-in account, orders, addresses, settings, notification preferences, personal info, help, notifications, favorites and cart screens. These parts rest on derived patterns instead of a direct capture:
 
-- **Signed-in and submit-only screens.** Trendyol's OTP and registration steps, signed-in orders, addresses, settings, and checkout open only after an account is created or data is submitted. Phases 1, 10 and 11 build them from the measured login, account and cart patterns.
-- **Search empty state.** Trendyol's fuzzy search returns products even for random text, so it never shows an empty result. Phase 5 builds the empty state from the empty-cart pattern.
+- **Address details form, checkout summary and payment methods.** Both come after Trendyol's map step, and the map needs Google Play Services, which this emulator lacks. Phases 10 and 11 build them from the measured personal-info fields and cart summary rows.
+- **Order detail.** The account has no past orders. Phase 10 builds the detail from cart cards and summary rows.
+- **OTP and registration steps.** The account was already signed in. Phase 1 builds them from the measured login screen.
+- **Search empty state.** Trendyol's fuzzy search returns products even for random text. Phase 5 builds the empty state from the empty-orders pattern.
 - **Full questions page.** Phase 6 reuses the reviews page template, captured in `47-pdp-reviews`.
-- **Element trees for animated screens.** Home after scrolling, some product sections, favorites and the search landing keep animating, so `uiautomator dump` returns no tree. Their measurements come from the screenshots.
+- **Element trees for animated screens.** Home after scrolling, some product sections, favorites and the search landing keep animating, so their measurements come from the screenshots.
 - **Doory logo file.** The web uses the text wordmark «دوري», and neither project has an SVG or PNG logo. `DooryWordmark` stands in until an official file is added.
 
-Next step: capture the signed-in screens with a test Trendyol account if the user provides one, and add the official Doory logo file when it exists.
+Next step: capture the address form and checkout on a Play-enabled emulator image or a real device, and add the official Doory logo file when it exists.

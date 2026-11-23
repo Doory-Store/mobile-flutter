@@ -7,7 +7,7 @@
   },
   {
    "key": "P1",
-   "title": "P1 · تسجيل الدخول والدخول الأول",
+   "title": "P1 · تسجيل الدخول",
    "description": "شاشات الجوال والرمز وكلمة السر وبوابة الدخول بأسلوب ترينديول"
   },
   {
@@ -427,21 +427,6 @@
   },
   {
    "phase": "P1",
-   "title": "[P1] شاشة الدخول الأول (اختيار الاهتمام)",
-   "labels": [
-    "type:feature",
-    "area:auth",
-    "role:flutter",
-    "ui-only"
-   ],
-   "body": "شاشة اختيارية على نمط 90-onboarding-1 بفئات دوري. تُبنى بعد موافقة المستخدم على وجودها.",
-   "acceptance": [
-    "تظهر مرة واحدة"
-   ],
-   "refs": "ref/90-onboarding-1.jpg"
-  },
-  {
-   "phase": "P1",
    "title": "[P1] فحص المرحلة 1 ولقطات الاعتماد",
    "labels": [
     "type:qa",
@@ -494,7 +479,7 @@
     "role:flutter",
     "ui-only"
    ],
-   "body": "HeroCarousel بارتفاع 105 dp مع عدّاد، وCategoryTileGrid بصفين وبلاطة 83×104 dp.",
+   "body": "HeroCarousel بارتفاع 105 dp مع عدّاد لصور دوري الثابتة، وCategoryTileGrid بصفين وبلاطة 83×104 dp. بلا تنزيلات خاطفة ولا عدّادات ولا كوبونات.",
    "acceptance": [
     "التمرير يبدأ من اليمين"
    ],
@@ -886,7 +871,7 @@
     "role:flutter",
     "ui-only"
    ],
-   "body": "CartSellerGroup، وCartItemCard بارتفاع 142 dp، وQuantityStepper، وOrderSummary، وCheckoutBar بارتفاع 73 dp وزر 53 dp.",
+   "body": "CartSellerGroup، وCartItemCard بارتفاع 142 dp، وQuantityStepper، وOrderSummary (الإجمالي الفرعي، والتسليم، والإجمالي)، وCheckoutBar بارتفاع 73 dp وزر 53 dp. بلا رموز الخصم ولا «العروض المميزة».",
    "acceptance": [
     "المجموع يتحدث فوراً"
    ],
@@ -931,11 +916,11 @@
     "role:designer",
     "ui-only"
    ],
-   "body": "من 60-favorites-guest.",
+   "body": "من 60-favorites-guest و81-favorites-signed، مع بلاطتي «المفضلات» و«سجل التصفح» فقط.",
    "acceptance": [
     "الحالات الثلاث"
    ],
-   "refs": "ref/60-favorites-guest.jpg"
+   "refs": "ref/81-favorites-signed.jpg"
   },
   {
    "phase": "P8",
@@ -946,7 +931,7 @@
     "role:flutter",
     "ui-only"
    ],
-   "body": "LoginPromptCard بثلاث مزايا، وشبكة المفضلات، والحالة الفارغة، ومزامنة القلب في كل الشاشات.",
+   "body": "LoginPromptCard بثلاث مزايا، وFavoritesTiles (المفضلات وسجل التصفح)، وشبكة المفضلات، والحالة الفارغة «المس القلب» مع «قطع لك خصيصاً»، ومزامنة القلب في كل الشاشات.",
    "acceptance": [
     "القلب متزامن"
    ],
@@ -976,7 +961,7 @@
     "role:designer",
     "ui-only"
    ],
-   "body": "من 20 و21 و23 و24، من غير الكوبونات وCoins والمحفظة.",
+   "body": "من 20 و21 و23 و70 و71 و73 و77 و77b، من غير الكوبونات وCoins والمحفظة وطلب رقم WhatsApp.",
    "acceptance": [
     "المجموعات وصفوفها"
    ],
@@ -991,7 +976,7 @@
     "role:flutter",
     "ui-only"
    ],
-   "body": "AccountHeader للضيف وللمسجّل، وصفوف التسليم واللغة، ومجموعات نظرة عامة والحساب والمزيد، وتسجيل الخروج.",
+   "body": "AccountHeader للضيف وللمسجّل (دائرة أحرف 56 dp وجرس إشعارات بعدّاد)، وصفوف التسليم واللغة، ومجموعات نظرة عامة والحساب والمزيد، وتسجيل الخروج.",
    "acceptance": [
     "الصف 42–52 dp",
     "الخلفية #FAFAFA"
@@ -1000,18 +985,19 @@
   },
   {
    "phase": "P9",
-   "title": "[P9] شاشات اللغة والإعدادات والبيانات الشخصية",
+   "title": "[P9] شاشات اللغة والإعدادات وتفضيلات الإشعارات والبيانات الشخصية",
    "labels": [
     "type:feature",
     "area:account",
     "role:flutter",
     "ui-only"
    ],
-   "body": "RadioListScreen بصفوف 50 dp، والإعدادات، والبيانات الشخصية.",
+   "body": "RadioListScreen بصفوف 50 dp، والإعدادات بصفوف 69 dp ورقم الإصدار، وتفضيلات الإشعارات ببطاقات Checkbox، والبيانات الشخصية بحقول 44 dp وزر «تحديث» يتفعّل عند التغيير.",
    "acceptance": [
-    "نفس أنماط الصفوف"
+    "نفس أنماط الصفوف",
+    "الزر معطّل حتى يتغير حقل"
    ],
-   "refs": "ref/23-language.jpg"
+   "refs": "ref/77-settings.jpg"
   },
   {
    "phase": "P9",
@@ -1037,7 +1023,7 @@
     "role:designer",
     "ui-only"
    ],
-   "body": "الطلبات، والعناوين، والإشعارات، والدعم، والمتجر، بأنماط المراحل السابقة.",
+   "body": "من 72 و74 و75 و78 و78b و80: الطلبات، والعناوين، والإشعارات، والمساعدة، والمتجر.",
    "acceptance": [
     "لكل شاشة حالاتها"
    ],
@@ -1052,41 +1038,41 @@
     "role:flutter",
     "ui-only"
    ],
-   "body": "OrderCard وStatusChip وتفاصيل الطلب.",
+   "body": "OrderCard وStatusChip وتفاصيل الطلب، وحالة الفراغ مع «ابدأ التسوق».",
    "acceptance": [
     "فارغة وخطأ"
    ],
-   "refs": ""
+   "refs": "ref/72-orders.jpg"
   },
   {
    "phase": "P10",
-   "title": "[P10] العناوين ونموذج العنوان",
+   "title": "[P10] العناوين واختيار الموقع ونموذج العنوان",
    "labels": [
     "type:feature",
     "area:account",
     "role:flutter",
     "ui-only"
    ],
-   "body": "AddressCard، وحقول بإطار 44 dp.",
+   "body": "AddressCard، والفراغ مع «أضف عنواناً» في شريط العنوان، وMapPicker (بحث 40 dp، و«عرض موقعي»، ودبوس، و«تأكيد العنوان»)، ثم نموذج بحقول 44 dp. الحفظ يبقى على الـ Mock.",
    "acceptance": [
     "التحقق من الحقول"
    ],
-   "refs": ""
+   "refs": "ref/75-address-form.jpg"
   },
   {
    "phase": "P10",
-   "title": "[P10] الإشعارات والدعم وصفحة المتجر",
+   "title": "[P10] الإشعارات والمساعدة وصفحة المتجر",
    "labels": [
     "type:feature",
     "area:account",
     "role:flutter",
     "ui-only"
    ],
-   "body": "NotificationRow، وشاشات الدعم، وStoreHeader لصفحة s/:slug.",
+   "body": "NotificationTabs («الكل» و«طلبياتي»، 48 dp)، ولافتة تشغيل الإشعارات، وNotificationRow بارتفاع 102 dp. والمساعدة بـ «كل المواضيع» وTopicChips بارتفاع 34 dp وبحث. وStoreHeader لصفحة s/:slug.",
    "acceptance": [
     "فارغة وخطأ"
    ],
-   "refs": ""
+   "refs": "ref/80-notifications.jpg"
   },
   {
    "phase": "P10",
@@ -1112,7 +1098,7 @@
     "role:designer",
     "ui-only"
    ],
-   "body": "صفحة بأقسام من أنماط السلة والحساب.",
+   "body": "صفحة بأقسام من أنماط السلة والحساب، تبدأ بخطوة العنوان (84-checkout-address-gate).",
    "acceptance": [
     "الأقسام والحالات"
    ],
@@ -1127,7 +1113,7 @@
     "role:flutter",
     "ui-only"
    ],
-   "body": "العنوان، وموعد التوصيل، وطريقة الدفع، والملخص، وشريط «تأكيد الطلب»، وشاشة التأكيد. الإرسال يبقى «لم يتم الربط بعد».",
+   "body": "«الدفع» يفتح اختيار العنوان عند عدم وجود عنوان (84-checkout-address-gate)، ثم العنوان، وموعد التوصيل، وطريقة الدفع، والملخص، وشريط «تأكيد الطلب»، وشاشة التأكيد. الإرسال يبقى «لم يتم الربط بعد».",
    "acceptance": [
     "لا عنوان",
     "إرسال"
