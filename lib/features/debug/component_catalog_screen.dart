@@ -346,22 +346,26 @@ class ComponentCatalogScreen extends StatelessWidget {
           ),
           _Block(
             title: 'الشريط',
-            child: Column(
-              children: [
-                BottomTabBar(current: DooryTab.home, onSelect: _ignoreTab),
-                SizedBox(height: 12),
-                BottomTabBar(
-                  current: DooryTab.home,
-                  cartCount: 3,
-                  onSelect: _ignoreTab,
-                ),
-                SizedBox(height: 12),
-                BottomTabBar(
-                  current: DooryTab.cart,
-                  cartCount: 120,
-                  onSelect: _ignoreTab,
-                ),
-              ],
+            child: MediaQuery.removePadding(
+              context: context,
+              removeBottom: true,
+              child: Column(
+                children: [
+                  BottomTabBar(current: DooryTab.home, onSelect: _ignoreTab),
+                  SizedBox(height: 12),
+                  BottomTabBar(
+                    current: DooryTab.home,
+                    cartCount: 3,
+                    onSelect: _ignoreTab,
+                  ),
+                  SizedBox(height: 12),
+                  BottomTabBar(
+                    current: DooryTab.cart,
+                    cartCount: 120,
+                    onSelect: _ignoreTab,
+                  ),
+                ],
+              ),
             ),
           ),
           const _Block(
