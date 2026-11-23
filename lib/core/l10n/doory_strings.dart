@@ -93,6 +93,15 @@ abstract final class DooryStrings {
   static const expand = 'عرض الفئات الفرعية';
   static const collapse = 'طي الفئات الفرعية';
   static const area = 'المنطقة';
+  static const back = 'رجوع';
+  static const clearSearch = 'مسح البحث';
+  static const seeAll = 'رؤية الكل';
+  static const discoverMore = 'اكتشف المزيد';
+  static const sectionReady = 'هذا القسم جاهز للعرض، ومحتواه يصل مع مرحلته.';
+  static const loadFailed = 'تعذّر التحميل';
+  static const working = 'جارٍ التنفيذ';
+  static const catalogTitle = 'كتالوج المكوّنات';
+  static const wordmarkHome = 'دوري، الرئيسية';
 
   static String searchHeading(String query) => 'نتائج البحث عن «$query»';
 
@@ -117,4 +126,21 @@ abstract final class DooryStrings {
 
   static String notWiredFeature(String feature) =>
       '«$feature» يعمل عند ربط التطبيق بالخادم، ولم يتم الربط بعد. باقي الشاشة يعمل على بيانات تجريبية.';
+
+  static String discountPercent(int percent) => 'خصم $percent٪';
+
+  static String discountSpoken(int percent) => 'خصم $percent بالمئة';
+
+  static String insteadOf(String amount) => 'بدلاً من $amount';
+
+  static String colorCount(int count) => '$count ألوان';
+
+  static String cartTabLabel(int count) =>
+      count <= 0 ? tabCart : '$tabCart، $count منتجات';
+
+  static String ratingSpoken(double rating, int? count) {
+    final value = rating.toStringAsFixed(1);
+    if (count == null || count <= 0) return 'التقييم $value من 5';
+    return 'التقييم $value من 5، $count مراجعة';
+  }
 }

@@ -8,6 +8,7 @@ abstract final class DooryColors {
   static const primarySubtle = Color(0xFFFFF3E8);
   static const surface = Color(0xFFFFFFFF);
   static const surfaceSubtle = Color(0xFFF5F5F5);
+  static const surfaceCanvas = Color(0xFFFAFAFA);
   static const surfaceInverse = Color(0xFF333333);
   static const textPrimary = Color(0xFF333333);
   static const textSecondary = Color(0xFF666666);
@@ -19,6 +20,7 @@ abstract final class DooryColors {
   static const discount = Color(0xFFBB0000);
   static const danger = Color(0xFFBB0000);
   static const success = Color(0xFF137333);
+  static const successSurface = Color(0xFFE7F9EF);
   static const rating = Color(0xFFFFC000);
   static const previewPlus = Color(0xFFFF4988);
   static const shortcutBorder = Color(0xFFE9E9E9);
@@ -42,4 +44,7 @@ abstract final class DooryColors {
 
   static const shadowCard = Color(0x14000000);
   static const shadowFavorite = Color(0x33000000);
+
+  /// Sheet barrier. Black at 40% — the adopted default in p0-decisions §6.
+  static const sheetBarrier = Color(0x66000000);
 }
