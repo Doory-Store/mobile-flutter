@@ -1,10 +1,61 @@
 # DESIGN — Doory (دوري)
 
-The visual language of the Doory buyer app: a light, dense, Arabic shopping interface with a clear orange identity. The direction is familiar marketplace energy — compact chrome, round category shortcuts, bordered product cards, horizontal shelves, short “view all” paths — tuned for a phone in formal MSA.
+The visual language of the Doory buyer app: a light, dense, Arabic shopping interface with a clear orange identity. The official direction is the Trendyol mobile app, matched as closely as possible — compact chrome, photo category chips, a banner carousel, a brands-and-sellers row, image-led product cards, and short “view all” paths — adapted for formal MSA, right-to-left layout, and Doory’s brand tokens. See Design reference: Trendyol below.
 
 This file is the design system. Tokens are the source of truth for color, type, radius, spacing, and shadow. Widgets read them through `ThemeData` and a `DooryTokens` `ThemeExtension`, not from raw hex in feature code.
 
 The palette is light-only. A dark theme can be added when a second set of tokens exists.
+
+## Design reference: Trendyol
+
+The official visual and interaction reference for this app is the **Trendyol mobile app**. New and revised screens should match it as closely as possible: the same chrome, density, component shapes, and shopping patterns, adapted for Arabic (formal MSA), right-to-left layout, and Doory’s brand (the tokens in this file, the «دوري» wordmark, and the honesty rules in `PRODUCT.md`). Trendyol’s own logos, campaign names, loyalty programs (Plus, Coins), and market-specific copy are not copied.
+
+### Where the references live
+
+Captured screens live on the designer’s Windows machine at:
+
+`C:\Users\bahaa\Desktop\Doory\trendyol-ref\screens`
+
+The folder holds full-resolution PNGs, matching UI Automator XML dumps (visible text, content descriptions, and bounds), and JPEG thumbnails under `small/`. The capture set used for this revision contains 69 screens (PNG + `small/*.jpg`) and 58 XML dumps. Filenames are numbered by flow, for example `01-home-top`, `10-categories`, `13-listing`, `40-pdp-top`, `50-cart-empty`, `70-account-signed`, `90-onboarding-1`. Before designing or changing a screen, open the matching capture — thumbnail first, then the PNG and XML if the layout is unclear — and follow that structure.
+
+Two canonical stills of the English LTR home and the category-personalization onboarding screen are also kept with the project brief. When a capture is in LTR, mirror it for Doory’s RTL (see RTL, below).
+
+### Patterns to copy
+
+These patterns are the default for Doory, unless a product rule in `PRODUCT.md` forbids showing data that is not real.
+
+- **Orange on white.** A bright orange primary accent on a white surface, light-grey wells, and dark-grey text. Doory already uses `#F27A1A` for this role; keep the token table in §1 rather than introducing a second orange.
+- **Top segment chips.** A horizontally scrolling row of compact pill cards, each with a photo and a short label (for example «النساء», «عالم الأطفال», «الرجال», deals, brands). The selected chip uses a primary-orange fill and a white label; unselected chips stay light grey with a photo.
+- **Search row.** A full-width light-grey search field with a leading magnifier, a trailing camera / visual-search icon, and — for a guest — a compact orange «تسجيل الدخول» pill beside the field. The home header does not lead with a large wordmark; the wordmark belongs on the splash, about, and account surfaces.
+- **Promo banner carousel.** A full-width campaign hero under the search row, with a small page counter (for example «1/12») on the banner. Autoplay is optional and respects reduced motion; the shopper can swipe in the reading direction.
+- **Category photo grid.** A two-row, horizontally scrolling grid of rounded-square tiles with product photography and a short label underneath — not pastel circles. This is the primary home category entry.
+- **Promo strip banners.** One or two compact full-width (or paired) campaign strips between modules, used only when a real campaign exists or the artwork is labelled «بيانات تجريبية».
+- **Top brands & sellers.** A titled row («أفضل الماركات والبائعين», or the agreed MSA equivalent) with «عرض الكل», showing rounded-square brand or seller marks in a horizontal scroller. Render the row when brand or store data exists; otherwise omit it.
+- **Popular products.** A two-column product grid titled along the lines of «منتجات محبوبة», with «اكتشف المزيد» or «عرض الكل» at the inline end. Each card has a heart favorite control on the image, optional sale or discount badges, and the price and rating rules in `PRODUCT.md`.
+- **Five-tab bottom navigation.** Home, Categories, Favorites, Cart, Account — already the app’s structure. The selected tab is a filled icon and label in primary orange; unselected tabs are grey outlines and grey labels. Do not add a strong indicator pill behind the icon.
+- **Personalization onboarding.** A first-run full-screen prompt: a light illustrated hero, a close control at the inline end, short centered copy asking the shopper to pick a preferred category for personalized suggestions, and two equal primary-orange buttons side by side (for example «النساء» and «الرجال», or the categories the catalog actually supports). The choice is stored on the device and may pre-select the matching home segment chip. Skip or close must land on home without blocking the catalog. A following notification-permission screen is shown only if the product has approved notifications; do not invent that policy here.
+
+### RTL and brand adaptation
+
+Doory is RTL. Mirror Trendyol’s LTR screens rather than copying pixel coordinates. Segment chips, shelves, and carousels start at the inline start (the right in Arabic). The search magnifier stays at the inline start of the field, the camera icon at the inline end, and the login pill on the inline end of the search row (the left in Arabic). Directional chevrons flip; photography, brand marks, and non-directional icons (search, cart, rating, camera, heart) stay as drawn. Latin brand names and prices inside Arabic strings sit in a bidi isolate, as in §6.
+
+Tokens, type (Cairo), spacing, and the contrast rules in this file still govern implementation. When a Trendyol pattern and a token conflict, keep the token and express the pattern with it. When a Trendyol element would display a rating, countdown, coupon, or delivery promise, follow `PRODUCT.md`: show it only with real data, or with a visible «بيانات تجريبية» label.
+
+### Screen index (what to open)
+
+| Doory surface | Captures to check first |
+| --- | --- |
+| First-run personalization | `90-onboarding-1`, `91-onboarding-2`, `92-onboarding-3` |
+| Home | `01-home-top`, `02`–`05` home scrolls, `06-home-women-top` and the women scrolls |
+| Categories tab | `10-categories`, `11-categories-rail-clothes`, `12-categories-women-tab` |
+| Listing, sort, filter | `13-listing`, `14-listing-scrolled`, `15-sort-sheet`, `16-filter`, `17-filter-price`, `18-filter-brand` |
+| Search | `35-search-landing`, `35b-search-landing-history`, `36-search-suggest`, `37-search-results`, `38-search-no-results` |
+| Product detail | `40-pdp-top` through `49-pdp-added`, including the variant sheet and reviews |
+| Cart and checkout gates | `50-cart-empty` through `54-cart-delete-dialog`, `82-cart-signed`, `83a-checkout-upsell-popup`, `84-checkout-address-gate` |
+| Favorites | `60-favorites-guest`, `81-favorites-signed` |
+| Account, orders, settings | `20-account-guest`, `70-account-signed`, and the `7x` / `8x` account flows |
+| Login | `30-login-email`, `31-login-email-focused` |
+
 
 ## 1. Color
 
@@ -160,12 +211,12 @@ Named text styles (`DooryTypography.page`, `.shelf`, `.body`, `.cardPrice`, …)
 | 5 | Account | «حسابي» | `person_outline` / `person` | `/account` |
 
 - **Implementation.** A Material 3 `NavigationBar` inside a go_router `StatefulShellRoute.indexedStack`, so each tab keeps its own navigation stack and scroll position. The destinations are declared in the order above; the app-wide `TextDirection.rtl` places the first destination (Home) on the right, so the order is never reversed by hand.
-- **Look.** Surface `#FFFFFF` with a 1px `#E6E6E6` top border and no elevation; selected icon and label in primary `#F27A1A`, unselected in text-secondary `#666666`; label 12/16 w600 Cairo, always visible; indicator pill in primary-subtle `#FFF3E8`. Bar height 64 plus the bottom safe-area inset; each destination is at least 48×48.
+- **Look.** Surface `#FFFFFF` with a 1px `#E6E6E6` top border and no elevation; selected icon and label in primary `#F27A1A`, unselected in text-secondary `#666666`; label 12/16 w600 Cairo, always visible. Follow the Trendyol tab treatment: a filled orange icon and orange label when selected, a grey outline icon and grey label when not; do not add a strong indicator pill behind the icon (if Material 3 requires an indicator, keep it quiet or transparent). Bar height 64 plus the bottom safe-area inset; each destination is at least 48×48.
 - **Behaviour.** Tapping the active tab pops its stack to the root, and a second tap scrolls to the top. Product detail, listing, and search are pushed inside the current tab's stack, so the bar stays visible while browsing; full-screen flows such as checkout cover the bar. Android back walks the current tab's stack first, then returns to Home, then exits.
 - **Badges.** The Cart tab shows a count badge (primary fill, white 10px w700 text) once cart state is real. Favorites can show a dot for unseen changes later; it starts without one.
 - **Tabs ahead of their API.** Favorites, Cart, and Account are present from the first release so the structure is stable. Until their contracts exist, each opens a clear MSA empty state that explains the feature is coming and offers a path back to browsing (for example «تصفّح الفئات»). Favorites is stored on the device until a server-side favorites contract exists.
 
-**App bar.** Each tab root has its own pinned app bar. On Home it holds the orange wordmark «دوري» at the start and a search field (or a tap target that opens search). Listing, search, and product detail are pushed routes with a back affordance that follows the platform (Android system back and predictive back; iOS back swipe + leading back button).
+**App bar.** Each tab root has its own pinned chrome. Home does not lead with a large wordmark; it starts with the top segment-chip row, then the search row (light-grey field plus, for a guest, the orange login pill), as in `01-home-top` and the Design reference. The «دوري» wordmark belongs on the splash, about, and account surfaces. Listing, search, and product detail are pushed routes with a back affordance that follows the platform (Android system back and predictive back; iOS back swipe + leading back button).
 
 **Routes.**
 
@@ -183,9 +234,9 @@ Named text styles (`DooryTypography.page`, `.shelf`, `.body`, `.cardPrice`, …)
 
 Deep links use the same shapes. Slugs come from the API.
 
-**App bar details.** 44px actions, accessible names, wordmark in primary. Search field: 44px tall, `#F5F5F5`, 20px radius, orange magnifier at the inline end, placeholder «ابحث عن منتج أو فئة».
+**App bar details.** 44px actions and accessible names. Search field: 44px tall, `#F5F5F5`, 20px radius (a pill is also acceptable), a grey magnifier at the inline start, a trailing camera / visual-search icon at the inline end, and placeholder «ابحث عن منتج أو فئة». For guests, a compact 32–40px-tall orange pill labelled «تسجيل الدخول» sits beside the field on the inline end of the row (the left in RTL). Visual search is reserved until a contract exists: the camera icon may be present but inert, or omitted, and must not invent a backend. On listing and search, the field shows the current query, a clear control, and a result count when one exists (see `13-listing`).
 
-**Home, top to bottom.** Maintenance banner when `/meta/status` reports an active window; delivery line when `/home` provides `delivery_promise.message_ar` (otherwise a labelled sample line is acceptable in early releases); search; shortcut rail; optional brand rail; product shelves («مختارات», «وصل حديثًا», and any labelled collections); campaign mosaic; suggestion pills; popular-category links; a short about block; a compact footer of real help links.
+**Home, top to bottom.** Follow the Trendyol home stack in `01-home-top` and the later home scrolls, in this order: a maintenance banner when `/meta/status` reports an active window; the top segment-chip row; the search row (with the login pill for guests); a full-width promo banner carousel with a page counter; the two-row photo category grid; promo strip banners when campaigns exist (or labelled sample artwork); a «أفضل الماركات والبائعين» row with «عرض الكل» when brand or store data exists; a popular-products grid («منتجات محبوبة») and any further product shelves («مختارات», «وصل حديثًا», and labelled collections); suggestion pills or popular-category links as needed; a short about block; a compact footer of real help links. A delivery line appears only when `/home` provides `delivery_promise.message_ar` (a labelled sample line is acceptable in early releases if that copy is required for layout). Omit any module whose data is missing, rather than inventing content.
 
 ## 6. Layout, gesture, and platform behaviour
 
@@ -204,17 +255,29 @@ Deep links use the same shapes. Slugs come from the API.
 
 ## 7. Components
 
-**Shortcut rail.** One horizontally scrolling row of 68px circles, pastel fill, `#E9E9E9` ring, label underneath (max two lines, weight 600). Item width about 88px. Tones rotate teal, rose, terracotta, green, wine, cyan.
+**Category photo grid (home).** The primary home category entry is a two-row, horizontally scrolling grid of rounded-square tiles with product photography and a short label underneath (max two lines, weight 600), matching `01-home-top` and `06-home-women-top`. Tile radius is 12; the photo sits in a white well; a peek of the next column should remain visible. This replaces the older 68px pastel-circle shortcut rail, which is retired for home and must not be reintroduced. Pastel shortcut tokens in §1 may remain in the theme for other compact chips, but new home entry points use photography.
 
-**Product card.** White, 1px border, 8px radius, no default shadow. The card body opens the product route. Image well is 2:3, flush with the top, `BoxFit.contain` on white. Title is 14/18, brand weight 600 then the name at 400, clamped to two lines with the full name in semantics. Price is 16/20 `#C2410C`. A genuine compare-at may sit with a primary discount chip and a struck `#999999` line. Estimate, sold-out, and can’t-purchase states come from API flags. Optional stamps, image strips, social proof, ratings, and promo lines appear only when they have data; they collapse when absent. A compact basket control, when present, is 32–44px and stays inert until cart is live.
+**Product card.** Image-led, following Trendyol’s popular-products and listing cards (`01-home-top`, `13-listing`): white surface, 8px radius, no default shadow. A 1px `#E6E6E6` border is acceptable when a grid needs separation on white, but the frame should stay light — the photograph carries the card. The card body opens the product route. Image well is 2:3, flush with the top, `BoxFit.contain` on white. A heart favorite control sits on the image at the inline end, on a light circular well; the target is 44 dp even if the glyph looks smaller. Favorites are stored on the device until a server-side contract exists. A genuine sale or discount badge (for example a small «عرض» / ON SALE chip, or a percent-off stamp) may sit on the image at the inline start only when `PRODUCT.md` allows it. Title is 14/18, brand weight 600 then the name at 400, clamped to two lines with the full name in semantics. Price is 16/20 `#C2410C`. A genuine compare-at may sit with a primary discount chip and a struck `#999999` line. Estimate, sold-out, and can’t-purchase states come from API flags. Ratings, review counts, colour-variant hints, verified-seller marks, countdowns, stamps, and promo lines appear only when they have data; they collapse when absent. A compact basket control, when present, is 32–44px and stays inert until cart is live. Popular products on home are a two-column grid; listing and search use the same card in a two-column grid with sort and filter chips above (`13-listing`, `15-sort-sheet`, `16-filter`).
 
 **Shelves.** Title at the start (`shelf`, 20/24, 600). «عرض الكل» at the end is a 16px pill (padding 8×12, radius 20) when a listing route exists; otherwise the same pill is a clearly inactive control. Flash or deals trays may use a `primary-subtle` frame; cards on the tray stay white.
 
-**Campaign mosaic.** Single column on a phone, about 2.4:1, 8px radius, palette fills (violet is allowed here). Sample tiles carry the demo label.
+**Promo banner carousel.** Full-width campaign hero under the home search row, rounded about 8px or slightly less, with a small page-counter chip (for example «1/12») on the banner, matching `01-home-top`. Swipe moves in the reading direction; autoplay, if used, respects reduced motion and pauses on interaction.
+
+**Promo strip banners.** Compact full-width or paired campaign strips between home modules, used only for real campaigns or labelled sample artwork. See the promotional rows in `01-home-top` and `04-home-scroll3`.
+
+**Top brands & sellers.** Shelf title at the start, «عرض الكل» at the end, and a horizontally scrolling row of rounded-square brand or seller marks (white well, light border, 8–12px radius), as in `06-home-women-top`. Omit the row when brand or store data is missing.
+
+**Personalization onboarding.** A first-run full-screen, white, with a close control at the inline end, a light illustrated hero, short centered body copy, and two equal primary filled buttons in one row, matching `90-onboarding-1`. Button labels are the categories the catalog actually supports. Closing or skipping goes to home. Further permission screens follow only after an approved product policy (see `91-onboarding-2`).
+
+**Categories tab.** Search field at the top (placeholder may mention brand, product, or category), then a horizontally scrolling department rail of photo cards, then sectioned category groups with a title, a photo grid, and «عرض الكل», as in `10-categories`, `11-categories-rail-clothes`, and `12-categories-women-tab`.
+
+**Listing and search chrome.** A query or category title, a result count, a trailing clear and camera control, then «الفرز» and «فلترة» chips (with any active-filter count), then the two-column product grid. Sort is a bottom sheet: الأنسب, الأكثر مبيعًا, المفضلة, وصل حديثًا, الأعلى تقييمًا, الأعلى سعراً, الأقل سعراً — use the MSA terms already in `PRODUCT.md` where they overlap («الأكثر مبيعًا», «وصل حديثًا») and keep the sheet’s structure from `15-sort-sheet`. Filters are a full-screen sheet with clear and apply, as in `16-filter`. Empty and no-result search follow `38-search-no-results`: explain that nothing matched and, when honest alternatives exist, offer them.
+
+**Campaign mosaic.** An optional single-column promotional mosaic (about 2.4:1, 8px radius, palette fills; violet is allowed here) may still appear below the default Trendyol home modules. Sample tiles carry the demo label. The banner carousel and promo strips are the default campaign treatment.
 
 **Suggestion pills.** 36px tall, 1px border, 999 radius, 14px text, wrapping row.
 
-**Buttons.** Primary filled: 48px, 8px radius, 18/600, white on `#F27A1A`, pressed `#D56B17`. Primary outline: 2px `#F27A1A` stroke and label, same size. Compact / sticky: 40px, 4px radius, 16/600. Secondary: white, `border-control`, dark label. Text actions use `primary-strong`.
+**Buttons.** Primary filled: 48px, 8px radius, 18/600, white on `#F27A1A`, pressed `#D56B17`. Primary outline: 2px `#F27A1A` stroke and label, same size. Compact / sticky: 40px, 4px radius, 16/600. Secondary: white, `border-control`, dark label. Text actions use `primary-strong`. The guest «تسجيل الدخول» control on the search row is a compact pill: 32–40px tall, radius 999, 14/600, white on primary. The onboarding pair uses two equal primary filled 48px buttons in one row, 8px radius, as in `90-onboarding-1`.
 
 **Product detail.** A phone column: gallery, title, seller, price (24/28 `#F27A1A`, with «سعر تقريبي» when flagged), variants, quantity, buy box, highlights and attributes, description, delivery rows that have data, reviews when genuine, and a “from the same store” rail. A compact sticky bar may pin price and the primary action as the shopper scrolls. Buy and add-to-cart are visible early; they complete a purchase once cart and checkout are contracted, and until then they explain that the action is coming.
 
@@ -230,4 +293,4 @@ Icons are simple outlines: 20px in chrome, 14px stars, 12px meta. Filled stars u
 
 ## 9. Quality bar
 
-A screen is ready when it uses theme tokens, reads correctly in RTL at large text sizes, has a skeleton, an empty state, and a retryable error, keeps 44–48 dp targets, and shows only prices and claims the data supports — with «بيانات تجريبية» on sample content. Unsettled typography, numeral format, cart-count, and tab-bar questions are confirmed before they are treated as decided.
+A screen is ready when it uses theme tokens, follows the Trendyol patterns in the Design reference (checked against the matching capture in `trendyol-ref/screens`), reads correctly in RTL at large text sizes, has a skeleton, an empty state, and a retryable error, keeps 44–48 dp targets, and shows only prices and claims the data supports — with «بيانات تجريبية» on sample content. Unsettled typography, numeral format, cart-count, and tab-bar questions are confirmed before they are treated as decided.

@@ -2,6 +2,8 @@
 
 A short guide for contributors and coding agents. Product intent lives in `PRODUCT.md`. Visual and interaction decisions live in `DESIGN.md`. Read both before changing the interface.
 
+The official mobile UI reference is the Trendyol app, as specified in `DESIGN.md` (Design reference: Trendyol). All UI work — new screens, redesigns, and visual tweaks — must follow that reference. Before designing or changing a screen, open the matching captures in `C:\Users\bahaa\Desktop\Doory\trendyol-ref\screens` (PNG, `small/*.jpg` thumbnails, and UI Automator XML) and match layout, chrome, and component patterns as closely as possible, adapted for RTL, formal MSA, and Doory’s brand tokens. Do not invent a parallel visual language.
+
 ## Everyday commands
 
 ```bash
@@ -38,6 +40,8 @@ New UI belongs in the feature it serves. Tokens and HTTP stay in `core/`.
 
 **Theme.** Storefront widgets read color, type, radius, and spacing from `Theme.of(context)` and `DooryTokens`. Named styles (`DooryTypography.cardPrice`, and the rest) stay on the scale in `DESIGN.md`.
 
+**Design reference.** Follow the Trendyol patterns in `DESIGN.md`. Check the matching `trendyol-ref/screens` capture before building or restyling a screen. Prefer the documented Trendyol layout (segment chips, search-and-login row, banner carousel, photo category grid, brands row, popular-products grid, five-tab bar) over older pastel-circle shortcuts or a wordmark-led home app bar.
+
 **Direction.** The app is `Locale('ar')` with `TextDirection.rtl`. Use directional insets and alignment. Carousels start at the inline start. Directional chevrons flip; wordmark, photos, and search/cart/rating icons stay as drawn.
 
 **Copy.** Formal MSA. Reuse the terms in `PRODUCT.md`. New strings go through `lib/core/l10n/` (or the project’s ARB files) so wording stays consistent.
@@ -61,7 +65,7 @@ List and search query parameters: `category`, `store`, `brand` (search), `sort` 
 A change is ready for review when all of the following hold:
 
 - `dart format` and `flutter analyze` are clean; new behavior has unit, widget, or golden coverage as it fits.
-- The UI uses theme tokens and remains readable in RTL at a large text scale, without overflow or horizontal page scroll.
+- The UI uses theme tokens, follows the Trendyol reference in `DESIGN.md` (checked against the matching `trendyol-ref` capture for visual changes), and remains readable in RTL at a large text scale, without overflow or horizontal page scroll.
 - Loading, empty, and error states are present; pull-to-refresh works on data screens.
 - Prices, discounts, ratings, and delivery lines match the Principles in `PRODUCT.md`. Sample content shows «بيانات تجريبية».
 - Networking stays on the contracted GET surface; auth, cart, and checkout changes belong to a later phase with an approved contract.

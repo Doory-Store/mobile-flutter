@@ -6,6 +6,8 @@ Doory is a local shopping business in Homs, Syria. It connects shoppers with loc
 
 The app should feel like a practical place to shop: organized, local, and easy to scan on a phone. It is lively — visible orange, real product photography, short paths into the catalog — and it stays clear of luxury-editorial emptiness, generic marketing splash screens, and permanent-discount spectacle.
 
+The UX goal is a Trendyol-like shopping experience: the same dense marketplace chrome, photo-led modules, and short paths from home into categories, brands, search, and product detail, adapted for formal MSA, right-to-left layout, and Doory’s brand. Layout and interaction follow the Design reference in `DESIGN.md`. The app does not copy Trendyol’s trademarks, loyalty schemes (Plus, Coins), or campaign calendar. Marketplace energy comes from photography, orange accents, and clear modules — not from invented discounts.
+
 ## Audience
 
 Primary users are shoppers in Homs, mostly on phones, often on modest devices and uneven connections. Sessions can be short or interrupted, so the app preserves context (scroll, query, selected variant) as features come online.
@@ -22,6 +24,13 @@ The interface is Arabic, right-to-left, written in formal contemporary Modern St
 - «مختارة لك» only when personalization is real
 - «الأكثر مبيعًا» only when it reflects real sales ranking
 
+Home modules introduced to match the Trendyol reference use these additional labels when the surfaces are present, without changing the terms above:
+
+- Brands and sellers row: «أفضل الماركات والبائعين»
+- Popular-products grid: «منتجات محبوبة»
+- A «اكتشف المزيد» text action may accompany «عرض الكل» on a popular-products or similar grid
+- Guest login pill on the home search row: «تسجيل الدخول»
+
 Errors explain what happened and what the shopper can do next, without blame.
 
 ## Jobs
@@ -31,6 +40,8 @@ Errors explain what happened and what the shopper can do next, without blame.
 3. Understand the selected product before adding it to a cart.
 4. Build and revise a cart, then see the final payable amount, complete checkout, and follow the order through to delivery — when those contracts exist.
 5. Return to a familiar storefront with stable navigation and product information.
+6. Optionally set a preferred category on first launch so home can open on a relevant segment chip — without presenting a shelf as personalized unless personalization is real.
+7. Browse brands and sellers from a dedicated home row when that data exists, and continue into a listing or, in a later phase, a store profile.
 
 ## Scope
 
@@ -39,6 +50,12 @@ This repository is the buyer app for Android and iOS. The first releases cover h
 Store profiles follow in a later phase. Cart, checkout, order tracking, and account follow once payment, delivery, address, and auth contracts are approved. Seller, merchant, and admin tools belong in other products.
 
 The app's structure is a five-tab bottom bar: Home, Categories, Favorites, Cart, and Account (Home on the right, in RTL reading order). Favorites starts as an on-device list; it moves to the server once a favorites contract exists. Loyalty, credit, subscriptions, and wallets are not part of the current product.
+
+The following surfaces are part of the intended shopping experience. They are layout and flow additions, not new backend claims:
+
+- A first-run personalization screen that lets the shopper pick a preferred category (for example «النساء» or «الرجال», or the categories the catalog actually offers). The choice is stored on the device and may pre-select the matching home segment chip. It may influence home merchandising only once a real personalization contract exists; until then, do not label a shelf «مختارة لك».
+- A home promo banner carousel and promo strip banners, shown only for real campaigns or as labelled sample content.
+- A «أفضل الماركات والبائعين» row with a see-all path, shown when brand or store data exists. Store profiles remain a later phase, as above.
 
 ## Principles
 
