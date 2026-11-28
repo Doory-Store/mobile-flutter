@@ -263,12 +263,17 @@ class _CategoryRail extends StatelessWidget {
                     showBorder: true,
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    node.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: DooryTypography.shortcut(context),
+                  // Remaining height in the 112 dp row is 24 dp; two 13 dp
+                  // shortcut lines need 26. Expanded + ellipsis absorbs the
+                  // 2 dp (and a missing Cairo fallback) without shrinking type.
+                  Expanded(
+                    child: Text(
+                      node.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: DooryTypography.shortcut(context),
+                    ),
                   ),
                 ],
               ),
