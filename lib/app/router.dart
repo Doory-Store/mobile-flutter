@@ -11,6 +11,7 @@ import '../features/addresses/address_form_screen.dart';
 import '../features/addresses/addresses_screen.dart';
 import '../features/auth/login_screen.dart';
 import '../features/cart/cart_screen.dart';
+import '../features/categories/categories_landing_screen.dart';
 import '../features/categories/categories_screen.dart';
 import '../features/checkout/checkout_screen.dart';
 import '../features/checkout/order_confirmation_screen.dart';
@@ -140,7 +141,10 @@ GoRouter buildRouter() {
     routes: [
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
-          return DooryShell(navigationShell: navigationShell);
+          return DooryShell(
+            navigationShell: navigationShell,
+            location: state.uri.path,
+          );
         },
         branches: [
           StatefulShellBranch(
@@ -158,8 +162,16 @@ GoRouter buildRouter() {
             routes: [
               GoRoute(
                 path: '/categories',
-                builder: (context, state) => const CategoriesScreen(),
-                routes: browseRoutes(),
+                builder: (context, state) => const CategoriesLandingScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'browse',
+                    builder: (context, state) => CategoriesScreen(
+                      initialSlug: state.uri.queryParameters['root'],
+                    ),
+                  ),
+                  ...browseRoutes(),
+                ],
               ),
             ],
           ),

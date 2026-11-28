@@ -13,6 +13,8 @@ class CategoryAvatar extends StatelessWidget {
     this.size = 68,
     this.backgroundColor,
     this.showBorder = false,
+    this.square = false,
+    this.borderRadius,
     super.key,
   });
 
@@ -21,6 +23,8 @@ class CategoryAvatar extends StatelessWidget {
   final double size;
   final Color? backgroundColor;
   final bool showBorder;
+  final bool square;
+  final double? borderRadius;
 
   String? get _url {
     final value = imageUrl?.trim();
@@ -51,7 +55,10 @@ class CategoryAvatar extends StatelessWidget {
         width: size,
         height: size,
         decoration: BoxDecoration(
-          shape: BoxShape.circle,
+          shape: square ? BoxShape.rectangle : BoxShape.circle,
+          borderRadius: square
+              ? BorderRadius.circular(borderRadius ?? 8)
+              : null,
           border: showBorder ? Border.all(color: pastels.border) : null,
         ),
         clipBehavior: Clip.antiAlias,

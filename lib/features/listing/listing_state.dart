@@ -3,6 +3,51 @@ import '../../data/models/product_query.dart';
 
 enum ListingFailure { none, unavailable, rejected, notFound }
 
+/// Draft / applied listing filters. [brand] is kept for the UI row but is
+/// not sent: GET /products ignores `brand`.
+class ListingFilters {
+  const ListingFilters({
+    this.categoryId,
+    this.minPrice,
+    this.maxPrice,
+    this.brand,
+  });
+
+  static const empty = ListingFilters();
+
+  final int? categoryId;
+  final int? minPrice;
+  final int? maxPrice;
+  final String? brand;
+
+  bool get hasPrice => minPrice != null || maxPrice != null;
+
+  int activeCount({int? rootCategoryId}) {
+    var n = 0;
+    if (hasPrice) n++;
+    if (categoryId != null && categoryId != rootCategoryId) n++;
+    if (brand != null && brand!.isNotEmpty) n++;
+    return n;
+  }
+
+  ListingFilters copyWith({
+    int? categoryId,
+    int? minPrice,
+    int? maxPrice,
+    String? brand,
+    bool clearCategory = false,
+    bool clearPrice = false,
+    bool clearBrand = false,
+  }) {
+    return ListingFilters(
+      categoryId: clearCategory ? null : (categoryId ?? this.categoryId),
+      minPrice: clearPrice ? null : (minPrice ?? this.minPrice),
+      maxPrice: clearPrice ? null : (maxPrice ?? this.maxPrice),
+      brand: clearBrand ? null : (brand ?? this.brand),
+    );
+  }
+}
+
 class ListingState {
   const ListingState({
     required this.slug,
@@ -20,6 +65,8 @@ class ListingState {
     this.sort = ProductSort.newest,
     this.minPrice,
     this.maxPrice,
+    this.filters = ListingFilters.empty,
+    this.rootCategoryId,
     this.priceRangeError = false,
   });
 
@@ -40,7 +87,14 @@ class ListingState {
   final ProductSort sort;
   final int? minPrice;
   final int? maxPrice;
+  final ListingFilters filters;
+  final int? rootCategoryId;
   final bool priceRangeError;
+
+  int get activeFilterCount =>
+      filters.activeCount(rootCategoryId: rootCategoryId);
+
+  bool get hasActiveFilters => activeFilterCount > 0;
 
   bool get isEmptyResult =>
       !loading && failure == ListingFailure.none && items.isEmpty;
@@ -62,6 +116,8 @@ class ListingState {
     int? minPrice,
     int? maxPrice,
     bool updatePrices = false,
+    ListingFilters? filters,
+    int? rootCategoryId,
     bool? priceRangeError,
   }) {
     return ListingState(
@@ -80,6 +136,8 @@ class ListingState {
       sort: sort ?? this.sort,
       minPrice: updatePrices ? minPrice : (minPrice ?? this.minPrice),
       maxPrice: updatePrices ? maxPrice : (maxPrice ?? this.maxPrice),
+      filters: filters ?? this.filters,
+      rootCategoryId: rootCategoryId ?? this.rootCategoryId,
       priceRangeError: priceRangeError ?? this.priceRangeError,
     );
   }

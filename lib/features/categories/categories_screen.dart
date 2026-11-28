@@ -1,30 +1,37 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/l10n/doory_strings.dart';
+import '../../core/l10n/search_strings.dart';
+import '../../core/theme/doory_colors.dart';
 import '../../core/routing/nav.dart';
-import '../../core/theme/doory_tokens.dart';
-import '../../core/theme/doory_typography.dart';
-import '../../core/widgets/category_avatar.dart';
 import '../../core/widgets/chrome.dart';
+import '../../core/widgets/ui_kit.dart';
 import '../../data/models/catalog_models.dart';
 import '../../data/repositories/providers.dart';
 import '../../data/repositories/repo_result.dart';
-import '../shell/tab_signal.dart';
+import 'category_rail.dart';
+import 'category_tile_grid.dart';
 
 class CategoriesScreen extends ConsumerStatefulWidget {
-  const CategoriesScreen({super.key});
+  const CategoriesScreen({this.initialSlug, super.key});
+
+  /// Root to select first. A child slug selects its root; an unknown or null
+  /// slug selects the first root.
+  final String? initialSlug;
 
   @override
   ConsumerState<CategoriesScreen> createState() => _CategoriesScreenState();
 }
 
 class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
-  final _scroll = ScrollController();
+  final _gridScroll = ScrollController();
+  int? _selectedId;
 
   @override
   void dispose() {
-    _scroll.dispose();
+    _gridScroll.dispose();
     super.dispose();
   }
 
@@ -33,38 +40,55 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
     await ref.read(categoriesProvider.future);
   }
 
+  static CategoryNode? _rootForSlug(List<CategoryNode> roots, String? slug) {
+    if (slug == null || slug.isEmpty) return null;
+    bool contains(CategoryNode node) =>
+        node.slug == slug || node.children.any(contains);
+    for (final root in roots) {
+      if (contains(root)) return root;
+    }
+    return null;
+  }
+
+  void _select(CategoryNode node) {
+    setState(() => _selectedId = node.id);
+    if (_gridScroll.hasClients) _gridScroll.jumpTo(0);
+  }
+
   @override
   Widget build(BuildContext context) {
-    ref.listen(tabReselectProvider, (previous, next) {
-      if (next.tab != 1 || !_scroll.hasClients) return;
-      if (MediaQuery.disableAnimationsOf(context)) {
-        _scroll.jumpTo(0);
-      } else {
-        _scroll.animateTo(
-          0,
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeOut,
-        );
-      }
-    });
     final async = ref.watch(categoriesProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text(DooryStrings.browseCategories)),
+      appBar: AppBar(
+        toolbarHeight: 56,
+        leadingWidth: 48,
+        titleSpacing: 0,
+        leading: IconButton(
+          tooltip: SearchStrings.back,
+          onPressed: () => context.pop(),
+          icon: const Icon(
+            Icons.arrow_back,
+            size: 24,
+            color: DooryColors.textPrimary,
+          ),
+        ),
+        title: Padding(
+          padding: const EdgeInsetsDirectional.only(end: 8),
+          child: DoorySearchField(
+            readOnly: true,
+            onTap: () => pushSearch(context),
+            showCamera: true,
+            onCameraTap: () => showNotWired(
+              context,
+              feature: SearchStrings.visualSearchFeature,
+            ),
+          ),
+        ),
+      ),
       body: RefreshIndicator(
         onRefresh: _refresh,
         child: async.when(
-          loading: () => ListView(
-            controller: _scroll,
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsetsDirectional.all(16),
-            children: const [
-              SkeletonBox(height: 56),
-              SizedBox(height: 8),
-              SkeletonBox(height: 56),
-              SizedBox(height: 8),
-              SkeletonBox(height: 56),
-            ],
-          ),
+          loading: () => const _CategoriesBody(loading: true),
           error: (error, stack) => ListView(
             physics: const AlwaysScrollableScrollPhysics(),
             children: [
@@ -82,9 +106,6 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
                 sample ?? const [],
               _ => const <CategoryNode>[],
             };
-            final sample =
-                result is RepoUnavailable<List<CategoryNode>> &&
-                nodes.isNotEmpty;
             if (result is RepoRejected<List<CategoryNode>> ||
                 (result is RepoUnavailable<List<CategoryNode>> &&
                     nodes.isEmpty)) {
@@ -110,18 +131,19 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
                 ],
               );
             }
-            return ListView(
-              controller: _scroll,
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsetsDirectional.only(bottom: 24),
-              children: [
-                if (sample)
-                  const Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16, 12, 16, 4),
-                    child: DemoLabel(),
-                  ),
-                for (final node in nodes) _CategoryTile(node: node, depth: 0),
-              ],
+            final selectedId =
+                _selectedId ??
+                _rootForSlug(nodes, widget.initialSlug)?.id ??
+                nodes.first.id;
+            final selected =
+                nodes.where((n) => n.id == selectedId).firstOrNull ??
+                nodes.first;
+            return _CategoriesBody(
+              roots: nodes,
+              selected: selected,
+              sample: result is RepoUnavailable<List<CategoryNode>>,
+              onSelect: _select,
+              gridController: _gridScroll,
             );
           },
         ),
@@ -130,68 +152,54 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
   }
 }
 
-class _CategoryTile extends StatefulWidget {
-  const _CategoryTile({required this.node, required this.depth});
+class _CategoriesBody extends StatelessWidget {
+  const _CategoriesBody({
+    this.roots = const [],
+    this.selected,
+    this.onSelect,
+    this.loading = false,
+    this.sample = false,
+    this.gridController,
+  });
 
-  final CategoryNode node;
-  final int depth;
-
-  @override
-  State<_CategoryTile> createState() => _CategoryTileState();
-}
-
-class _CategoryTileState extends State<_CategoryTile> {
-  bool _open = false;
+  final List<CategoryNode> roots;
+  final CategoryNode? selected;
+  final ValueChanged<CategoryNode>? onSelect;
+  final bool loading;
+  final bool sample;
+  final ScrollController? gridController;
 
   @override
   Widget build(BuildContext context) {
-    final tokens = DooryTokens.of(context);
-    final node = widget.node;
-    final hasChildren = node.children.isNotEmpty;
-    return Column(
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        InkWell(
-          onTap: () => pushCategory(context, node.slug),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 48),
-            child: Padding(
-              padding: EdgeInsetsDirectional.only(
-                start: 16 + widget.depth * 16,
-                end: 8,
-                top: 8,
-                bottom: 8,
+        CategoryRail(
+          roots: roots,
+          selectedId: selected?.id,
+          onSelect: onSelect ?? (_) {},
+          loading: loading,
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (sample)
+                const Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
+                  child: DemoLabel(),
+                ),
+              Expanded(
+                child: CategoryTileGrid(
+                  root: selected,
+                  loading: loading,
+                  controller: gridController,
+                  onOpen: (node) => pushCategory(context, node.slug),
+                ),
               ),
-              child: Row(
-                children: [
-                  CategoryAvatar(
-                    name: node.name,
-                    imageUrl: node.imageUrl,
-                    size: 36,
-                    backgroundColor: tokens.shortcutPastels.toneAt(node.id),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      node.name,
-                      style: DooryTypography.body(context),
-                    ),
-                  ),
-                  if (hasChildren)
-                    IconButton(
-                      tooltip: _open
-                          ? DooryStrings.collapse
-                          : DooryStrings.expand,
-                      onPressed: () => setState(() => _open = !_open),
-                      icon: Icon(_open ? Icons.expand_less : Icons.expand_more),
-                    ),
-                ],
-              ),
-            ),
+            ],
           ),
         ),
-        if (_open)
-          for (final child in node.children)
-            _CategoryTile(node: child, depth: widget.depth + 1),
       ],
     );
   }

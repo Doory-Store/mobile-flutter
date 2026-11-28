@@ -10,6 +10,8 @@ abstract final class DooryStrings {
   static const searchAction = 'بحث';
   static const viewAll = 'عرض الكل';
   static const browseCategories = 'تصفّح الفئات';
+  static const allCategories = 'كل الفئات';
+  static const newBadge = 'جديد';
   static const featured = 'مختارات';
   static const latest = 'وصل حديثًا';
   static const recentlyViewed = 'شاهدته مؤخرًا';

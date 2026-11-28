@@ -48,6 +48,7 @@ class ListingController extends FamilyNotifier<ListingState, String> {
         updatePrices: true,
         minPrice: min,
         maxPrice: max,
+        filters: state.filters.copyWith(minPrice: min, maxPrice: max),
         priceRangeError: true,
       );
       return;
@@ -56,10 +57,40 @@ class ListingController extends FamilyNotifier<ListingState, String> {
       updatePrices: true,
       minPrice: min,
       maxPrice: max,
+      filters: state.filters.copyWith(
+        minPrice: min,
+        maxPrice: max,
+        clearPrice: min == null && max == null,
+      ),
       priceRangeError: false,
     );
     await reload();
   }
+
+  Future<void> applyFilters(ListingFilters filters) async {
+    if (filters.minPrice != null &&
+        filters.maxPrice != null &&
+        filters.minPrice! > filters.maxPrice!) {
+      state = state.copyWith(
+        filters: filters,
+        updatePrices: true,
+        minPrice: filters.minPrice,
+        maxPrice: filters.maxPrice,
+        priceRangeError: true,
+      );
+      return;
+    }
+    state = state.copyWith(
+      filters: filters,
+      updatePrices: true,
+      minPrice: filters.minPrice,
+      maxPrice: filters.maxPrice,
+      priceRangeError: false,
+    );
+    await reload();
+  }
+
+  Future<void> clearFilters() => applyFilters(ListingFilters.empty);
 
   Future<void> _fetch({required bool reset}) async {
     final generation = ++_generation;
@@ -129,10 +160,10 @@ class ListingController extends FamilyNotifier<ListingState, String> {
         .read(catalogRepositoryProvider)
         .products(
           ProductsQuery(
-            categoryId: node?.id,
+            categoryId: state.filters.categoryId ?? node?.id,
             sort: sort,
-            minPriceSyp: minPrice,
-            maxPriceSyp: maxPrice,
+            minPriceSyp: state.filters.minPrice ?? minPrice,
+            maxPriceSyp: state.filters.maxPrice ?? maxPrice,
             page: clampPage(nextPage, reset ? nextPage : state.lastPage),
             perPage: 24,
           ),
@@ -155,6 +186,7 @@ class ListingController extends FamilyNotifier<ListingState, String> {
           failure: ListingFailure.none,
           categoryName: node?.name,
           children: node?.children,
+          rootCategoryId: node?.id,
           clearMessage: true,
         );
       case RepoUnavailable<ProductPage>(:final sample, :final message):
@@ -172,6 +204,7 @@ class ListingController extends FamilyNotifier<ListingState, String> {
               : DooryStrings.resultsMayBeSample,
           categoryName: node?.name,
           children: node?.children,
+          rootCategoryId: node?.id,
         );
         if (message != null && sample == null) {
           state = state.copyWith(message: message);
@@ -186,6 +219,7 @@ class ListingController extends FamilyNotifier<ListingState, String> {
           message: message,
           categoryName: node?.name,
           children: node?.children,
+          rootCategoryId: node?.id,
         );
       case RepoNotFound<ProductPage>():
         state = state.copyWith(

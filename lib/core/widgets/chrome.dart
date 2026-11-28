@@ -1,6 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../l10n/doory_strings.dart';
+import '../l10n/search_strings.dart';
+import '../theme/doory_colors.dart';
 import '../theme/doory_tokens.dart';
 import '../theme/doory_typography.dart';
 
@@ -174,47 +176,105 @@ Future<void> showCheckoutComing(BuildContext context) {
 /// Quiet search field. 44px tall, 20px radius, magnifier at the inline end.
 class DoorySearchField extends StatelessWidget {
   const DoorySearchField({
-    required this.controller,
+    this.controller,
     this.onSubmitted,
     this.onChanged,
     this.readOnly = false,
     this.onTap,
     this.autofocus = false,
+    this.showCamera = false,
+    this.onCameraTap,
+    this.hintText,
     super.key,
   });
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final ValueChanged<String>? onSubmitted;
   final ValueChanged<String>? onChanged;
   final bool readOnly;
   final VoidCallback? onTap;
   final bool autofocus;
 
+  /// Camera / visual search. Not wired; the caller shows [showNotWired].
+  // BACKEND: MISSING visual / image search endpoint.
+  final bool showCamera;
+  final VoidCallback? onCameraTap;
+  final String? hintText;
+
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
     return SizedBox(
-      height: 44,
+      height: 40,
       child: TextField(
         controller: controller,
         readOnly: readOnly,
+        // A read-only pill only opens search: no cursor, no keyboard, and no
+        // lingering focus ring when the shopper comes back.
+        canRequestFocus: !readOnly,
+        showCursor: !readOnly,
+        enableInteractiveSelection: !readOnly,
         onTap: onTap,
         autofocus: autofocus,
         onSubmitted: onSubmitted,
         onChanged: onChanged,
         textInputAction: TextInputAction.search,
-        style: DooryTypography.body(context),
+        style: DooryTypography.body(context)
+            .copyWith(fontSize: 14, color: DooryColors.textPrimary),
         decoration: InputDecoration(
           isDense: true,
-          hintText: DooryStrings.searchHint,
-          contentPadding: const EdgeInsetsDirectional.fromSTEB(16, 10, 8, 10),
-          suffixIcon: IconButton(
-            tooltip: DooryStrings.searchAction,
-            onPressed: () => onSubmitted?.call(controller.text),
-            icon: Icon(Icons.search, color: scheme.primary),
+          filled: true,
+          fillColor: DooryColors.surfaceSubtle,
+          hintText: hintText ?? DooryStrings.searchHint,
+          contentPadding: const EdgeInsetsDirectional.fromSTEB(0, 8, 8, 8),
+          prefixIcon: const Icon(
+            Icons.search,
+            size: 24,
+            color: DooryColors.primary,
           ),
+          prefixIconConstraints: const BoxConstraints(
+            minWidth: 40,
+            minHeight: 40,
+          ),
+          suffixIcon: showCamera
+              ? _VisualSearchButton(onPressed: onCameraTap)
+              : null,
+          suffixIconConstraints: showCamera
+              ? const BoxConstraints(minWidth: 48, minHeight: 40)
+              : null,
         ),
       ),
+    );
+  }
+}
+
+class _VisualSearchButton extends StatelessWidget {
+  const _VisualSearchButton({this.onPressed});
+
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(
+          height: 20,
+          child: VerticalDivider(
+            width: 1,
+            thickness: 1,
+            color: DooryColors.border,
+          ),
+        ),
+        IconButton(
+          tooltip: SearchStrings.visualSearch,
+          onPressed: onPressed,
+          icon: const Icon(
+            Icons.photo_camera_outlined,
+            size: 24,
+            color: DooryColors.textPrimary,
+          ),
+        ),
+      ],
     );
   }
 }
