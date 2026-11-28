@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../core/l10n/doory_strings.dart';
 import '../core/routing/home_collection.dart';
 import '../core/widgets/chrome.dart';
+import '../data/models/catalog_models.dart';
 import '../features/account/account_screen.dart';
 import '../features/account/profile_screen.dart';
 import '../features/addresses/address_form_screen.dart';
@@ -24,6 +25,7 @@ import '../features/notifications/notifications_screen.dart';
 import '../features/orders/order_detail_screen.dart';
 import '../features/orders/orders_screen.dart';
 import '../features/product/product_screen.dart';
+import '../features/search/browsing_history_screen.dart';
 import '../features/search/search_screen.dart';
 import '../features/settings/settings_screen.dart';
 import '../features/shell/doory_shell.dart';
@@ -40,6 +42,10 @@ List<RouteBase> browseRoutes() {
           SearchScreen(initialQuery: state.uri.queryParameters['q'] ?? ''),
     ),
     GoRoute(
+      path: 'history',
+      builder: (context, state) => const BrowsingHistoryScreen(),
+    ),
+    GoRoute(
       path: 'products',
       builder: (context, state) => CollectionScreen(
         collection: HomeCollection.parse(
@@ -54,8 +60,12 @@ List<RouteBase> browseRoutes() {
     ),
     GoRoute(
       path: 'p/:ref',
-      builder: (context, state) =>
-          ProductScreen(ref: state.pathParameters['ref']!),
+      builder: (context, state) => ProductScreen(
+        ref: state.pathParameters['ref']!,
+        card: state.extra is ProductCardModel
+            ? state.extra as ProductCardModel
+            : null,
+      ),
     ),
     GoRoute(
       path: 's/:slug',

@@ -1,6 +1,7 @@
 import 'package:doory_mobile/app/app.dart';
 import 'package:doory_mobile/core/config/app_config.dart';
 import 'package:doory_mobile/core/l10n/doory_strings.dart';
+import 'package:doory_mobile/core/l10n/search_strings.dart';
 import 'package:doory_mobile/core/network/api_exception.dart';
 import 'package:doory_mobile/core/theme/doory_theme.dart';
 import 'package:doory_mobile/core/widgets/chrome.dart';
@@ -149,7 +150,10 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text(DooryStrings.demo), findsWidgets);
-    expect(find.text('خبز تنور بلدي'), findsWidgets);
+    expect(
+      find.textContaining('خبز تنور بلدي', findRichText: true),
+      findsWidgets,
+    );
     expect(find.text(DooryStrings.retry), findsWidgets);
   });
 
@@ -185,7 +189,10 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('البيانات غير صالحة'), findsOneWidget);
-    expect(find.text('خبز تنور بلدي'), findsNothing);
+    expect(
+      find.textContaining('خبز تنور بلدي', findRichText: true),
+      findsNothing,
+    );
     expect(find.text(DooryStrings.demo), findsNothing);
   });
 
@@ -241,7 +248,8 @@ void main() {
 
       await tester.pumpWidget(app(''));
       await tester.pumpAndSettle();
-      expect(find.text(DooryStrings.emptySearch), findsOneWidget);
+      // Trendyol landing: popular searches, no request before a query.
+      expect(find.text(SearchStrings.popularTitle), findsOneWidget);
       expect(transport.calls.where((path) => path == '/search'), isEmpty);
 
       transport.calls.clear();
@@ -249,7 +257,74 @@ void main() {
       await tester.pumpAndSettle();
       expect(transport.calls, contains('/search'));
       expect(find.text(DooryStrings.degraded), findsOneWidget);
-      expect(find.text(DooryStrings.noResults), findsOneWidget);
+      expect(find.text(SearchStrings.noResultsFor('خبز')), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'home shortcuts row does not overflow without Cairo, including two-line names',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+
+      final overflows = <String>[];
+      final previous = FlutterError.onError;
+      FlutterError.onError = (details) {
+        final text = details.exceptionAsString();
+        if (text.contains('overflowed')) {
+          overflows.add(text);
+        } else {
+          previous?.call(details);
+        }
+      };
+      addTearDown(() => FlutterError.onError = previous);
+
+      final prefs = await _prefs();
+      final transport = FakeTransport((path, query) async {
+        return switch (path) {
+          '/home' => {'featured': [], 'latest': []},
+          '/categories' => [
+            {'id': 3, 'name': 'بقالة', 'slug': 'grocery', 'parent_id': null},
+            {
+              'id': 11,
+              'name': 'حبوب وبقوليات',
+              'slug': 'grains',
+              'parent_id': null,
+            },
+            {
+              'id': 7,
+              'name': 'منظفات وعناية بالمنزل',
+              'slug': 'cleaning',
+              'parent_id': null,
+            },
+          ],
+          '/meta/status' => {'maintenance_active': false},
+          _ => throw const ApiException(ApiFailureKind.notFound, 'no'),
+        };
+      });
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            sharedPreferencesProvider.overrideWithValue(prefs),
+            apiTransportProvider.overrideWith((ref) => transport),
+            appConfigProvider.overrideWithValue(
+              const AppConfig(
+                baseUrl: 'https://example.test/api/v1',
+                timeout: Duration(seconds: 4),
+                flavor: AppFlavor.dev,
+              ),
+            ),
+          ],
+          child: const DooryApp(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('بقالة'), findsWidgets);
+      expect(find.textContaining('حبوب'), findsWidgets);
+      expect(overflows, isEmpty);
     },
   );
 }

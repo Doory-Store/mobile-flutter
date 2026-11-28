@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/l10n/doory_strings.dart';
+import '../../core/l10n/search_strings.dart';
 import '../../core/l10n/shop_strings.dart';
+import '../../core/routing/nav.dart';
 import '../../core/theme/doory_colors.dart';
 import '../../core/theme/doory_tokens.dart';
 import '../../core/theme/doory_typography.dart';
@@ -54,6 +56,12 @@ class AccountScreen extends ConsumerWidget {
                   icon: Icons.favorite_border,
                   label: DooryStrings.tabFavorites,
                   onTap: () => context.go('/favorites'),
+                ),
+                // Local list; BACKEND: MISSING server-side history list/clear.
+                _MenuTile(
+                  icon: Icons.history,
+                  label: SearchStrings.browsingHistory,
+                  onTap: () => pushHistory(context),
                 ),
                 _MenuTile(
                   icon: Icons.notifications_none,

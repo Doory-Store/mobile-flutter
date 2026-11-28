@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/l10n/doory_strings.dart';
+import '../../core/l10n/search_strings.dart';
 import '../notifications/notification_bell.dart';
 import '../../core/routing/home_collection.dart';
 import '../../core/routing/nav.dart';
@@ -9,6 +10,7 @@ import '../../core/theme/doory_tokens.dart';
 import '../../core/theme/doory_typography.dart';
 import '../../core/widgets/category_avatar.dart';
 import '../../core/widgets/chrome.dart';
+import '../../core/widgets/ui_kit.dart';
 import '../../core/widgets/product_shelf.dart';
 import '../../data/models/catalog_models.dart';
 import '../../data/repositories/providers.dart';
@@ -24,12 +26,10 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final _scroll = ScrollController();
-  final _search = TextEditingController();
 
   @override
   void dispose() {
     _scroll.dispose();
-    _search.dispose();
     super.dispose();
   }
 
@@ -72,8 +72,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
             const SizedBox(height: 8),
             DoorySearchField(
-              controller: _search,
-              onSubmitted: (value) => pushSearch(context, value),
+              readOnly: true,
+              onTap: () => pushSearch(context),
+              showCamera: true,
+              onCameraTap: () => showNotWired(
+                context,
+                feature: SearchStrings.visualSearchFeature,
+              ),
             ),
           ],
         ),
@@ -203,8 +208,7 @@ class _HomeBody extends StatelessWidget {
               title: DooryStrings.recentlyViewed,
               products: content.recentlyViewed,
               sample: sample,
-              onViewAll: () =>
-                  pushCollection(context, HomeCollection.recentlyViewed),
+              onViewAll: () => pushHistory(context),
             ),
           if (sample) const _DemoMosaic(),
           _PopularCategories(categories: categories),

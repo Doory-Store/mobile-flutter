@@ -1,4 +1,5 @@
 import '../l10n/doory_strings.dart';
+import '../l10n/search_strings.dart';
 
 /// Home shelves that open a full listing from «عرض الكل».
 ///
@@ -7,7 +8,10 @@ import '../l10n/doory_strings.dart';
 enum HomeCollection {
   featured('featured', DooryStrings.featured),
   latest('latest', DooryStrings.latest),
-  recentlyViewed('recent', DooryStrings.recentlyViewed);
+  recentlyViewed('recent', DooryStrings.recentlyViewed),
+
+  /// «قطع لك خصيصًا» on the search page: sample data (no personalised feed).
+  recommended('recommended', SearchStrings.recommendedTitle);
 
   const HomeCollection(this.key, this.title);
 

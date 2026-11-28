@@ -7,6 +7,7 @@ import '../../data/models/catalog_models.dart';
 import '../../data/repositories/providers.dart';
 import '../../data/repositories/repo_result.dart';
 import 'catalog_widgets.dart';
+import '../search/recommended_shelf.dart';
 import 'listing_screen.dart';
 
 /// Full listing behind a home shelf's «عرض الكل».
@@ -27,6 +28,9 @@ class CollectionScreen extends ConsumerWidget {
       title: collection.title,
     );
     if (collection == HomeCollection.latest) return fullCatalog;
+    if (collection == HomeCollection.recommended) {
+      return const RecommendedCollectionScreen();
+    }
 
     final home = ref.watch(homeProvider);
     final content = switch (home.asData?.value) {
@@ -47,6 +51,7 @@ class CollectionScreen extends ConsumerWidget {
       HomeCollection.featured => content?.featured,
       HomeCollection.recentlyViewed => content?.recentlyViewed,
       HomeCollection.latest => content?.latest,
+      HomeCollection.recommended => null,
     };
     if (items == null || items.isEmpty) return fullCatalog;
 

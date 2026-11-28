@@ -33,4 +33,10 @@ final localIdSetProvider =
 
 const followedStoresKey = 'followed-stores';
 const priceWatchesKey = 'price-watches';
+const stockWatchesKey = 'stock-watches';
 const recentSearchesKey = 'recent-searches';
+const browsingHistoryKey = 'browsing-history';
+
+/// On/off switch of browsing history (default on). Stored without the
+/// `doory.mock.` prefix: it is a real preference, not demo data.
+const browsingHistoryEnabledKey = 'doory.browsing-history-enabled';

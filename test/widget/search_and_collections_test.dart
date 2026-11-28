@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:doory_mobile/app/app.dart';
 import 'package:doory_mobile/core/config/app_config.dart';
 import 'package:doory_mobile/core/l10n/doory_strings.dart';
+import 'package:doory_mobile/core/l10n/search_strings.dart';
 import 'package:doory_mobile/core/network/api_exception.dart';
 import 'package:doory_mobile/core/network/api_transport.dart';
 import 'package:doory_mobile/core/routing/home_collection.dart';
@@ -123,14 +124,26 @@ void main() {
       await tester.pump(const Duration(milliseconds: 500));
       await tester.pumpAndSettle();
 
+      // Typing shows suggestions (Trendyol) and keeps the composing region;
+      // nothing is sent to /search until the shopper submits.
       expect(field.controller!.text, 'زيت');
       expect(
         field.controller!.value.composing,
         const TextRange(start: 0, end: 3),
       );
-      expect(queries, ['زيت']);
-      expect(find.text('زيت زيتون بلدي'), findsOneWidget);
+      expect(find.text(SearchStrings.relatedTitle), findsOneWidget);
+      expect(queries, isEmpty);
 
+      await tester.testTextInput.receiveAction(TextInputAction.search);
+      await tester.pumpAndSettle();
+      expect(queries, ['زيت']);
+      // The card title sits inline after the seller («متجر ✓ الاسم»).
+      expect(
+        find.textContaining('زيت زيتون بلدي', findRichText: true),
+        findsOneWidget,
+      );
+
+      await tester.showKeyboard(find.byType(TextField));
       tester.testTextInput.updateEditingValue(
         const TextEditingValue(
           text: 'زيت زيتون',
@@ -138,6 +151,7 @@ void main() {
         ),
       );
       await tester.pump(const Duration(milliseconds: 500));
+      await tester.testTextInput.receiveAction(TextInputAction.search);
       await tester.pumpAndSettle();
       expect(field.controller!.text, 'زيت زيتون');
       expect(queries.last, 'زيت زيتون');
@@ -212,10 +226,13 @@ void main() {
     // «وصل حديثًا» pages the whole catalog.
     await tester.tap(viewAll.at(1));
     await tester.pumpAndSettle();
-    expect(find.text(DooryStrings.latest), findsOneWidget);
+    expect(find.textContaining(DooryStrings.latest), findsWidgets);
     expect(productQueries, isNotEmpty);
     expect(productQueries.last!.containsKey('category'), isFalse);
-    expect(find.text('لبنة بلدية'), findsOneWidget);
+    expect(
+      find.textContaining('لبنة بلدية', findRichText: true),
+      findsOneWidget,
+    );
     expect(find.text(DooryStrings.emptyCategory), findsNothing);
 
     await tester.binding.handlePopRoute();
@@ -225,7 +242,13 @@ void main() {
     await tester.tap(viewAll.at(0));
     await tester.pumpAndSettle();
     expect(find.text(DooryStrings.featured), findsOneWidget);
-    expect(find.text('خبز تنور بلدي'), findsOneWidget);
-    expect(find.text('بقلاوة بالفستق'), findsOneWidget);
+    expect(
+      find.textContaining('خبز تنور بلدي', findRichText: true),
+      findsOneWidget,
+    );
+    expect(
+      find.textContaining('بقلاوة بالفستق', findRichText: true),
+      findsOneWidget,
+    );
   });
 }
