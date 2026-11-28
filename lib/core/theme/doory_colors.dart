@@ -42,4 +42,8 @@ abstract final class DooryColors {
 
   static const shadowCard = Color(0x14000000);
   static const shadowFavorite = Color(0x33000000);
+
+  /// Review marker: card pieces the server does not provide yet
+  /// (`BACKEND: MISSING`). Remove once the data exists.
+  static const backendMissing = Color(0xFFFF0000);
 }

@@ -289,7 +289,7 @@ as String?,
 /// @nodoc
 mixin _$ProductCardDto {
 
-@JsonKey(fromJson: intOrNull) int? get id;@JsonKey(fromJson: stringOrNull) String? get slug;@JsonKey(fromJson: stringOrNull) String? get path;@JsonKey(fromJson: stringOrNull) String? get name;@JsonKey(fromJson: photoUrlOrNull) String? get photo;@JsonKey(fromJson: stringOrNull) String? get storeName;@JsonKey(fromJson: stringOrNull) String? get storeSlug;@JsonKey(fromJson: boolOrNull) bool? get available;@JsonKey(fromJson: intOrNull) int? get priceSyp;@JsonKey(fromJson: boolOrNull) bool? get priceIsEstimate;@JsonKey(fromJson: boolOrNull) bool? get canPurchase;@JsonKey(fromJson: stringOrNull) String? get currencyListed;@JsonKey(fromJson: boolOrNull) bool? get isFavorited;@JsonKey(fromJson: doubleOrNull) double? get averageRating;@JsonKey(fromJson: intOrNull) int? get reviewsCount;@JsonKey(fromJson: shareFromJson, toJson: shareToJson) ShareDto? get share;
+@JsonKey(fromJson: intOrNull) int? get id;@JsonKey(fromJson: stringOrNull) String? get slug;@JsonKey(fromJson: stringOrNull) String? get path;@JsonKey(fromJson: stringOrNull) String? get name;@JsonKey(fromJson: photoUrlOrNull) String? get photo;@JsonKey(fromJson: stringOrNull) String? get storeName;@JsonKey(fromJson: stringOrNull) String? get storeSlug;@JsonKey(fromJson: boolOrNull) bool? get available;@JsonKey(fromJson: intOrNull) int? get priceSyp;@JsonKey(fromJson: boolOrNull) bool? get priceIsEstimate;@JsonKey(fromJson: boolOrNull) bool? get canPurchase;@JsonKey(fromJson: stringOrNull) String? get currencyListed;@JsonKey(fromJson: boolOrNull) bool? get isFavorited;@JsonKey(fromJson: doubleOrNull) double? get averageRating;@JsonKey(fromJson: intOrNull) int? get reviewsCount;@JsonKey(fromJson: shareFromJson, toJson: shareToJson) ShareDto? get share;@JsonKey(fromJson: stringOrNull) String? get brandName;@JsonKey(fromJson: boolOrNull) bool? get brandVerified;@JsonKey(fromJson: intOrNull) int? get compareAtSyp;@JsonKey(fromJson: intOrNull) int? get discountPercent;@JsonKey(fromJson: badgeLabelsFromJson) List<String>? get badges;@JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson) ViewerActivityDto? get viewerActivity;
 /// Create a copy of ProductCardDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -303,20 +303,20 @@ $ProductCardDtoCopyWith<ProductCardDto> get copyWith => _$ProductCardDtoCopyWith
 @override
 bool operator ==(Object other) {
   final _this = this as ProductCardDto;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductCardDto&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.slug, _this.slug) || other.slug == _this.slug)&&(identical(other.path, _this.path) || other.path == _this.path)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.photo, _this.photo) || other.photo == _this.photo)&&(identical(other.storeName, _this.storeName) || other.storeName == _this.storeName)&&(identical(other.storeSlug, _this.storeSlug) || other.storeSlug == _this.storeSlug)&&(identical(other.available, _this.available) || other.available == _this.available)&&(identical(other.priceSyp, _this.priceSyp) || other.priceSyp == _this.priceSyp)&&(identical(other.priceIsEstimate, _this.priceIsEstimate) || other.priceIsEstimate == _this.priceIsEstimate)&&(identical(other.canPurchase, _this.canPurchase) || other.canPurchase == _this.canPurchase)&&(identical(other.currencyListed, _this.currencyListed) || other.currencyListed == _this.currencyListed)&&(identical(other.isFavorited, _this.isFavorited) || other.isFavorited == _this.isFavorited)&&(identical(other.averageRating, _this.averageRating) || other.averageRating == _this.averageRating)&&(identical(other.reviewsCount, _this.reviewsCount) || other.reviewsCount == _this.reviewsCount)&&(identical(other.share, _this.share) || other.share == _this.share));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductCardDto&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.slug, _this.slug) || other.slug == _this.slug)&&(identical(other.path, _this.path) || other.path == _this.path)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.photo, _this.photo) || other.photo == _this.photo)&&(identical(other.storeName, _this.storeName) || other.storeName == _this.storeName)&&(identical(other.storeSlug, _this.storeSlug) || other.storeSlug == _this.storeSlug)&&(identical(other.available, _this.available) || other.available == _this.available)&&(identical(other.priceSyp, _this.priceSyp) || other.priceSyp == _this.priceSyp)&&(identical(other.priceIsEstimate, _this.priceIsEstimate) || other.priceIsEstimate == _this.priceIsEstimate)&&(identical(other.canPurchase, _this.canPurchase) || other.canPurchase == _this.canPurchase)&&(identical(other.currencyListed, _this.currencyListed) || other.currencyListed == _this.currencyListed)&&(identical(other.isFavorited, _this.isFavorited) || other.isFavorited == _this.isFavorited)&&(identical(other.averageRating, _this.averageRating) || other.averageRating == _this.averageRating)&&(identical(other.reviewsCount, _this.reviewsCount) || other.reviewsCount == _this.reviewsCount)&&(identical(other.share, _this.share) || other.share == _this.share)&&(identical(other.brandName, _this.brandName) || other.brandName == _this.brandName)&&(identical(other.brandVerified, _this.brandVerified) || other.brandVerified == _this.brandVerified)&&(identical(other.compareAtSyp, _this.compareAtSyp) || other.compareAtSyp == _this.compareAtSyp)&&(identical(other.discountPercent, _this.discountPercent) || other.discountPercent == _this.discountPercent)&&const DeepCollectionEquality().equals(other.badges, _this.badges)&&(identical(other.viewerActivity, _this.viewerActivity) || other.viewerActivity == _this.viewerActivity));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as ProductCardDto;
-  return Object.hash(runtimeType,_this.id,_this.slug,_this.path,_this.name,_this.photo,_this.storeName,_this.storeSlug,_this.available,_this.priceSyp,_this.priceIsEstimate,_this.canPurchase,_this.currencyListed,_this.isFavorited,_this.averageRating,_this.reviewsCount,_this.share);
+  return Object.hashAll([runtimeType,_this.id,_this.slug,_this.path,_this.name,_this.photo,_this.storeName,_this.storeSlug,_this.available,_this.priceSyp,_this.priceIsEstimate,_this.canPurchase,_this.currencyListed,_this.isFavorited,_this.averageRating,_this.reviewsCount,_this.share,_this.brandName,_this.brandVerified,_this.compareAtSyp,_this.discountPercent,const DeepCollectionEquality().hash(_this.badges),_this.viewerActivity]);
 }
 
 @override
 String toString() {
   final _this = this as ProductCardDto;
-  return 'ProductCardDto(id: ${_this.id}, slug: ${_this.slug}, path: ${_this.path}, name: ${_this.name}, photo: ${_this.photo}, storeName: ${_this.storeName}, storeSlug: ${_this.storeSlug}, available: ${_this.available}, priceSyp: ${_this.priceSyp}, priceIsEstimate: ${_this.priceIsEstimate}, canPurchase: ${_this.canPurchase}, currencyListed: ${_this.currencyListed}, isFavorited: ${_this.isFavorited}, averageRating: ${_this.averageRating}, reviewsCount: ${_this.reviewsCount}, share: ${_this.share})';
+  return 'ProductCardDto(id: ${_this.id}, slug: ${_this.slug}, path: ${_this.path}, name: ${_this.name}, photo: ${_this.photo}, storeName: ${_this.storeName}, storeSlug: ${_this.storeSlug}, available: ${_this.available}, priceSyp: ${_this.priceSyp}, priceIsEstimate: ${_this.priceIsEstimate}, canPurchase: ${_this.canPurchase}, currencyListed: ${_this.currencyListed}, isFavorited: ${_this.isFavorited}, averageRating: ${_this.averageRating}, reviewsCount: ${_this.reviewsCount}, share: ${_this.share}, brandName: ${_this.brandName}, brandVerified: ${_this.brandVerified}, compareAtSyp: ${_this.compareAtSyp}, discountPercent: ${_this.discountPercent}, badges: ${_this.badges}, viewerActivity: ${_this.viewerActivity})';
 }
 
 
@@ -327,11 +327,11 @@ abstract mixin class $ProductCardDtoCopyWith<$Res>  {
   factory $ProductCardDtoCopyWith(ProductCardDto value, $Res Function(ProductCardDto) _then) = _$ProductCardDtoCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(fromJson: intOrNull) int? id,@JsonKey(fromJson: stringOrNull) String? slug,@JsonKey(fromJson: stringOrNull) String? path,@JsonKey(fromJson: stringOrNull) String? name,@JsonKey(fromJson: photoUrlOrNull) String? photo,@JsonKey(fromJson: stringOrNull) String? storeName,@JsonKey(fromJson: stringOrNull) String? storeSlug,@JsonKey(fromJson: boolOrNull) bool? available,@JsonKey(fromJson: intOrNull) int? priceSyp,@JsonKey(fromJson: boolOrNull) bool? priceIsEstimate,@JsonKey(fromJson: boolOrNull) bool? canPurchase,@JsonKey(fromJson: stringOrNull) String? currencyListed,@JsonKey(fromJson: boolOrNull) bool? isFavorited,@JsonKey(fromJson: doubleOrNull) double? averageRating,@JsonKey(fromJson: intOrNull) int? reviewsCount,@JsonKey(fromJson: shareFromJson, toJson: shareToJson) ShareDto? share
+@JsonKey(fromJson: intOrNull) int? id,@JsonKey(fromJson: stringOrNull) String? slug,@JsonKey(fromJson: stringOrNull) String? path,@JsonKey(fromJson: stringOrNull) String? name,@JsonKey(fromJson: photoUrlOrNull) String? photo,@JsonKey(fromJson: stringOrNull) String? storeName,@JsonKey(fromJson: stringOrNull) String? storeSlug,@JsonKey(fromJson: boolOrNull) bool? available,@JsonKey(fromJson: intOrNull) int? priceSyp,@JsonKey(fromJson: boolOrNull) bool? priceIsEstimate,@JsonKey(fromJson: boolOrNull) bool? canPurchase,@JsonKey(fromJson: stringOrNull) String? currencyListed,@JsonKey(fromJson: boolOrNull) bool? isFavorited,@JsonKey(fromJson: doubleOrNull) double? averageRating,@JsonKey(fromJson: intOrNull) int? reviewsCount,@JsonKey(fromJson: shareFromJson, toJson: shareToJson) ShareDto? share,@JsonKey(fromJson: stringOrNull) String? brandName,@JsonKey(fromJson: boolOrNull) bool? brandVerified,@JsonKey(fromJson: intOrNull) int? compareAtSyp,@JsonKey(fromJson: intOrNull) int? discountPercent,@JsonKey(fromJson: badgeLabelsFromJson) List<String>? badges,@JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson) ViewerActivityDto? viewerActivity
 });
 
 
-$ShareDtoCopyWith<$Res>? get share;
+$ShareDtoCopyWith<$Res>? get share;$ViewerActivityDtoCopyWith<$Res>? get viewerActivity;
 
 }
 /// @nodoc
@@ -344,7 +344,7 @@ class _$ProductCardDtoCopyWithImpl<$Res>
 
 /// Create a copy of ProductCardDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? slug = freezed,Object? path = freezed,Object? name = freezed,Object? photo = freezed,Object? storeName = freezed,Object? storeSlug = freezed,Object? available = freezed,Object? priceSyp = freezed,Object? priceIsEstimate = freezed,Object? canPurchase = freezed,Object? currencyListed = freezed,Object? isFavorited = freezed,Object? averageRating = freezed,Object? reviewsCount = freezed,Object? share = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? slug = freezed,Object? path = freezed,Object? name = freezed,Object? photo = freezed,Object? storeName = freezed,Object? storeSlug = freezed,Object? available = freezed,Object? priceSyp = freezed,Object? priceIsEstimate = freezed,Object? canPurchase = freezed,Object? currencyListed = freezed,Object? isFavorited = freezed,Object? averageRating = freezed,Object? reviewsCount = freezed,Object? share = freezed,Object? brandName = freezed,Object? brandVerified = freezed,Object? compareAtSyp = freezed,Object? discountPercent = freezed,Object? badges = freezed,Object? viewerActivity = freezed,}) {
   return _then(ProductCardDto(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,slug: freezed == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
@@ -362,7 +362,13 @@ as String?,isFavorited: freezed == isFavorited ? _self.isFavorited : isFavorited
 as bool?,averageRating: freezed == averageRating ? _self.averageRating : averageRating // ignore: cast_nullable_to_non_nullable
 as double?,reviewsCount: freezed == reviewsCount ? _self.reviewsCount : reviewsCount // ignore: cast_nullable_to_non_nullable
 as int?,share: freezed == share ? _self.share : share // ignore: cast_nullable_to_non_nullable
-as ShareDto?,
+as ShareDto?,brandName: freezed == brandName ? _self.brandName : brandName // ignore: cast_nullable_to_non_nullable
+as String?,brandVerified: freezed == brandVerified ? _self.brandVerified : brandVerified // ignore: cast_nullable_to_non_nullable
+as bool?,compareAtSyp: freezed == compareAtSyp ? _self.compareAtSyp : compareAtSyp // ignore: cast_nullable_to_non_nullable
+as int?,discountPercent: freezed == discountPercent ? _self.discountPercent : discountPercent // ignore: cast_nullable_to_non_nullable
+as int?,badges: freezed == badges ? _self.badges : badges // ignore: cast_nullable_to_non_nullable
+as List<String>?,viewerActivity: freezed == viewerActivity ? _self.viewerActivity : viewerActivity // ignore: cast_nullable_to_non_nullable
+as ViewerActivityDto?,
   ));
 }
 /// Create a copy of ProductCardDto
@@ -376,6 +382,18 @@ $ShareDtoCopyWith<$Res>? get share {
 
   return $ShareDtoCopyWith<$Res>(_self.share!, (value) {
     return _then(_self.copyWith(share: value));
+  });
+}/// Create a copy of ProductCardDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ViewerActivityDtoCopyWith<$Res>? get viewerActivity {
+    if (_self.viewerActivity == null) {
+    return null;
+  }
+
+  return $ViewerActivityDtoCopyWith<$Res>(_self.viewerActivity!, (value) {
+    return _then(_self.copyWith(viewerActivity: value));
   });
 }
 }
@@ -459,10 +477,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: intOrNull)  int? id, @JsonKey(fromJson: stringOrNull)  String? slug, @JsonKey(fromJson: stringOrNull)  String? path, @JsonKey(fromJson: stringOrNull)  String? name, @JsonKey(fromJson: photoUrlOrNull)  String? photo, @JsonKey(fromJson: stringOrNull)  String? storeName, @JsonKey(fromJson: stringOrNull)  String? storeSlug, @JsonKey(fromJson: boolOrNull)  bool? available, @JsonKey(fromJson: intOrNull)  int? priceSyp, @JsonKey(fromJson: boolOrNull)  bool? priceIsEstimate, @JsonKey(fromJson: boolOrNull)  bool? canPurchase, @JsonKey(fromJson: stringOrNull)  String? currencyListed, @JsonKey(fromJson: boolOrNull)  bool? isFavorited, @JsonKey(fromJson: doubleOrNull)  double? averageRating, @JsonKey(fromJson: intOrNull)  int? reviewsCount, @JsonKey(fromJson: shareFromJson, toJson: shareToJson)  ShareDto? share)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: intOrNull)  int? id, @JsonKey(fromJson: stringOrNull)  String? slug, @JsonKey(fromJson: stringOrNull)  String? path, @JsonKey(fromJson: stringOrNull)  String? name, @JsonKey(fromJson: photoUrlOrNull)  String? photo, @JsonKey(fromJson: stringOrNull)  String? storeName, @JsonKey(fromJson: stringOrNull)  String? storeSlug, @JsonKey(fromJson: boolOrNull)  bool? available, @JsonKey(fromJson: intOrNull)  int? priceSyp, @JsonKey(fromJson: boolOrNull)  bool? priceIsEstimate, @JsonKey(fromJson: boolOrNull)  bool? canPurchase, @JsonKey(fromJson: stringOrNull)  String? currencyListed, @JsonKey(fromJson: boolOrNull)  bool? isFavorited, @JsonKey(fromJson: doubleOrNull)  double? averageRating, @JsonKey(fromJson: intOrNull)  int? reviewsCount, @JsonKey(fromJson: shareFromJson, toJson: shareToJson)  ShareDto? share, @JsonKey(fromJson: stringOrNull)  String? brandName, @JsonKey(fromJson: boolOrNull)  bool? brandVerified, @JsonKey(fromJson: intOrNull)  int? compareAtSyp, @JsonKey(fromJson: intOrNull)  int? discountPercent, @JsonKey(fromJson: badgeLabelsFromJson)  List<String>? badges, @JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson)  ViewerActivityDto? viewerActivity)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProductCardDto() when $default != null:
-return $default(_that.id,_that.slug,_that.path,_that.name,_that.photo,_that.storeName,_that.storeSlug,_that.available,_that.priceSyp,_that.priceIsEstimate,_that.canPurchase,_that.currencyListed,_that.isFavorited,_that.averageRating,_that.reviewsCount,_that.share);case _:
+return $default(_that.id,_that.slug,_that.path,_that.name,_that.photo,_that.storeName,_that.storeSlug,_that.available,_that.priceSyp,_that.priceIsEstimate,_that.canPurchase,_that.currencyListed,_that.isFavorited,_that.averageRating,_that.reviewsCount,_that.share,_that.brandName,_that.brandVerified,_that.compareAtSyp,_that.discountPercent,_that.badges,_that.viewerActivity);case _:
   return orElse();
 
 }
@@ -480,10 +498,10 @@ return $default(_that.id,_that.slug,_that.path,_that.name,_that.photo,_that.stor
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: intOrNull)  int? id, @JsonKey(fromJson: stringOrNull)  String? slug, @JsonKey(fromJson: stringOrNull)  String? path, @JsonKey(fromJson: stringOrNull)  String? name, @JsonKey(fromJson: photoUrlOrNull)  String? photo, @JsonKey(fromJson: stringOrNull)  String? storeName, @JsonKey(fromJson: stringOrNull)  String? storeSlug, @JsonKey(fromJson: boolOrNull)  bool? available, @JsonKey(fromJson: intOrNull)  int? priceSyp, @JsonKey(fromJson: boolOrNull)  bool? priceIsEstimate, @JsonKey(fromJson: boolOrNull)  bool? canPurchase, @JsonKey(fromJson: stringOrNull)  String? currencyListed, @JsonKey(fromJson: boolOrNull)  bool? isFavorited, @JsonKey(fromJson: doubleOrNull)  double? averageRating, @JsonKey(fromJson: intOrNull)  int? reviewsCount, @JsonKey(fromJson: shareFromJson, toJson: shareToJson)  ShareDto? share)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: intOrNull)  int? id, @JsonKey(fromJson: stringOrNull)  String? slug, @JsonKey(fromJson: stringOrNull)  String? path, @JsonKey(fromJson: stringOrNull)  String? name, @JsonKey(fromJson: photoUrlOrNull)  String? photo, @JsonKey(fromJson: stringOrNull)  String? storeName, @JsonKey(fromJson: stringOrNull)  String? storeSlug, @JsonKey(fromJson: boolOrNull)  bool? available, @JsonKey(fromJson: intOrNull)  int? priceSyp, @JsonKey(fromJson: boolOrNull)  bool? priceIsEstimate, @JsonKey(fromJson: boolOrNull)  bool? canPurchase, @JsonKey(fromJson: stringOrNull)  String? currencyListed, @JsonKey(fromJson: boolOrNull)  bool? isFavorited, @JsonKey(fromJson: doubleOrNull)  double? averageRating, @JsonKey(fromJson: intOrNull)  int? reviewsCount, @JsonKey(fromJson: shareFromJson, toJson: shareToJson)  ShareDto? share, @JsonKey(fromJson: stringOrNull)  String? brandName, @JsonKey(fromJson: boolOrNull)  bool? brandVerified, @JsonKey(fromJson: intOrNull)  int? compareAtSyp, @JsonKey(fromJson: intOrNull)  int? discountPercent, @JsonKey(fromJson: badgeLabelsFromJson)  List<String>? badges, @JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson)  ViewerActivityDto? viewerActivity)  $default,) {final _that = this;
 switch (_that) {
 case _ProductCardDto():
-return $default(_that.id,_that.slug,_that.path,_that.name,_that.photo,_that.storeName,_that.storeSlug,_that.available,_that.priceSyp,_that.priceIsEstimate,_that.canPurchase,_that.currencyListed,_that.isFavorited,_that.averageRating,_that.reviewsCount,_that.share);case _:
+return $default(_that.id,_that.slug,_that.path,_that.name,_that.photo,_that.storeName,_that.storeSlug,_that.available,_that.priceSyp,_that.priceIsEstimate,_that.canPurchase,_that.currencyListed,_that.isFavorited,_that.averageRating,_that.reviewsCount,_that.share,_that.brandName,_that.brandVerified,_that.compareAtSyp,_that.discountPercent,_that.badges,_that.viewerActivity);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -500,10 +518,10 @@ return $default(_that.id,_that.slug,_that.path,_that.name,_that.photo,_that.stor
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: intOrNull)  int? id, @JsonKey(fromJson: stringOrNull)  String? slug, @JsonKey(fromJson: stringOrNull)  String? path, @JsonKey(fromJson: stringOrNull)  String? name, @JsonKey(fromJson: photoUrlOrNull)  String? photo, @JsonKey(fromJson: stringOrNull)  String? storeName, @JsonKey(fromJson: stringOrNull)  String? storeSlug, @JsonKey(fromJson: boolOrNull)  bool? available, @JsonKey(fromJson: intOrNull)  int? priceSyp, @JsonKey(fromJson: boolOrNull)  bool? priceIsEstimate, @JsonKey(fromJson: boolOrNull)  bool? canPurchase, @JsonKey(fromJson: stringOrNull)  String? currencyListed, @JsonKey(fromJson: boolOrNull)  bool? isFavorited, @JsonKey(fromJson: doubleOrNull)  double? averageRating, @JsonKey(fromJson: intOrNull)  int? reviewsCount, @JsonKey(fromJson: shareFromJson, toJson: shareToJson)  ShareDto? share)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: intOrNull)  int? id, @JsonKey(fromJson: stringOrNull)  String? slug, @JsonKey(fromJson: stringOrNull)  String? path, @JsonKey(fromJson: stringOrNull)  String? name, @JsonKey(fromJson: photoUrlOrNull)  String? photo, @JsonKey(fromJson: stringOrNull)  String? storeName, @JsonKey(fromJson: stringOrNull)  String? storeSlug, @JsonKey(fromJson: boolOrNull)  bool? available, @JsonKey(fromJson: intOrNull)  int? priceSyp, @JsonKey(fromJson: boolOrNull)  bool? priceIsEstimate, @JsonKey(fromJson: boolOrNull)  bool? canPurchase, @JsonKey(fromJson: stringOrNull)  String? currencyListed, @JsonKey(fromJson: boolOrNull)  bool? isFavorited, @JsonKey(fromJson: doubleOrNull)  double? averageRating, @JsonKey(fromJson: intOrNull)  int? reviewsCount, @JsonKey(fromJson: shareFromJson, toJson: shareToJson)  ShareDto? share, @JsonKey(fromJson: stringOrNull)  String? brandName, @JsonKey(fromJson: boolOrNull)  bool? brandVerified, @JsonKey(fromJson: intOrNull)  int? compareAtSyp, @JsonKey(fromJson: intOrNull)  int? discountPercent, @JsonKey(fromJson: badgeLabelsFromJson)  List<String>? badges, @JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson)  ViewerActivityDto? viewerActivity)?  $default,) {final _that = this;
 switch (_that) {
 case _ProductCardDto() when $default != null:
-return $default(_that.id,_that.slug,_that.path,_that.name,_that.photo,_that.storeName,_that.storeSlug,_that.available,_that.priceSyp,_that.priceIsEstimate,_that.canPurchase,_that.currencyListed,_that.isFavorited,_that.averageRating,_that.reviewsCount,_that.share);case _:
+return $default(_that.id,_that.slug,_that.path,_that.name,_that.photo,_that.storeName,_that.storeSlug,_that.available,_that.priceSyp,_that.priceIsEstimate,_that.canPurchase,_that.currencyListed,_that.isFavorited,_that.averageRating,_that.reviewsCount,_that.share,_that.brandName,_that.brandVerified,_that.compareAtSyp,_that.discountPercent,_that.badges,_that.viewerActivity);case _:
   return null;
 
 }
@@ -515,7 +533,7 @@ return $default(_that.id,_that.slug,_that.path,_that.name,_that.photo,_that.stor
 @JsonSerializable()
 
 class _ProductCardDto implements ProductCardDto {
-  const _ProductCardDto({@JsonKey(fromJson: intOrNull) this.id, @JsonKey(fromJson: stringOrNull) this.slug, @JsonKey(fromJson: stringOrNull) this.path, @JsonKey(fromJson: stringOrNull) this.name, @JsonKey(fromJson: photoUrlOrNull) this.photo, @JsonKey(fromJson: stringOrNull) this.storeName, @JsonKey(fromJson: stringOrNull) this.storeSlug, @JsonKey(fromJson: boolOrNull) this.available, @JsonKey(fromJson: intOrNull) this.priceSyp, @JsonKey(fromJson: boolOrNull) this.priceIsEstimate, @JsonKey(fromJson: boolOrNull) this.canPurchase, @JsonKey(fromJson: stringOrNull) this.currencyListed, @JsonKey(fromJson: boolOrNull) this.isFavorited, @JsonKey(fromJson: doubleOrNull) this.averageRating, @JsonKey(fromJson: intOrNull) this.reviewsCount, @JsonKey(fromJson: shareFromJson, toJson: shareToJson) this.share});
+  const _ProductCardDto({@JsonKey(fromJson: intOrNull) this.id, @JsonKey(fromJson: stringOrNull) this.slug, @JsonKey(fromJson: stringOrNull) this.path, @JsonKey(fromJson: stringOrNull) this.name, @JsonKey(fromJson: photoUrlOrNull) this.photo, @JsonKey(fromJson: stringOrNull) this.storeName, @JsonKey(fromJson: stringOrNull) this.storeSlug, @JsonKey(fromJson: boolOrNull) this.available, @JsonKey(fromJson: intOrNull) this.priceSyp, @JsonKey(fromJson: boolOrNull) this.priceIsEstimate, @JsonKey(fromJson: boolOrNull) this.canPurchase, @JsonKey(fromJson: stringOrNull) this.currencyListed, @JsonKey(fromJson: boolOrNull) this.isFavorited, @JsonKey(fromJson: doubleOrNull) this.averageRating, @JsonKey(fromJson: intOrNull) this.reviewsCount, @JsonKey(fromJson: shareFromJson, toJson: shareToJson) this.share, @JsonKey(fromJson: stringOrNull) this.brandName, @JsonKey(fromJson: boolOrNull) this.brandVerified, @JsonKey(fromJson: intOrNull) this.compareAtSyp, @JsonKey(fromJson: intOrNull) this.discountPercent, @JsonKey(fromJson: badgeLabelsFromJson)  List<String>? badges, @JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson) this.viewerActivity}): _badges = badges;
   factory _ProductCardDto.fromJson(Map<String, dynamic> json) => _$ProductCardDtoFromJson(json);
 
 @override@JsonKey(fromJson: intOrNull) final  int? id;
@@ -534,6 +552,20 @@ class _ProductCardDto implements ProductCardDto {
 @override@JsonKey(fromJson: doubleOrNull) final  double? averageRating;
 @override@JsonKey(fromJson: intOrNull) final  int? reviewsCount;
 @override@JsonKey(fromJson: shareFromJson, toJson: shareToJson) final  ShareDto? share;
+@override@JsonKey(fromJson: stringOrNull) final  String? brandName;
+@override@JsonKey(fromJson: boolOrNull) final  bool? brandVerified;
+@override@JsonKey(fromJson: intOrNull) final  int? compareAtSyp;
+@override@JsonKey(fromJson: intOrNull) final  int? discountPercent;
+ final  List<String>? _badges;
+@override@JsonKey(fromJson: badgeLabelsFromJson) List<String>? get badges {
+  final value = _badges;
+  if (value == null) return null;
+  if (_badges is EqualUnmodifiableListView) return _badges;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+@override@JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson) final  ViewerActivityDto? viewerActivity;
 
 /// Create a copy of ProductCardDto
 /// with the given fields replaced by the non-null parameter values.
@@ -548,18 +580,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProductCardDto&&(identical(other.id, id) || other.id == id)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.path, path) || other.path == path)&&(identical(other.name, name) || other.name == name)&&(identical(other.photo, photo) || other.photo == photo)&&(identical(other.storeName, storeName) || other.storeName == storeName)&&(identical(other.storeSlug, storeSlug) || other.storeSlug == storeSlug)&&(identical(other.available, available) || other.available == available)&&(identical(other.priceSyp, priceSyp) || other.priceSyp == priceSyp)&&(identical(other.priceIsEstimate, priceIsEstimate) || other.priceIsEstimate == priceIsEstimate)&&(identical(other.canPurchase, canPurchase) || other.canPurchase == canPurchase)&&(identical(other.currencyListed, currencyListed) || other.currencyListed == currencyListed)&&(identical(other.isFavorited, isFavorited) || other.isFavorited == isFavorited)&&(identical(other.averageRating, averageRating) || other.averageRating == averageRating)&&(identical(other.reviewsCount, reviewsCount) || other.reviewsCount == reviewsCount)&&(identical(other.share, share) || other.share == share));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProductCardDto&&(identical(other.id, id) || other.id == id)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.path, path) || other.path == path)&&(identical(other.name, name) || other.name == name)&&(identical(other.photo, photo) || other.photo == photo)&&(identical(other.storeName, storeName) || other.storeName == storeName)&&(identical(other.storeSlug, storeSlug) || other.storeSlug == storeSlug)&&(identical(other.available, available) || other.available == available)&&(identical(other.priceSyp, priceSyp) || other.priceSyp == priceSyp)&&(identical(other.priceIsEstimate, priceIsEstimate) || other.priceIsEstimate == priceIsEstimate)&&(identical(other.canPurchase, canPurchase) || other.canPurchase == canPurchase)&&(identical(other.currencyListed, currencyListed) || other.currencyListed == currencyListed)&&(identical(other.isFavorited, isFavorited) || other.isFavorited == isFavorited)&&(identical(other.averageRating, averageRating) || other.averageRating == averageRating)&&(identical(other.reviewsCount, reviewsCount) || other.reviewsCount == reviewsCount)&&(identical(other.share, share) || other.share == share)&&(identical(other.brandName, brandName) || other.brandName == brandName)&&(identical(other.brandVerified, brandVerified) || other.brandVerified == brandVerified)&&(identical(other.compareAtSyp, compareAtSyp) || other.compareAtSyp == compareAtSyp)&&(identical(other.discountPercent, discountPercent) || other.discountPercent == discountPercent)&&const DeepCollectionEquality().equals(other.badges, _badges)&&(identical(other.viewerActivity, viewerActivity) || other.viewerActivity == viewerActivity));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,slug,path,name,photo,storeName,storeSlug,available,priceSyp,priceIsEstimate,canPurchase,currencyListed,isFavorited,averageRating,reviewsCount,share);
+    return Object.hashAll([runtimeType,id,slug,path,name,photo,storeName,storeSlug,available,priceSyp,priceIsEstimate,canPurchase,currencyListed,isFavorited,averageRating,reviewsCount,share,brandName,brandVerified,compareAtSyp,discountPercent,const DeepCollectionEquality().hash(_badges),viewerActivity]);
 }
 
 @override
 String toString() {
-    return 'ProductCardDto(id: $id, slug: $slug, path: $path, name: $name, photo: $photo, storeName: $storeName, storeSlug: $storeSlug, available: $available, priceSyp: $priceSyp, priceIsEstimate: $priceIsEstimate, canPurchase: $canPurchase, currencyListed: $currencyListed, isFavorited: $isFavorited, averageRating: $averageRating, reviewsCount: $reviewsCount, share: $share)';
+    return 'ProductCardDto(id: $id, slug: $slug, path: $path, name: $name, photo: $photo, storeName: $storeName, storeSlug: $storeSlug, available: $available, priceSyp: $priceSyp, priceIsEstimate: $priceIsEstimate, canPurchase: $canPurchase, currencyListed: $currencyListed, isFavorited: $isFavorited, averageRating: $averageRating, reviewsCount: $reviewsCount, share: $share, brandName: $brandName, brandVerified: $brandVerified, compareAtSyp: $compareAtSyp, discountPercent: $discountPercent, badges: $badges, viewerActivity: $viewerActivity)';
 }
 
 
@@ -570,11 +602,11 @@ abstract mixin class _$ProductCardDtoCopyWith<$Res> implements $ProductCardDtoCo
   factory _$ProductCardDtoCopyWith(_ProductCardDto value, $Res Function(_ProductCardDto) _then) = __$ProductCardDtoCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(fromJson: intOrNull) int? id,@JsonKey(fromJson: stringOrNull) String? slug,@JsonKey(fromJson: stringOrNull) String? path,@JsonKey(fromJson: stringOrNull) String? name,@JsonKey(fromJson: photoUrlOrNull) String? photo,@JsonKey(fromJson: stringOrNull) String? storeName,@JsonKey(fromJson: stringOrNull) String? storeSlug,@JsonKey(fromJson: boolOrNull) bool? available,@JsonKey(fromJson: intOrNull) int? priceSyp,@JsonKey(fromJson: boolOrNull) bool? priceIsEstimate,@JsonKey(fromJson: boolOrNull) bool? canPurchase,@JsonKey(fromJson: stringOrNull) String? currencyListed,@JsonKey(fromJson: boolOrNull) bool? isFavorited,@JsonKey(fromJson: doubleOrNull) double? averageRating,@JsonKey(fromJson: intOrNull) int? reviewsCount,@JsonKey(fromJson: shareFromJson, toJson: shareToJson) ShareDto? share
+@JsonKey(fromJson: intOrNull) int? id,@JsonKey(fromJson: stringOrNull) String? slug,@JsonKey(fromJson: stringOrNull) String? path,@JsonKey(fromJson: stringOrNull) String? name,@JsonKey(fromJson: photoUrlOrNull) String? photo,@JsonKey(fromJson: stringOrNull) String? storeName,@JsonKey(fromJson: stringOrNull) String? storeSlug,@JsonKey(fromJson: boolOrNull) bool? available,@JsonKey(fromJson: intOrNull) int? priceSyp,@JsonKey(fromJson: boolOrNull) bool? priceIsEstimate,@JsonKey(fromJson: boolOrNull) bool? canPurchase,@JsonKey(fromJson: stringOrNull) String? currencyListed,@JsonKey(fromJson: boolOrNull) bool? isFavorited,@JsonKey(fromJson: doubleOrNull) double? averageRating,@JsonKey(fromJson: intOrNull) int? reviewsCount,@JsonKey(fromJson: shareFromJson, toJson: shareToJson) ShareDto? share,@JsonKey(fromJson: stringOrNull) String? brandName,@JsonKey(fromJson: boolOrNull) bool? brandVerified,@JsonKey(fromJson: intOrNull) int? compareAtSyp,@JsonKey(fromJson: intOrNull) int? discountPercent,@JsonKey(fromJson: badgeLabelsFromJson) List<String>? badges,@JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson) ViewerActivityDto? viewerActivity
 });
 
 
-@override $ShareDtoCopyWith<$Res>? get share;
+@override $ShareDtoCopyWith<$Res>? get share;@override $ViewerActivityDtoCopyWith<$Res>? get viewerActivity;
 
 }
 /// @nodoc
@@ -587,7 +619,7 @@ class __$ProductCardDtoCopyWithImpl<$Res>
 
 /// Create a copy of ProductCardDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? slug = freezed,Object? path = freezed,Object? name = freezed,Object? photo = freezed,Object? storeName = freezed,Object? storeSlug = freezed,Object? available = freezed,Object? priceSyp = freezed,Object? priceIsEstimate = freezed,Object? canPurchase = freezed,Object? currencyListed = freezed,Object? isFavorited = freezed,Object? averageRating = freezed,Object? reviewsCount = freezed,Object? share = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? slug = freezed,Object? path = freezed,Object? name = freezed,Object? photo = freezed,Object? storeName = freezed,Object? storeSlug = freezed,Object? available = freezed,Object? priceSyp = freezed,Object? priceIsEstimate = freezed,Object? canPurchase = freezed,Object? currencyListed = freezed,Object? isFavorited = freezed,Object? averageRating = freezed,Object? reviewsCount = freezed,Object? share = freezed,Object? brandName = freezed,Object? brandVerified = freezed,Object? compareAtSyp = freezed,Object? discountPercent = freezed,Object? badges = freezed,Object? viewerActivity = freezed,}) {
   return _then(_ProductCardDto(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,slug: freezed == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
@@ -605,7 +637,13 @@ as String?,isFavorited: freezed == isFavorited ? _self.isFavorited : isFavorited
 as bool?,averageRating: freezed == averageRating ? _self.averageRating : averageRating // ignore: cast_nullable_to_non_nullable
 as double?,reviewsCount: freezed == reviewsCount ? _self.reviewsCount : reviewsCount // ignore: cast_nullable_to_non_nullable
 as int?,share: freezed == share ? _self.share : share // ignore: cast_nullable_to_non_nullable
-as ShareDto?,
+as ShareDto?,brandName: freezed == brandName ? _self.brandName : brandName // ignore: cast_nullable_to_non_nullable
+as String?,brandVerified: freezed == brandVerified ? _self.brandVerified : brandVerified // ignore: cast_nullable_to_non_nullable
+as bool?,compareAtSyp: freezed == compareAtSyp ? _self.compareAtSyp : compareAtSyp // ignore: cast_nullable_to_non_nullable
+as int?,discountPercent: freezed == discountPercent ? _self.discountPercent : discountPercent // ignore: cast_nullable_to_non_nullable
+as int?,badges: freezed == badges ? _self._badges : badges // ignore: cast_nullable_to_non_nullable
+as List<String>?,viewerActivity: freezed == viewerActivity ? _self.viewerActivity : viewerActivity // ignore: cast_nullable_to_non_nullable
+as ViewerActivityDto?,
   ));
 }
 
@@ -621,7 +659,298 @@ $ShareDtoCopyWith<$Res>? get share {
   return $ShareDtoCopyWith<$Res>(_self.share!, (value) {
     return _then(_self.copyWith(share: value));
   });
+}/// Create a copy of ProductCardDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ViewerActivityDtoCopyWith<$Res>? get viewerActivity {
+    if (_self.viewerActivity == null) {
+    return null;
+  }
+
+  return $ViewerActivityDtoCopyWith<$Res>(_self.viewerActivity!, (value) {
+    return _then(_self.copyWith(viewerActivity: value));
+  });
 }
+}
+
+
+/// @nodoc
+mixin _$ViewerActivityDto {
+
+@JsonKey(fromJson: stringOrNull) String? get metric;@JsonKey(fromJson: intOrNull) int? get count;@JsonKey(fromJson: intOrNull) int? get windowHours;@JsonKey(fromJson: stringOrNull) String? get asOf;
+/// Create a copy of ViewerActivityDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ViewerActivityDtoCopyWith<ViewerActivityDto> get copyWith => _$ViewerActivityDtoCopyWithImpl<ViewerActivityDto>(this as ViewerActivityDto, _$identity);
+
+  /// Serializes this ViewerActivityDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as ViewerActivityDto;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ViewerActivityDto&&(identical(other.metric, _this.metric) || other.metric == _this.metric)&&(identical(other.count, _this.count) || other.count == _this.count)&&(identical(other.windowHours, _this.windowHours) || other.windowHours == _this.windowHours)&&(identical(other.asOf, _this.asOf) || other.asOf == _this.asOf));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+  final _this = this as ViewerActivityDto;
+  return Object.hash(runtimeType,_this.metric,_this.count,_this.windowHours,_this.asOf);
+}
+
+@override
+String toString() {
+  final _this = this as ViewerActivityDto;
+  return 'ViewerActivityDto(metric: ${_this.metric}, count: ${_this.count}, windowHours: ${_this.windowHours}, asOf: ${_this.asOf})';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ViewerActivityDtoCopyWith<$Res>  {
+  factory $ViewerActivityDtoCopyWith(ViewerActivityDto value, $Res Function(ViewerActivityDto) _then) = _$ViewerActivityDtoCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(fromJson: stringOrNull) String? metric,@JsonKey(fromJson: intOrNull) int? count,@JsonKey(fromJson: intOrNull) int? windowHours,@JsonKey(fromJson: stringOrNull) String? asOf
+});
+
+
+
+
+}
+/// @nodoc
+class _$ViewerActivityDtoCopyWithImpl<$Res>
+    implements $ViewerActivityDtoCopyWith<$Res> {
+  _$ViewerActivityDtoCopyWithImpl(this._self, this._then);
+
+  final ViewerActivityDto _self;
+  final $Res Function(ViewerActivityDto) _then;
+
+/// Create a copy of ViewerActivityDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? metric = freezed,Object? count = freezed,Object? windowHours = freezed,Object? asOf = freezed,}) {
+  return _then(ViewerActivityDto(
+metric: freezed == metric ? _self.metric : metric // ignore: cast_nullable_to_non_nullable
+as String?,count: freezed == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
+as int?,windowHours: freezed == windowHours ? _self.windowHours : windowHours // ignore: cast_nullable_to_non_nullable
+as int?,asOf: freezed == asOf ? _self.asOf : asOf // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ViewerActivityDto].
+extension ViewerActivityDtoPatterns on ViewerActivityDto {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ViewerActivityDto value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ViewerActivityDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ViewerActivityDto value)  $default,){
+final _that = this;
+switch (_that) {
+case _ViewerActivityDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ViewerActivityDto value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ViewerActivityDto() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: stringOrNull)  String? metric, @JsonKey(fromJson: intOrNull)  int? count, @JsonKey(fromJson: intOrNull)  int? windowHours, @JsonKey(fromJson: stringOrNull)  String? asOf)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ViewerActivityDto() when $default != null:
+return $default(_that.metric,_that.count,_that.windowHours,_that.asOf);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: stringOrNull)  String? metric, @JsonKey(fromJson: intOrNull)  int? count, @JsonKey(fromJson: intOrNull)  int? windowHours, @JsonKey(fromJson: stringOrNull)  String? asOf)  $default,) {final _that = this;
+switch (_that) {
+case _ViewerActivityDto():
+return $default(_that.metric,_that.count,_that.windowHours,_that.asOf);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: stringOrNull)  String? metric, @JsonKey(fromJson: intOrNull)  int? count, @JsonKey(fromJson: intOrNull)  int? windowHours, @JsonKey(fromJson: stringOrNull)  String? asOf)?  $default,) {final _that = this;
+switch (_that) {
+case _ViewerActivityDto() when $default != null:
+return $default(_that.metric,_that.count,_that.windowHours,_that.asOf);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _ViewerActivityDto implements ViewerActivityDto {
+  const _ViewerActivityDto({@JsonKey(fromJson: stringOrNull) this.metric, @JsonKey(fromJson: intOrNull) this.count, @JsonKey(fromJson: intOrNull) this.windowHours, @JsonKey(fromJson: stringOrNull) this.asOf});
+  factory _ViewerActivityDto.fromJson(Map<String, dynamic> json) => _$ViewerActivityDtoFromJson(json);
+
+@override@JsonKey(fromJson: stringOrNull) final  String? metric;
+@override@JsonKey(fromJson: intOrNull) final  int? count;
+@override@JsonKey(fromJson: intOrNull) final  int? windowHours;
+@override@JsonKey(fromJson: stringOrNull) final  String? asOf;
+
+/// Create a copy of ViewerActivityDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ViewerActivityDtoCopyWith<_ViewerActivityDto> get copyWith => __$ViewerActivityDtoCopyWithImpl<_ViewerActivityDto>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ViewerActivityDtoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ViewerActivityDto&&(identical(other.metric, metric) || other.metric == metric)&&(identical(other.count, count) || other.count == count)&&(identical(other.windowHours, windowHours) || other.windowHours == windowHours)&&(identical(other.asOf, asOf) || other.asOf == asOf));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+    return Object.hash(runtimeType,metric,count,windowHours,asOf);
+}
+
+@override
+String toString() {
+    return 'ViewerActivityDto(metric: $metric, count: $count, windowHours: $windowHours, asOf: $asOf)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ViewerActivityDtoCopyWith<$Res> implements $ViewerActivityDtoCopyWith<$Res> {
+  factory _$ViewerActivityDtoCopyWith(_ViewerActivityDto value, $Res Function(_ViewerActivityDto) _then) = __$ViewerActivityDtoCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(fromJson: stringOrNull) String? metric,@JsonKey(fromJson: intOrNull) int? count,@JsonKey(fromJson: intOrNull) int? windowHours,@JsonKey(fromJson: stringOrNull) String? asOf
+});
+
+
+
+
+}
+/// @nodoc
+class __$ViewerActivityDtoCopyWithImpl<$Res>
+    implements _$ViewerActivityDtoCopyWith<$Res> {
+  __$ViewerActivityDtoCopyWithImpl(this._self, this._then);
+
+  final _ViewerActivityDto _self;
+  final $Res Function(_ViewerActivityDto) _then;
+
+/// Create a copy of ViewerActivityDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? metric = freezed,Object? count = freezed,Object? windowHours = freezed,Object? asOf = freezed,}) {
+  return _then(_ViewerActivityDto(
+metric: freezed == metric ? _self.metric : metric // ignore: cast_nullable_to_non_nullable
+as String?,count: freezed == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
+as int?,windowHours: freezed == windowHours ? _self.windowHours : windowHours // ignore: cast_nullable_to_non_nullable
+as int?,asOf: freezed == asOf ? _self.asOf : asOf // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
 }
 
 
@@ -2013,7 +2342,7 @@ as List<SeoAlternateDto>?,
 /// @nodoc
 mixin _$ProductDetailDto {
 
-@JsonKey(fromJson: intOrNull) int? get id;@JsonKey(fromJson: stringOrNull) String? get slug;@JsonKey(fromJson: stringOrNull) String? get path;@JsonKey(fromJson: stringOrNull) String? get name;@JsonKey(fromJson: stringOrNull) String? get description;@JsonKey(fromJson: storeRefFromJson, toJson: storeRefToJson) StoreRefDto? get store;@JsonKey(fromJson: categoryRefFromJson, toJson: categoryRefToJson) CategoryRefDto? get category;@JsonKey(fromJson: photoListFromJson, toJson: photoListToJson) List<String>? get photos;@JsonKey(fromJson: optionsFromJson, toJson: optionsToJson) List<ProductOptionDto>? get options;@JsonKey(fromJson: intOrNull) int? get priceSyp;@JsonKey(fromJson: boolOrNull) bool? get priceIsEstimate;@JsonKey(fromJson: boolOrNull) bool? get canPurchase;@JsonKey(fromJson: boolOrNull) bool? get available;@JsonKey(fromJson: stringOrNull) String? get currencyListed;@JsonKey(fromJson: boolOrNull) bool? get isFavorited;@JsonKey(fromJson: doubleOrNull) double? get averageRating;@JsonKey(fromJson: intOrNull) int? get reviewsCount;@JsonKey(fromJson: shareFromJson, toJson: shareToJson) ShareDto? get share;@JsonKey(fromJson: seoFromJson, toJson: seoToJson) SeoDto? get seo;
+@JsonKey(fromJson: intOrNull) int? get id;@JsonKey(fromJson: stringOrNull) String? get slug;@JsonKey(fromJson: stringOrNull) String? get path;@JsonKey(fromJson: stringOrNull) String? get name;@JsonKey(fromJson: stringOrNull) String? get description;@JsonKey(fromJson: storeRefFromJson, toJson: storeRefToJson) StoreRefDto? get store;@JsonKey(fromJson: categoryRefFromJson, toJson: categoryRefToJson) CategoryRefDto? get category;@JsonKey(fromJson: photoListFromJson, toJson: photoListToJson) List<String>? get photos;@JsonKey(fromJson: optionsFromJson, toJson: optionsToJson) List<ProductOptionDto>? get options;@JsonKey(fromJson: intOrNull) int? get priceSyp;@JsonKey(fromJson: boolOrNull) bool? get priceIsEstimate;@JsonKey(fromJson: boolOrNull) bool? get canPurchase;@JsonKey(fromJson: boolOrNull) bool? get available;@JsonKey(fromJson: stringOrNull) String? get currencyListed;@JsonKey(fromJson: boolOrNull) bool? get isFavorited;@JsonKey(fromJson: doubleOrNull) double? get averageRating;@JsonKey(fromJson: intOrNull) int? get reviewsCount;@JsonKey(fromJson: shareFromJson, toJson: shareToJson) ShareDto? get share;@JsonKey(fromJson: seoFromJson, toJson: seoToJson) SeoDto? get seo;@JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson) ViewerActivityDto? get viewerActivity;
 /// Create a copy of ProductDetailDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -2027,20 +2356,20 @@ $ProductDetailDtoCopyWith<ProductDetailDto> get copyWith => _$ProductDetailDtoCo
 @override
 bool operator ==(Object other) {
   final _this = this as ProductDetailDto;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductDetailDto&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.slug, _this.slug) || other.slug == _this.slug)&&(identical(other.path, _this.path) || other.path == _this.path)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.description, _this.description) || other.description == _this.description)&&(identical(other.store, _this.store) || other.store == _this.store)&&(identical(other.category, _this.category) || other.category == _this.category)&&const DeepCollectionEquality().equals(other.photos, _this.photos)&&const DeepCollectionEquality().equals(other.options, _this.options)&&(identical(other.priceSyp, _this.priceSyp) || other.priceSyp == _this.priceSyp)&&(identical(other.priceIsEstimate, _this.priceIsEstimate) || other.priceIsEstimate == _this.priceIsEstimate)&&(identical(other.canPurchase, _this.canPurchase) || other.canPurchase == _this.canPurchase)&&(identical(other.available, _this.available) || other.available == _this.available)&&(identical(other.currencyListed, _this.currencyListed) || other.currencyListed == _this.currencyListed)&&(identical(other.isFavorited, _this.isFavorited) || other.isFavorited == _this.isFavorited)&&(identical(other.averageRating, _this.averageRating) || other.averageRating == _this.averageRating)&&(identical(other.reviewsCount, _this.reviewsCount) || other.reviewsCount == _this.reviewsCount)&&(identical(other.share, _this.share) || other.share == _this.share)&&(identical(other.seo, _this.seo) || other.seo == _this.seo));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductDetailDto&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.slug, _this.slug) || other.slug == _this.slug)&&(identical(other.path, _this.path) || other.path == _this.path)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.description, _this.description) || other.description == _this.description)&&(identical(other.store, _this.store) || other.store == _this.store)&&(identical(other.category, _this.category) || other.category == _this.category)&&const DeepCollectionEquality().equals(other.photos, _this.photos)&&const DeepCollectionEquality().equals(other.options, _this.options)&&(identical(other.priceSyp, _this.priceSyp) || other.priceSyp == _this.priceSyp)&&(identical(other.priceIsEstimate, _this.priceIsEstimate) || other.priceIsEstimate == _this.priceIsEstimate)&&(identical(other.canPurchase, _this.canPurchase) || other.canPurchase == _this.canPurchase)&&(identical(other.available, _this.available) || other.available == _this.available)&&(identical(other.currencyListed, _this.currencyListed) || other.currencyListed == _this.currencyListed)&&(identical(other.isFavorited, _this.isFavorited) || other.isFavorited == _this.isFavorited)&&(identical(other.averageRating, _this.averageRating) || other.averageRating == _this.averageRating)&&(identical(other.reviewsCount, _this.reviewsCount) || other.reviewsCount == _this.reviewsCount)&&(identical(other.share, _this.share) || other.share == _this.share)&&(identical(other.seo, _this.seo) || other.seo == _this.seo)&&(identical(other.viewerActivity, _this.viewerActivity) || other.viewerActivity == _this.viewerActivity));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as ProductDetailDto;
-  return Object.hashAll([runtimeType,_this.id,_this.slug,_this.path,_this.name,_this.description,_this.store,_this.category,const DeepCollectionEquality().hash(_this.photos),const DeepCollectionEquality().hash(_this.options),_this.priceSyp,_this.priceIsEstimate,_this.canPurchase,_this.available,_this.currencyListed,_this.isFavorited,_this.averageRating,_this.reviewsCount,_this.share,_this.seo]);
+  return Object.hashAll([runtimeType,_this.id,_this.slug,_this.path,_this.name,_this.description,_this.store,_this.category,const DeepCollectionEquality().hash(_this.photos),const DeepCollectionEquality().hash(_this.options),_this.priceSyp,_this.priceIsEstimate,_this.canPurchase,_this.available,_this.currencyListed,_this.isFavorited,_this.averageRating,_this.reviewsCount,_this.share,_this.seo,_this.viewerActivity]);
 }
 
 @override
 String toString() {
   final _this = this as ProductDetailDto;
-  return 'ProductDetailDto(id: ${_this.id}, slug: ${_this.slug}, path: ${_this.path}, name: ${_this.name}, description: ${_this.description}, store: ${_this.store}, category: ${_this.category}, photos: ${_this.photos}, options: ${_this.options}, priceSyp: ${_this.priceSyp}, priceIsEstimate: ${_this.priceIsEstimate}, canPurchase: ${_this.canPurchase}, available: ${_this.available}, currencyListed: ${_this.currencyListed}, isFavorited: ${_this.isFavorited}, averageRating: ${_this.averageRating}, reviewsCount: ${_this.reviewsCount}, share: ${_this.share}, seo: ${_this.seo})';
+  return 'ProductDetailDto(id: ${_this.id}, slug: ${_this.slug}, path: ${_this.path}, name: ${_this.name}, description: ${_this.description}, store: ${_this.store}, category: ${_this.category}, photos: ${_this.photos}, options: ${_this.options}, priceSyp: ${_this.priceSyp}, priceIsEstimate: ${_this.priceIsEstimate}, canPurchase: ${_this.canPurchase}, available: ${_this.available}, currencyListed: ${_this.currencyListed}, isFavorited: ${_this.isFavorited}, averageRating: ${_this.averageRating}, reviewsCount: ${_this.reviewsCount}, share: ${_this.share}, seo: ${_this.seo}, viewerActivity: ${_this.viewerActivity})';
 }
 
 
@@ -2051,11 +2380,11 @@ abstract mixin class $ProductDetailDtoCopyWith<$Res>  {
   factory $ProductDetailDtoCopyWith(ProductDetailDto value, $Res Function(ProductDetailDto) _then) = _$ProductDetailDtoCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(fromJson: intOrNull) int? id,@JsonKey(fromJson: stringOrNull) String? slug,@JsonKey(fromJson: stringOrNull) String? path,@JsonKey(fromJson: stringOrNull) String? name,@JsonKey(fromJson: stringOrNull) String? description,@JsonKey(fromJson: storeRefFromJson, toJson: storeRefToJson) StoreRefDto? store,@JsonKey(fromJson: categoryRefFromJson, toJson: categoryRefToJson) CategoryRefDto? category,@JsonKey(fromJson: photoListFromJson, toJson: photoListToJson) List<String>? photos,@JsonKey(fromJson: optionsFromJson, toJson: optionsToJson) List<ProductOptionDto>? options,@JsonKey(fromJson: intOrNull) int? priceSyp,@JsonKey(fromJson: boolOrNull) bool? priceIsEstimate,@JsonKey(fromJson: boolOrNull) bool? canPurchase,@JsonKey(fromJson: boolOrNull) bool? available,@JsonKey(fromJson: stringOrNull) String? currencyListed,@JsonKey(fromJson: boolOrNull) bool? isFavorited,@JsonKey(fromJson: doubleOrNull) double? averageRating,@JsonKey(fromJson: intOrNull) int? reviewsCount,@JsonKey(fromJson: shareFromJson, toJson: shareToJson) ShareDto? share,@JsonKey(fromJson: seoFromJson, toJson: seoToJson) SeoDto? seo
+@JsonKey(fromJson: intOrNull) int? id,@JsonKey(fromJson: stringOrNull) String? slug,@JsonKey(fromJson: stringOrNull) String? path,@JsonKey(fromJson: stringOrNull) String? name,@JsonKey(fromJson: stringOrNull) String? description,@JsonKey(fromJson: storeRefFromJson, toJson: storeRefToJson) StoreRefDto? store,@JsonKey(fromJson: categoryRefFromJson, toJson: categoryRefToJson) CategoryRefDto? category,@JsonKey(fromJson: photoListFromJson, toJson: photoListToJson) List<String>? photos,@JsonKey(fromJson: optionsFromJson, toJson: optionsToJson) List<ProductOptionDto>? options,@JsonKey(fromJson: intOrNull) int? priceSyp,@JsonKey(fromJson: boolOrNull) bool? priceIsEstimate,@JsonKey(fromJson: boolOrNull) bool? canPurchase,@JsonKey(fromJson: boolOrNull) bool? available,@JsonKey(fromJson: stringOrNull) String? currencyListed,@JsonKey(fromJson: boolOrNull) bool? isFavorited,@JsonKey(fromJson: doubleOrNull) double? averageRating,@JsonKey(fromJson: intOrNull) int? reviewsCount,@JsonKey(fromJson: shareFromJson, toJson: shareToJson) ShareDto? share,@JsonKey(fromJson: seoFromJson, toJson: seoToJson) SeoDto? seo,@JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson) ViewerActivityDto? viewerActivity
 });
 
 
-$StoreRefDtoCopyWith<$Res>? get store;$CategoryRefDtoCopyWith<$Res>? get category;$ShareDtoCopyWith<$Res>? get share;$SeoDtoCopyWith<$Res>? get seo;
+$StoreRefDtoCopyWith<$Res>? get store;$CategoryRefDtoCopyWith<$Res>? get category;$ShareDtoCopyWith<$Res>? get share;$SeoDtoCopyWith<$Res>? get seo;$ViewerActivityDtoCopyWith<$Res>? get viewerActivity;
 
 }
 /// @nodoc
@@ -2068,7 +2397,7 @@ class _$ProductDetailDtoCopyWithImpl<$Res>
 
 /// Create a copy of ProductDetailDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? slug = freezed,Object? path = freezed,Object? name = freezed,Object? description = freezed,Object? store = freezed,Object? category = freezed,Object? photos = freezed,Object? options = freezed,Object? priceSyp = freezed,Object? priceIsEstimate = freezed,Object? canPurchase = freezed,Object? available = freezed,Object? currencyListed = freezed,Object? isFavorited = freezed,Object? averageRating = freezed,Object? reviewsCount = freezed,Object? share = freezed,Object? seo = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? slug = freezed,Object? path = freezed,Object? name = freezed,Object? description = freezed,Object? store = freezed,Object? category = freezed,Object? photos = freezed,Object? options = freezed,Object? priceSyp = freezed,Object? priceIsEstimate = freezed,Object? canPurchase = freezed,Object? available = freezed,Object? currencyListed = freezed,Object? isFavorited = freezed,Object? averageRating = freezed,Object? reviewsCount = freezed,Object? share = freezed,Object? seo = freezed,Object? viewerActivity = freezed,}) {
   return _then(ProductDetailDto(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,slug: freezed == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
@@ -2089,7 +2418,8 @@ as bool?,averageRating: freezed == averageRating ? _self.averageRating : average
 as double?,reviewsCount: freezed == reviewsCount ? _self.reviewsCount : reviewsCount // ignore: cast_nullable_to_non_nullable
 as int?,share: freezed == share ? _self.share : share // ignore: cast_nullable_to_non_nullable
 as ShareDto?,seo: freezed == seo ? _self.seo : seo // ignore: cast_nullable_to_non_nullable
-as SeoDto?,
+as SeoDto?,viewerActivity: freezed == viewerActivity ? _self.viewerActivity : viewerActivity // ignore: cast_nullable_to_non_nullable
+as ViewerActivityDto?,
   ));
 }
 /// Create a copy of ProductDetailDto
@@ -2139,6 +2469,18 @@ $SeoDtoCopyWith<$Res>? get seo {
 
   return $SeoDtoCopyWith<$Res>(_self.seo!, (value) {
     return _then(_self.copyWith(seo: value));
+  });
+}/// Create a copy of ProductDetailDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ViewerActivityDtoCopyWith<$Res>? get viewerActivity {
+    if (_self.viewerActivity == null) {
+    return null;
+  }
+
+  return $ViewerActivityDtoCopyWith<$Res>(_self.viewerActivity!, (value) {
+    return _then(_self.copyWith(viewerActivity: value));
   });
 }
 }
@@ -2222,10 +2564,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: intOrNull)  int? id, @JsonKey(fromJson: stringOrNull)  String? slug, @JsonKey(fromJson: stringOrNull)  String? path, @JsonKey(fromJson: stringOrNull)  String? name, @JsonKey(fromJson: stringOrNull)  String? description, @JsonKey(fromJson: storeRefFromJson, toJson: storeRefToJson)  StoreRefDto? store, @JsonKey(fromJson: categoryRefFromJson, toJson: categoryRefToJson)  CategoryRefDto? category, @JsonKey(fromJson: photoListFromJson, toJson: photoListToJson)  List<String>? photos, @JsonKey(fromJson: optionsFromJson, toJson: optionsToJson)  List<ProductOptionDto>? options, @JsonKey(fromJson: intOrNull)  int? priceSyp, @JsonKey(fromJson: boolOrNull)  bool? priceIsEstimate, @JsonKey(fromJson: boolOrNull)  bool? canPurchase, @JsonKey(fromJson: boolOrNull)  bool? available, @JsonKey(fromJson: stringOrNull)  String? currencyListed, @JsonKey(fromJson: boolOrNull)  bool? isFavorited, @JsonKey(fromJson: doubleOrNull)  double? averageRating, @JsonKey(fromJson: intOrNull)  int? reviewsCount, @JsonKey(fromJson: shareFromJson, toJson: shareToJson)  ShareDto? share, @JsonKey(fromJson: seoFromJson, toJson: seoToJson)  SeoDto? seo)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: intOrNull)  int? id, @JsonKey(fromJson: stringOrNull)  String? slug, @JsonKey(fromJson: stringOrNull)  String? path, @JsonKey(fromJson: stringOrNull)  String? name, @JsonKey(fromJson: stringOrNull)  String? description, @JsonKey(fromJson: storeRefFromJson, toJson: storeRefToJson)  StoreRefDto? store, @JsonKey(fromJson: categoryRefFromJson, toJson: categoryRefToJson)  CategoryRefDto? category, @JsonKey(fromJson: photoListFromJson, toJson: photoListToJson)  List<String>? photos, @JsonKey(fromJson: optionsFromJson, toJson: optionsToJson)  List<ProductOptionDto>? options, @JsonKey(fromJson: intOrNull)  int? priceSyp, @JsonKey(fromJson: boolOrNull)  bool? priceIsEstimate, @JsonKey(fromJson: boolOrNull)  bool? canPurchase, @JsonKey(fromJson: boolOrNull)  bool? available, @JsonKey(fromJson: stringOrNull)  String? currencyListed, @JsonKey(fromJson: boolOrNull)  bool? isFavorited, @JsonKey(fromJson: doubleOrNull)  double? averageRating, @JsonKey(fromJson: intOrNull)  int? reviewsCount, @JsonKey(fromJson: shareFromJson, toJson: shareToJson)  ShareDto? share, @JsonKey(fromJson: seoFromJson, toJson: seoToJson)  SeoDto? seo, @JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson)  ViewerActivityDto? viewerActivity)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProductDetailDto() when $default != null:
-return $default(_that.id,_that.slug,_that.path,_that.name,_that.description,_that.store,_that.category,_that.photos,_that.options,_that.priceSyp,_that.priceIsEstimate,_that.canPurchase,_that.available,_that.currencyListed,_that.isFavorited,_that.averageRating,_that.reviewsCount,_that.share,_that.seo);case _:
+return $default(_that.id,_that.slug,_that.path,_that.name,_that.description,_that.store,_that.category,_that.photos,_that.options,_that.priceSyp,_that.priceIsEstimate,_that.canPurchase,_that.available,_that.currencyListed,_that.isFavorited,_that.averageRating,_that.reviewsCount,_that.share,_that.seo,_that.viewerActivity);case _:
   return orElse();
 
 }
@@ -2243,10 +2585,10 @@ return $default(_that.id,_that.slug,_that.path,_that.name,_that.description,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: intOrNull)  int? id, @JsonKey(fromJson: stringOrNull)  String? slug, @JsonKey(fromJson: stringOrNull)  String? path, @JsonKey(fromJson: stringOrNull)  String? name, @JsonKey(fromJson: stringOrNull)  String? description, @JsonKey(fromJson: storeRefFromJson, toJson: storeRefToJson)  StoreRefDto? store, @JsonKey(fromJson: categoryRefFromJson, toJson: categoryRefToJson)  CategoryRefDto? category, @JsonKey(fromJson: photoListFromJson, toJson: photoListToJson)  List<String>? photos, @JsonKey(fromJson: optionsFromJson, toJson: optionsToJson)  List<ProductOptionDto>? options, @JsonKey(fromJson: intOrNull)  int? priceSyp, @JsonKey(fromJson: boolOrNull)  bool? priceIsEstimate, @JsonKey(fromJson: boolOrNull)  bool? canPurchase, @JsonKey(fromJson: boolOrNull)  bool? available, @JsonKey(fromJson: stringOrNull)  String? currencyListed, @JsonKey(fromJson: boolOrNull)  bool? isFavorited, @JsonKey(fromJson: doubleOrNull)  double? averageRating, @JsonKey(fromJson: intOrNull)  int? reviewsCount, @JsonKey(fromJson: shareFromJson, toJson: shareToJson)  ShareDto? share, @JsonKey(fromJson: seoFromJson, toJson: seoToJson)  SeoDto? seo)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: intOrNull)  int? id, @JsonKey(fromJson: stringOrNull)  String? slug, @JsonKey(fromJson: stringOrNull)  String? path, @JsonKey(fromJson: stringOrNull)  String? name, @JsonKey(fromJson: stringOrNull)  String? description, @JsonKey(fromJson: storeRefFromJson, toJson: storeRefToJson)  StoreRefDto? store, @JsonKey(fromJson: categoryRefFromJson, toJson: categoryRefToJson)  CategoryRefDto? category, @JsonKey(fromJson: photoListFromJson, toJson: photoListToJson)  List<String>? photos, @JsonKey(fromJson: optionsFromJson, toJson: optionsToJson)  List<ProductOptionDto>? options, @JsonKey(fromJson: intOrNull)  int? priceSyp, @JsonKey(fromJson: boolOrNull)  bool? priceIsEstimate, @JsonKey(fromJson: boolOrNull)  bool? canPurchase, @JsonKey(fromJson: boolOrNull)  bool? available, @JsonKey(fromJson: stringOrNull)  String? currencyListed, @JsonKey(fromJson: boolOrNull)  bool? isFavorited, @JsonKey(fromJson: doubleOrNull)  double? averageRating, @JsonKey(fromJson: intOrNull)  int? reviewsCount, @JsonKey(fromJson: shareFromJson, toJson: shareToJson)  ShareDto? share, @JsonKey(fromJson: seoFromJson, toJson: seoToJson)  SeoDto? seo, @JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson)  ViewerActivityDto? viewerActivity)  $default,) {final _that = this;
 switch (_that) {
 case _ProductDetailDto():
-return $default(_that.id,_that.slug,_that.path,_that.name,_that.description,_that.store,_that.category,_that.photos,_that.options,_that.priceSyp,_that.priceIsEstimate,_that.canPurchase,_that.available,_that.currencyListed,_that.isFavorited,_that.averageRating,_that.reviewsCount,_that.share,_that.seo);case _:
+return $default(_that.id,_that.slug,_that.path,_that.name,_that.description,_that.store,_that.category,_that.photos,_that.options,_that.priceSyp,_that.priceIsEstimate,_that.canPurchase,_that.available,_that.currencyListed,_that.isFavorited,_that.averageRating,_that.reviewsCount,_that.share,_that.seo,_that.viewerActivity);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -2263,10 +2605,10 @@ return $default(_that.id,_that.slug,_that.path,_that.name,_that.description,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: intOrNull)  int? id, @JsonKey(fromJson: stringOrNull)  String? slug, @JsonKey(fromJson: stringOrNull)  String? path, @JsonKey(fromJson: stringOrNull)  String? name, @JsonKey(fromJson: stringOrNull)  String? description, @JsonKey(fromJson: storeRefFromJson, toJson: storeRefToJson)  StoreRefDto? store, @JsonKey(fromJson: categoryRefFromJson, toJson: categoryRefToJson)  CategoryRefDto? category, @JsonKey(fromJson: photoListFromJson, toJson: photoListToJson)  List<String>? photos, @JsonKey(fromJson: optionsFromJson, toJson: optionsToJson)  List<ProductOptionDto>? options, @JsonKey(fromJson: intOrNull)  int? priceSyp, @JsonKey(fromJson: boolOrNull)  bool? priceIsEstimate, @JsonKey(fromJson: boolOrNull)  bool? canPurchase, @JsonKey(fromJson: boolOrNull)  bool? available, @JsonKey(fromJson: stringOrNull)  String? currencyListed, @JsonKey(fromJson: boolOrNull)  bool? isFavorited, @JsonKey(fromJson: doubleOrNull)  double? averageRating, @JsonKey(fromJson: intOrNull)  int? reviewsCount, @JsonKey(fromJson: shareFromJson, toJson: shareToJson)  ShareDto? share, @JsonKey(fromJson: seoFromJson, toJson: seoToJson)  SeoDto? seo)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: intOrNull)  int? id, @JsonKey(fromJson: stringOrNull)  String? slug, @JsonKey(fromJson: stringOrNull)  String? path, @JsonKey(fromJson: stringOrNull)  String? name, @JsonKey(fromJson: stringOrNull)  String? description, @JsonKey(fromJson: storeRefFromJson, toJson: storeRefToJson)  StoreRefDto? store, @JsonKey(fromJson: categoryRefFromJson, toJson: categoryRefToJson)  CategoryRefDto? category, @JsonKey(fromJson: photoListFromJson, toJson: photoListToJson)  List<String>? photos, @JsonKey(fromJson: optionsFromJson, toJson: optionsToJson)  List<ProductOptionDto>? options, @JsonKey(fromJson: intOrNull)  int? priceSyp, @JsonKey(fromJson: boolOrNull)  bool? priceIsEstimate, @JsonKey(fromJson: boolOrNull)  bool? canPurchase, @JsonKey(fromJson: boolOrNull)  bool? available, @JsonKey(fromJson: stringOrNull)  String? currencyListed, @JsonKey(fromJson: boolOrNull)  bool? isFavorited, @JsonKey(fromJson: doubleOrNull)  double? averageRating, @JsonKey(fromJson: intOrNull)  int? reviewsCount, @JsonKey(fromJson: shareFromJson, toJson: shareToJson)  ShareDto? share, @JsonKey(fromJson: seoFromJson, toJson: seoToJson)  SeoDto? seo, @JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson)  ViewerActivityDto? viewerActivity)?  $default,) {final _that = this;
 switch (_that) {
 case _ProductDetailDto() when $default != null:
-return $default(_that.id,_that.slug,_that.path,_that.name,_that.description,_that.store,_that.category,_that.photos,_that.options,_that.priceSyp,_that.priceIsEstimate,_that.canPurchase,_that.available,_that.currencyListed,_that.isFavorited,_that.averageRating,_that.reviewsCount,_that.share,_that.seo);case _:
+return $default(_that.id,_that.slug,_that.path,_that.name,_that.description,_that.store,_that.category,_that.photos,_that.options,_that.priceSyp,_that.priceIsEstimate,_that.canPurchase,_that.available,_that.currencyListed,_that.isFavorited,_that.averageRating,_that.reviewsCount,_that.share,_that.seo,_that.viewerActivity);case _:
   return null;
 
 }
@@ -2278,7 +2620,7 @@ return $default(_that.id,_that.slug,_that.path,_that.name,_that.description,_tha
 @JsonSerializable()
 
 class _ProductDetailDto implements ProductDetailDto {
-  const _ProductDetailDto({@JsonKey(fromJson: intOrNull) this.id, @JsonKey(fromJson: stringOrNull) this.slug, @JsonKey(fromJson: stringOrNull) this.path, @JsonKey(fromJson: stringOrNull) this.name, @JsonKey(fromJson: stringOrNull) this.description, @JsonKey(fromJson: storeRefFromJson, toJson: storeRefToJson) this.store, @JsonKey(fromJson: categoryRefFromJson, toJson: categoryRefToJson) this.category, @JsonKey(fromJson: photoListFromJson, toJson: photoListToJson)  List<String>? photos, @JsonKey(fromJson: optionsFromJson, toJson: optionsToJson)  List<ProductOptionDto>? options, @JsonKey(fromJson: intOrNull) this.priceSyp, @JsonKey(fromJson: boolOrNull) this.priceIsEstimate, @JsonKey(fromJson: boolOrNull) this.canPurchase, @JsonKey(fromJson: boolOrNull) this.available, @JsonKey(fromJson: stringOrNull) this.currencyListed, @JsonKey(fromJson: boolOrNull) this.isFavorited, @JsonKey(fromJson: doubleOrNull) this.averageRating, @JsonKey(fromJson: intOrNull) this.reviewsCount, @JsonKey(fromJson: shareFromJson, toJson: shareToJson) this.share, @JsonKey(fromJson: seoFromJson, toJson: seoToJson) this.seo}): _photos = photos,_options = options;
+  const _ProductDetailDto({@JsonKey(fromJson: intOrNull) this.id, @JsonKey(fromJson: stringOrNull) this.slug, @JsonKey(fromJson: stringOrNull) this.path, @JsonKey(fromJson: stringOrNull) this.name, @JsonKey(fromJson: stringOrNull) this.description, @JsonKey(fromJson: storeRefFromJson, toJson: storeRefToJson) this.store, @JsonKey(fromJson: categoryRefFromJson, toJson: categoryRefToJson) this.category, @JsonKey(fromJson: photoListFromJson, toJson: photoListToJson)  List<String>? photos, @JsonKey(fromJson: optionsFromJson, toJson: optionsToJson)  List<ProductOptionDto>? options, @JsonKey(fromJson: intOrNull) this.priceSyp, @JsonKey(fromJson: boolOrNull) this.priceIsEstimate, @JsonKey(fromJson: boolOrNull) this.canPurchase, @JsonKey(fromJson: boolOrNull) this.available, @JsonKey(fromJson: stringOrNull) this.currencyListed, @JsonKey(fromJson: boolOrNull) this.isFavorited, @JsonKey(fromJson: doubleOrNull) this.averageRating, @JsonKey(fromJson: intOrNull) this.reviewsCount, @JsonKey(fromJson: shareFromJson, toJson: shareToJson) this.share, @JsonKey(fromJson: seoFromJson, toJson: seoToJson) this.seo, @JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson) this.viewerActivity}): _photos = photos,_options = options;
   factory _ProductDetailDto.fromJson(Map<String, dynamic> json) => _$ProductDetailDtoFromJson(json);
 
 @override@JsonKey(fromJson: intOrNull) final  int? id;
@@ -2316,6 +2658,7 @@ class _ProductDetailDto implements ProductDetailDto {
 @override@JsonKey(fromJson: intOrNull) final  int? reviewsCount;
 @override@JsonKey(fromJson: shareFromJson, toJson: shareToJson) final  ShareDto? share;
 @override@JsonKey(fromJson: seoFromJson, toJson: seoToJson) final  SeoDto? seo;
+@override@JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson) final  ViewerActivityDto? viewerActivity;
 
 /// Create a copy of ProductDetailDto
 /// with the given fields replaced by the non-null parameter values.
@@ -2330,18 +2673,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProductDetailDto&&(identical(other.id, id) || other.id == id)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.path, path) || other.path == path)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.store, store) || other.store == store)&&(identical(other.category, category) || other.category == category)&&const DeepCollectionEquality().equals(other.photos, _photos)&&const DeepCollectionEquality().equals(other.options, _options)&&(identical(other.priceSyp, priceSyp) || other.priceSyp == priceSyp)&&(identical(other.priceIsEstimate, priceIsEstimate) || other.priceIsEstimate == priceIsEstimate)&&(identical(other.canPurchase, canPurchase) || other.canPurchase == canPurchase)&&(identical(other.available, available) || other.available == available)&&(identical(other.currencyListed, currencyListed) || other.currencyListed == currencyListed)&&(identical(other.isFavorited, isFavorited) || other.isFavorited == isFavorited)&&(identical(other.averageRating, averageRating) || other.averageRating == averageRating)&&(identical(other.reviewsCount, reviewsCount) || other.reviewsCount == reviewsCount)&&(identical(other.share, share) || other.share == share)&&(identical(other.seo, seo) || other.seo == seo));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProductDetailDto&&(identical(other.id, id) || other.id == id)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.path, path) || other.path == path)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.store, store) || other.store == store)&&(identical(other.category, category) || other.category == category)&&const DeepCollectionEquality().equals(other.photos, _photos)&&const DeepCollectionEquality().equals(other.options, _options)&&(identical(other.priceSyp, priceSyp) || other.priceSyp == priceSyp)&&(identical(other.priceIsEstimate, priceIsEstimate) || other.priceIsEstimate == priceIsEstimate)&&(identical(other.canPurchase, canPurchase) || other.canPurchase == canPurchase)&&(identical(other.available, available) || other.available == available)&&(identical(other.currencyListed, currencyListed) || other.currencyListed == currencyListed)&&(identical(other.isFavorited, isFavorited) || other.isFavorited == isFavorited)&&(identical(other.averageRating, averageRating) || other.averageRating == averageRating)&&(identical(other.reviewsCount, reviewsCount) || other.reviewsCount == reviewsCount)&&(identical(other.share, share) || other.share == share)&&(identical(other.seo, seo) || other.seo == seo)&&(identical(other.viewerActivity, viewerActivity) || other.viewerActivity == viewerActivity));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hashAll([runtimeType,id,slug,path,name,description,store,category,const DeepCollectionEquality().hash(_photos),const DeepCollectionEquality().hash(_options),priceSyp,priceIsEstimate,canPurchase,available,currencyListed,isFavorited,averageRating,reviewsCount,share,seo]);
+    return Object.hashAll([runtimeType,id,slug,path,name,description,store,category,const DeepCollectionEquality().hash(_photos),const DeepCollectionEquality().hash(_options),priceSyp,priceIsEstimate,canPurchase,available,currencyListed,isFavorited,averageRating,reviewsCount,share,seo,viewerActivity]);
 }
 
 @override
 String toString() {
-    return 'ProductDetailDto(id: $id, slug: $slug, path: $path, name: $name, description: $description, store: $store, category: $category, photos: $photos, options: $options, priceSyp: $priceSyp, priceIsEstimate: $priceIsEstimate, canPurchase: $canPurchase, available: $available, currencyListed: $currencyListed, isFavorited: $isFavorited, averageRating: $averageRating, reviewsCount: $reviewsCount, share: $share, seo: $seo)';
+    return 'ProductDetailDto(id: $id, slug: $slug, path: $path, name: $name, description: $description, store: $store, category: $category, photos: $photos, options: $options, priceSyp: $priceSyp, priceIsEstimate: $priceIsEstimate, canPurchase: $canPurchase, available: $available, currencyListed: $currencyListed, isFavorited: $isFavorited, averageRating: $averageRating, reviewsCount: $reviewsCount, share: $share, seo: $seo, viewerActivity: $viewerActivity)';
 }
 
 
@@ -2352,11 +2695,11 @@ abstract mixin class _$ProductDetailDtoCopyWith<$Res> implements $ProductDetailD
   factory _$ProductDetailDtoCopyWith(_ProductDetailDto value, $Res Function(_ProductDetailDto) _then) = __$ProductDetailDtoCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(fromJson: intOrNull) int? id,@JsonKey(fromJson: stringOrNull) String? slug,@JsonKey(fromJson: stringOrNull) String? path,@JsonKey(fromJson: stringOrNull) String? name,@JsonKey(fromJson: stringOrNull) String? description,@JsonKey(fromJson: storeRefFromJson, toJson: storeRefToJson) StoreRefDto? store,@JsonKey(fromJson: categoryRefFromJson, toJson: categoryRefToJson) CategoryRefDto? category,@JsonKey(fromJson: photoListFromJson, toJson: photoListToJson) List<String>? photos,@JsonKey(fromJson: optionsFromJson, toJson: optionsToJson) List<ProductOptionDto>? options,@JsonKey(fromJson: intOrNull) int? priceSyp,@JsonKey(fromJson: boolOrNull) bool? priceIsEstimate,@JsonKey(fromJson: boolOrNull) bool? canPurchase,@JsonKey(fromJson: boolOrNull) bool? available,@JsonKey(fromJson: stringOrNull) String? currencyListed,@JsonKey(fromJson: boolOrNull) bool? isFavorited,@JsonKey(fromJson: doubleOrNull) double? averageRating,@JsonKey(fromJson: intOrNull) int? reviewsCount,@JsonKey(fromJson: shareFromJson, toJson: shareToJson) ShareDto? share,@JsonKey(fromJson: seoFromJson, toJson: seoToJson) SeoDto? seo
+@JsonKey(fromJson: intOrNull) int? id,@JsonKey(fromJson: stringOrNull) String? slug,@JsonKey(fromJson: stringOrNull) String? path,@JsonKey(fromJson: stringOrNull) String? name,@JsonKey(fromJson: stringOrNull) String? description,@JsonKey(fromJson: storeRefFromJson, toJson: storeRefToJson) StoreRefDto? store,@JsonKey(fromJson: categoryRefFromJson, toJson: categoryRefToJson) CategoryRefDto? category,@JsonKey(fromJson: photoListFromJson, toJson: photoListToJson) List<String>? photos,@JsonKey(fromJson: optionsFromJson, toJson: optionsToJson) List<ProductOptionDto>? options,@JsonKey(fromJson: intOrNull) int? priceSyp,@JsonKey(fromJson: boolOrNull) bool? priceIsEstimate,@JsonKey(fromJson: boolOrNull) bool? canPurchase,@JsonKey(fromJson: boolOrNull) bool? available,@JsonKey(fromJson: stringOrNull) String? currencyListed,@JsonKey(fromJson: boolOrNull) bool? isFavorited,@JsonKey(fromJson: doubleOrNull) double? averageRating,@JsonKey(fromJson: intOrNull) int? reviewsCount,@JsonKey(fromJson: shareFromJson, toJson: shareToJson) ShareDto? share,@JsonKey(fromJson: seoFromJson, toJson: seoToJson) SeoDto? seo,@JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson) ViewerActivityDto? viewerActivity
 });
 
 
-@override $StoreRefDtoCopyWith<$Res>? get store;@override $CategoryRefDtoCopyWith<$Res>? get category;@override $ShareDtoCopyWith<$Res>? get share;@override $SeoDtoCopyWith<$Res>? get seo;
+@override $StoreRefDtoCopyWith<$Res>? get store;@override $CategoryRefDtoCopyWith<$Res>? get category;@override $ShareDtoCopyWith<$Res>? get share;@override $SeoDtoCopyWith<$Res>? get seo;@override $ViewerActivityDtoCopyWith<$Res>? get viewerActivity;
 
 }
 /// @nodoc
@@ -2369,7 +2712,7 @@ class __$ProductDetailDtoCopyWithImpl<$Res>
 
 /// Create a copy of ProductDetailDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? slug = freezed,Object? path = freezed,Object? name = freezed,Object? description = freezed,Object? store = freezed,Object? category = freezed,Object? photos = freezed,Object? options = freezed,Object? priceSyp = freezed,Object? priceIsEstimate = freezed,Object? canPurchase = freezed,Object? available = freezed,Object? currencyListed = freezed,Object? isFavorited = freezed,Object? averageRating = freezed,Object? reviewsCount = freezed,Object? share = freezed,Object? seo = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? slug = freezed,Object? path = freezed,Object? name = freezed,Object? description = freezed,Object? store = freezed,Object? category = freezed,Object? photos = freezed,Object? options = freezed,Object? priceSyp = freezed,Object? priceIsEstimate = freezed,Object? canPurchase = freezed,Object? available = freezed,Object? currencyListed = freezed,Object? isFavorited = freezed,Object? averageRating = freezed,Object? reviewsCount = freezed,Object? share = freezed,Object? seo = freezed,Object? viewerActivity = freezed,}) {
   return _then(_ProductDetailDto(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,slug: freezed == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
@@ -2390,7 +2733,8 @@ as bool?,averageRating: freezed == averageRating ? _self.averageRating : average
 as double?,reviewsCount: freezed == reviewsCount ? _self.reviewsCount : reviewsCount // ignore: cast_nullable_to_non_nullable
 as int?,share: freezed == share ? _self.share : share // ignore: cast_nullable_to_non_nullable
 as ShareDto?,seo: freezed == seo ? _self.seo : seo // ignore: cast_nullable_to_non_nullable
-as SeoDto?,
+as SeoDto?,viewerActivity: freezed == viewerActivity ? _self.viewerActivity : viewerActivity // ignore: cast_nullable_to_non_nullable
+as ViewerActivityDto?,
   ));
 }
 
@@ -2441,6 +2785,18 @@ $SeoDtoCopyWith<$Res>? get seo {
 
   return $SeoDtoCopyWith<$Res>(_self.seo!, (value) {
     return _then(_self.copyWith(seo: value));
+  });
+}/// Create a copy of ProductDetailDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ViewerActivityDtoCopyWith<$Res>? get viewerActivity {
+    if (_self.viewerActivity == null) {
+    return null;
+  }
+
+  return $ViewerActivityDtoCopyWith<$Res>(_self.viewerActivity!, (value) {
+    return _then(_self.copyWith(viewerActivity: value));
   });
 }
 }

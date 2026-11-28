@@ -16,6 +16,31 @@ ShareDto? shareFromJson(Object? raw) {
 
 Map<String, dynamic>? shareToJson(ShareDto? value) => value?.toJson();
 
+ViewerActivityDto? viewerActivityFromJson(Object? raw) {
+  if (raw is! Map) return null;
+  try {
+    return ViewerActivityDto.fromJson(Map<String, dynamic>.from(raw));
+  } catch (_) {
+    return null;
+  }
+}
+
+Map<String, dynamic>? viewerActivityToJson(ViewerActivityDto? value) =>
+    value?.toJson();
+
+/// `badges` arrives as `[{code, label}]`; a cached copy may hold plain labels.
+List<String> badgeLabelsFromJson(Object? raw) {
+  if (raw is! List) return const [];
+  final labels = <String>[];
+  for (final item in raw) {
+    final label = item is Map
+        ? stringOrNull(item['label'])
+        : stringOrNull(item);
+    if (label != null && label.isNotEmpty) labels.add(label);
+  }
+  return labels;
+}
+
 DeliveryPromiseDto? deliveryFromJson(Object? raw) {
   if (raw is! Map) return null;
   try {
@@ -272,10 +297,31 @@ abstract class ProductCardDto with _$ProductCardDto {
     @JsonKey(fromJson: doubleOrNull) double? averageRating,
     @JsonKey(fromJson: intOrNull) int? reviewsCount,
     @JsonKey(fromJson: shareFromJson, toJson: shareToJson) ShareDto? share,
+    @JsonKey(fromJson: stringOrNull) String? brandName,
+    @JsonKey(fromJson: boolOrNull) bool? brandVerified,
+    @JsonKey(fromJson: intOrNull) int? compareAtSyp,
+    @JsonKey(fromJson: intOrNull) int? discountPercent,
+    @JsonKey(fromJson: badgeLabelsFromJson) List<String>? badges,
+    @JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson)
+    ViewerActivityDto? viewerActivity,
   }) = _ProductCardDto;
 
   factory ProductCardDto.fromJson(Map<String, dynamic> json) =>
       _$ProductCardDtoFromJson(json);
+}
+
+/// `viewer_activity` on product cards: unique viewers in a recent window.
+@freezed
+abstract class ViewerActivityDto with _$ViewerActivityDto {
+  const factory ViewerActivityDto({
+    @JsonKey(fromJson: stringOrNull) String? metric,
+    @JsonKey(fromJson: intOrNull) int? count,
+    @JsonKey(fromJson: intOrNull) int? windowHours,
+    @JsonKey(fromJson: stringOrNull) String? asOf,
+  }) = _ViewerActivityDto;
+
+  factory ViewerActivityDto.fromJson(Map<String, dynamic> json) =>
+      _$ViewerActivityDtoFromJson(json);
 }
 
 @freezed
@@ -363,6 +409,8 @@ abstract class ProductDetailDto with _$ProductDetailDto {
     @JsonKey(fromJson: intOrNull) int? reviewsCount,
     @JsonKey(fromJson: shareFromJson, toJson: shareToJson) ShareDto? share,
     @JsonKey(fromJson: seoFromJson, toJson: seoToJson) SeoDto? seo,
+    @JsonKey(fromJson: viewerActivityFromJson, toJson: viewerActivityToJson)
+    ViewerActivityDto? viewerActivity,
   }) = _ProductDetailDto;
 
   factory ProductDetailDto.fromJson(Map<String, dynamic> json) =>

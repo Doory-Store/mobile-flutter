@@ -24,7 +24,7 @@ class ProductShelf extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (products.isEmpty) return const SizedBox.shrink();
-    final scale = MediaQuery.textScalerOf(context).scale(1).clamp(1.0, 1.6);
+    final scale = ProductCardMetrics.scaleOf(context);
     return RepaintBoundary(
       child: Padding(
         padding: const EdgeInsetsDirectional.only(top: 8, bottom: 8),
@@ -46,22 +46,22 @@ class ProductShelf extends StatelessWidget {
             ),
             LayoutBuilder(
               builder: (context, constraints) {
-                final cardWidth = ((constraints.maxWidth - 16) / 1.75).clamp(
-                  160.0,
-                  240.0,
+                // ≈ 0.335 of the width, so 2.7–2.8 cards show with the next
+                // one cut off (Trendyol home shelf).
+                final cardWidth = ProductCardMetrics.shelfCardWidth(
+                  constraints.maxWidth,
+                  scale,
                 );
-                final textHeight = 148 * scale;
-                final height = cardWidth * 1.5 + textHeight;
                 return SizedBox(
-                  height: height,
+                  height: ProductCardMetrics.cardHeight(cardWidth, scale),
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsetsDirectional.symmetric(
-                      horizontal: 16,
+                      horizontal: ProductCardMetrics.gap,
                     ),
                     itemCount: products.length,
                     separatorBuilder: (context, index) =>
-                        const SizedBox(width: 12),
+                        const SizedBox(width: ProductCardMetrics.gap),
                     itemBuilder: (context, index) {
                       return ProductCard(
                         product: products[index],

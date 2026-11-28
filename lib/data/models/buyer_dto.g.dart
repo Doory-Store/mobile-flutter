@@ -34,6 +34,12 @@ _ProductCardDto _$ProductCardDtoFromJson(Map<String, dynamic> json) =>
       averageRating: doubleOrNull(json['average_rating']),
       reviewsCount: intOrNull(json['reviews_count']),
       share: shareFromJson(json['share']),
+      brandName: stringOrNull(json['brand_name']),
+      brandVerified: boolOrNull(json['brand_verified']),
+      compareAtSyp: intOrNull(json['compare_at_syp']),
+      discountPercent: intOrNull(json['discount_percent']),
+      badges: badgeLabelsFromJson(json['badges']),
+      viewerActivity: viewerActivityFromJson(json['viewer_activity']),
     );
 
 Map<String, dynamic> _$ProductCardDtoToJson(_ProductCardDto instance) =>
@@ -54,6 +60,28 @@ Map<String, dynamic> _$ProductCardDtoToJson(_ProductCardDto instance) =>
       'average_rating': instance.averageRating,
       'reviews_count': instance.reviewsCount,
       'share': shareToJson(instance.share),
+      'brand_name': instance.brandName,
+      'brand_verified': instance.brandVerified,
+      'compare_at_syp': instance.compareAtSyp,
+      'discount_percent': instance.discountPercent,
+      'badges': instance.badges,
+      'viewer_activity': viewerActivityToJson(instance.viewerActivity),
+    };
+
+_ViewerActivityDto _$ViewerActivityDtoFromJson(Map<String, dynamic> json) =>
+    _ViewerActivityDto(
+      metric: stringOrNull(json['metric']),
+      count: intOrNull(json['count']),
+      windowHours: intOrNull(json['window_hours']),
+      asOf: stringOrNull(json['as_of']),
+    );
+
+Map<String, dynamic> _$ViewerActivityDtoToJson(_ViewerActivityDto instance) =>
+    <String, dynamic>{
+      'metric': instance.metric,
+      'count': instance.count,
+      'window_hours': instance.windowHours,
+      'as_of': instance.asOf,
     };
 
 _ProductOptionDto _$ProductOptionDtoFromJson(Map<String, dynamic> json) =>
@@ -139,6 +167,7 @@ _ProductDetailDto _$ProductDetailDtoFromJson(Map<String, dynamic> json) =>
       reviewsCount: intOrNull(json['reviews_count']),
       share: shareFromJson(json['share']),
       seo: seoFromJson(json['seo']),
+      viewerActivity: viewerActivityFromJson(json['viewer_activity']),
     );
 
 Map<String, dynamic> _$ProductDetailDtoToJson(_ProductDetailDto instance) =>
@@ -162,6 +191,7 @@ Map<String, dynamic> _$ProductDetailDtoToJson(_ProductDetailDto instance) =>
       'reviews_count': instance.reviewsCount,
       'share': shareToJson(instance.share),
       'seo': seoToJson(instance.seo),
+      'viewer_activity': viewerActivityToJson(instance.viewerActivity),
     };
 
 _CategoryDto _$CategoryDtoFromJson(Map<String, dynamic> json) => _CategoryDto(

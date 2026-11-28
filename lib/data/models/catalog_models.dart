@@ -14,6 +14,13 @@ class ProductCardModel {
     this.canPurchase = true,
     this.averageRating,
     this.reviewsCount = 0,
+    this.brandName,
+    this.brandVerified = false,
+    this.compareAtSyp,
+    this.discountPercent,
+    this.badgeLabels = const [],
+    this.viewers,
+    this.favoritesCount,
     this.sample = false,
   });
 
@@ -29,9 +36,49 @@ class ProductCardModel {
   final bool canPurchase;
   final double? averageRating;
   final int reviewsCount;
+
+  /// `brand_name` / `brand_verified` from the card payload.
+  final String? brandName;
+  final bool brandVerified;
+
+  /// `compare_at_syp` / `discount_percent`: a genuine struck price, if any.
+  final int? compareAtSyp;
+  final int? discountPercent;
+
+  /// `badges[].label`, for example «منتج محلي».
+  final List<String> badgeLabels;
+
+  /// `viewer_activity`: how many people looked at it recently.
+  final ViewerActivity? viewers;
+
+  /// How many buyers favourited it. Null means the server has no count
+  /// (show a red sample); 0 hides the line.
+  // BACKEND: MISSING `favorites_count` on GET /products, /home, /search.
+  final int? favoritesCount;
   final bool sample;
 
   String get ref => slug.isEmpty ? '$id' : slug;
+
+  /// The bold lead-in on the card: brand first, store as a fallback.
+  String? get sellerLabel => brandName ?? storeName;
+
+  /// A struck compare-at price shows only when it is real and higher.
+  bool get hasDiscount {
+    final price = priceSyp;
+    final compare = compareAtSyp;
+    return price != null &&
+        compare != null &&
+        compare > price &&
+        (discountPercent ?? 0) > 0;
+  }
+}
+
+/// Unique viewers over the last [windowHours] hours.
+class ViewerActivity {
+  const ViewerActivity({required this.count, required this.windowHours});
+
+  final int count;
+  final int windowHours;
 }
 
 class ProductOptionModel {
@@ -68,6 +115,7 @@ class ProductDetailModel {
     this.available = true,
     this.averageRating,
     this.reviewsCount = 0,
+    this.viewers,
     this.shareUrl,
     this.sample = false,
   });
@@ -90,6 +138,9 @@ class ProductDetailModel {
   final bool available;
   final double? averageRating;
   final int reviewsCount;
+
+  /// `viewer_activity` on GET /products/{id}.
+  final ViewerActivity? viewers;
   final String? shareUrl;
   final bool sample;
 
@@ -107,6 +158,7 @@ class ProductDetailModel {
       canPurchase: canPurchase,
       averageRating: averageRating,
       reviewsCount: reviewsCount,
+      viewers: viewers,
       sample: sample,
     );
   }
@@ -288,8 +340,21 @@ ProductCardModel? mapCard(ProductCardDto dto, {bool sample = false}) {
     canPurchase: dto.canPurchase ?? true,
     averageRating: dto.averageRating,
     reviewsCount: dto.reviewsCount ?? 0,
+    brandName: dto.brandName,
+    brandVerified: dto.brandVerified ?? false,
+    compareAtSyp: dto.compareAtSyp,
+    discountPercent: dto.discountPercent,
+    badgeLabels: dto.badges ?? const [],
+    viewers: _mapViewers(dto.viewerActivity),
     sample: sample,
   );
+}
+
+ViewerActivity? _mapViewers(ViewerActivityDto? dto) {
+  final count = dto?.count;
+  final hours = dto?.windowHours;
+  if (count == null || count <= 0 || hours == null || hours <= 0) return null;
+  return ViewerActivity(count: count, windowHours: hours);
 }
 
 List<ProductCardModel> mapCards(
@@ -366,6 +431,7 @@ ProductDetailModel? mapDetail(ProductDetailDto dto, {bool sample = false}) {
     available: dto.available ?? true,
     averageRating: dto.averageRating,
     reviewsCount: dto.reviewsCount ?? 0,
+    viewers: _mapViewers(dto.viewerActivity),
     shareUrl: dto.share?.url,
     sample: sample,
   );

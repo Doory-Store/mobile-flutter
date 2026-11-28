@@ -9,6 +9,13 @@ import 'package:doory_mobile/data/repositories/repo_result.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  test('compact counts use Latin digits and ألف / مليون', () {
+    expect(formatCompactCount(12), contains('12'));
+    expect(formatCompactCount(1247), contains('1.2 ألف'));
+    expect(formatCompactCount(1000), contains('1 ألف'));
+    expect(formatCompactCount(1200000), contains('1.2 مليون'));
+  });
+
   test('base URL drops a trailing slash', () {
     expect(
       AppConfig.normalizeBaseUrl('https://doory.elogyc.com/api/v1/'),
